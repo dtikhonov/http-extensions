@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-09T00:12:56.669808+00:00",
+  "timestamp": "2020-08-11T00:12:27.891067+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -64318,7 +64318,7 @@
       "labels": [],
       "body": "- Strengthened requirement for content identifiers for header fields to be lower-case (changed from SHOULD to MUST).\r\n- Relaxed guidance on processing Creation Time and Expiration Time to only require verifiers to examine them and test against the verifier\u2019s requirements.\r\n- Minor editorial corrections and readability improvements.\r\n\r\nResolves #1187, resolves #1188 ",
       "createdAt": "2020-07-24T23:14:24Z",
-      "updatedAt": "2020-07-24T23:14:24Z",
+      "updatedAt": "2020-08-10T19:55:57Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "a01b9d4abb116685fdad1061fd2f7ce6335c0748",
@@ -64330,7 +64330,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY0NTM0NTM2",
+          "commit": {
+            "abbreviatedOid": "b60a4cd"
+          },
+          "author": "jricher",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-08-10T19:55:57Z",
+          "updatedAt": "2020-08-10T19:55:57Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 1236,
