@@ -97,15 +97,15 @@ Table of Contents
        2.3.10. Connection Read Timeout . . . . . . . . . . . . . . .  10
        2.3.11. Connection Write Timeout  . . . . . . . . . . . . . .  10
        2.3.12. Connection Limit Reached  . . . . . . . . . . . . . .  11
-       2.3.13. HTTP Incomplete Response  . . . . . . . . . . . . . .  11
-       2.3.14. HTTP Protocol Error . . . . . . . . . . . . . . . . .  11
-       2.3.15. HTTP Response Header Block Too Large  . . . . . . . .  11
-       2.3.16. HTTP Response Header Too Large  . . . . . . . . . . .  12
-       2.3.17. HTTP Response Body Too Large  . . . . . . . . . . . .  12
-       2.3.18. HTTP Response Transfer-Coding Error . . . . . . . . .  12
-       2.3.19. HTTP Response Content-Coding Error  . . . . . . . . .  13
-       2.3.20. HTTP Response Timeout . . . . . . . . . . . . . . . .  13
-       2.3.21. TLS Protocol Error  . . . . . . . . . . . . . . . . .  13
+       2.3.13. TLS Protocol Error  . . . . . . . . . . . . . . . . .  11
+       2.3.14. TLS Certificate Error . . . . . . . . . . . . . . . .  11
+       2.3.15. TLS Alert Received  . . . . . . . . . . . . . . . . .  11
+       2.3.16. HTTP Request Error  . . . . . . . . . . . . . . . . .  12
+       2.3.17. HTTP Request Denied . . . . . . . . . . . . . . . . .  12
+       2.3.18. HTTP Incomplete Response  . . . . . . . . . . . . . .  12
+       2.3.19. HTTP Response Header Block Too Large  . . . . . . . .  13
+       2.3.20. HTTP Response Header Too Large  . . . . . . . . . . .  13
+       2.3.21. HTTP Response Body Too Large  . . . . . . . . . . . .  13
 
 
 
@@ -114,11 +114,11 @@ Nottingham & Sikora     Expires February 12, 2021               [Page 2]
 Internet-Draft                Proxy-Status                   August 2020
 
 
-       2.3.22. TLS Certificate Error . . . . . . . . . . . . . . . .  13
-       2.3.23. TLS Alert Received  . . . . . . . . . . . . . . . . .  14
-       2.3.24. HTTP Request Error  . . . . . . . . . . . . . . . . .  14
-       2.3.25. HTTP Request Denied . . . . . . . . . . . . . . . . .  14
-       2.3.26. HTTP Upgrade Failed . . . . . . . . . . . . . . . . .  15
+       2.3.22. HTTP Response Transfer-Coding Error . . . . . . . . .  14
+       2.3.23. HTTP Response Content-Coding Error  . . . . . . . . .  14
+       2.3.24. HTTP Response Timeout . . . . . . . . . . . . . . . .  14
+       2.3.25. HTTP Upgrade Failed . . . . . . . . . . . . . . . . .  14
+       2.3.26. HTTP Protocol Error . . . . . . . . . . . . . . . . .  15
        2.3.27. Proxy Internal Response . . . . . . . . . . . . . . .  15
        2.3.28. Proxy Internal Error  . . . . . . . . . . . . . . . .  15
        2.3.29. Proxy Configuration Error . . . . . . . . . . . . . .  15
@@ -130,7 +130,7 @@ Internet-Draft                Proxy-Status                   August 2020
      5.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
      5.2.  Informative References  . . . . . . . . . . . . . . . . .  18
      5.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  18
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 1.  Introduction
 
@@ -574,132 +574,7 @@ Internet-Draft                Proxy-Status                   August 2020
 
    o  Recommended HTTP status code: 503
 
-2.3.13.  HTTP Incomplete Response
-
-   o  Name: http_response_incomplete
-
-   o  Description: The intermediary received an incomplete response to
-      the request from the next hop.
-
-   o  Extra Parameters: None.
-
-   o  Recommended HTTP status code: 502
-
-2.3.14.  HTTP Protocol Error
-
-   o  Name: http_protocol_error
-
-   o  Description: The intermediary encountered a HTTP protocol error
-      when communicating with the next hop.  This error should only be
-      used when a more specific one is not defined.
-
-   o  Extra Parameters: None.
-
-   o  Recommended HTTP status code: 502
-
-2.3.15.  HTTP Response Header Block Too Large
-
-   o  Name: http_response_header_block_size
-
-   o  Description: The intermediary received a response to the request
-      whose header block was considered too large.
-
-   o  Extra Parameters:
-
-      *  header_block_size: a sf-integer indicating how large the
-         headers received were.  Note that they might not be complete;
-         i.e., the intermediary may have discarded or refused additional
-         data.
-
-
-
-Nottingham & Sikora     Expires February 12, 2021              [Page 11]
-
-Internet-Draft                Proxy-Status                   August 2020
-
-
-   o  Recommended HTTP status code: 502
-
-2.3.16.  HTTP Response Header Too Large
-
-   o  Name: http_response_header_size
-
-   o  Description: The intermediary received a response to the request
-      containing an individual header line that was considered too
-      large.
-
-   o  Extra Parameters:
-
-      *  header_name: a sf-string indicating the name of the header that
-         triggered the error.
-
-   o  Recommended HTTP status code: 502
-
-2.3.17.  HTTP Response Body Too Large
-
-   o  Name: http_response_body_size
-
-   o  Description: The intermediary received a response to the request
-      whose body was considered too large.
-
-   o  Extra Parameters:
-
-      *  body_size: a sf-integer indicating how large the body received
-         was.  Note that it may not have been complete; i.e., the
-         intermediary may have discarded or refused additional data.
-
-   o  Recommended HTTP status code: 502
-
-2.3.18.  HTTP Response Transfer-Coding Error
-
-   o  Name: http_response_transfer_coding
-
-   o  Description: The intermediary encountered an error decoding the
-      transfer-coding of the response.
-
-   o  Extra Parameters:
-
-      *  coding: a sf-token containing the specific coding that caused
-         the error.
-
-   o  Recommended HTTP status code: 502
-
-
-
-
-
-
-Nottingham & Sikora     Expires February 12, 2021              [Page 12]
-
-Internet-Draft                Proxy-Status                   August 2020
-
-
-2.3.19.  HTTP Response Content-Coding Error
-
-   o  Name: http_response_content_coding
-
-   o  Description: The intermediary encountered an error decoding the
-      content-coding of the response.
-
-   o  Extra Parameters:
-
-      *  coding: a sf-token containing the specific coding that caused
-         the error.
-
-   o  Recommended HTTP status code: 502
-
-2.3.20.  HTTP Response Timeout
-
-   o  Name: http_response_timeout
-
-   o  Description: The intermediary reached a configured time limit
-      waiting for the complete response.
-
-   o  Extra Parameters: None.
-
-   o  Recommended HTTP status code: 504
-
-2.3.21.  TLS Protocol Error
+2.3.13.  TLS Protocol Error
 
    o  Name: tls_protocol_error
 
@@ -711,7 +586,10 @@ Internet-Draft                Proxy-Status                   August 2020
 
    o  Recommended HTTP status code: 502
 
-2.3.22.  TLS Certificate Error
+   Note that additional information about the error can be recorded in
+   the details parameter (as is the case for all errors).
+
+2.3.14.  TLS Certificate Error
 
    o  Name: tls_certificate_error
 
@@ -722,20 +600,23 @@ Internet-Draft                Proxy-Status                   August 2020
 
    o  Recommended HTTP status code: 502
 
+   Note that additional information about the error can be recorded in
+   the details parameter (as is the case for all errors).
 
-
-
-Nottingham & Sikora     Expires February 12, 2021              [Page 13]
-
-Internet-Draft                Proxy-Status                   August 2020
-
-
-2.3.23.  TLS Alert Received
+2.3.15.  TLS Alert Received
 
    o  Name: tls_alert_received
 
    o  Description: The intermediary received a TLS alert from the next
       hop.
+
+
+
+
+Nottingham & Sikora     Expires February 12, 2021              [Page 11]
+
+Internet-Draft                Proxy-Status                   August 2020
+
 
    o  Extra Parameters:
 
@@ -744,7 +625,7 @@ Internet-Draft                Proxy-Status                   August 2020
 
    o  Recommended HTTP status code: 502
 
-2.3.24.  HTTP Request Error
+2.3.16.  HTTP Request Error
 
    o  Name: http_request_error
 
@@ -765,7 +646,7 @@ Internet-Draft                Proxy-Status                   August 2020
    This type helps distinguish between responses generated by
    intermediaries from those generated by the origin.
 
-2.3.25.  HTTP Request Denied
+2.3.17.  HTTP Request Denied
 
    o  Name: http_request_denied
 
@@ -777,6 +658,125 @@ Internet-Draft                Proxy-Status                   August 2020
 
    o  Recommended HTTP status code: 400
 
+2.3.18.  HTTP Incomplete Response
+
+   o  Name: http_response_incomplete
+
+   o  Description: The intermediary received an incomplete response to
+      the request from the next hop.
+
+   o  Extra Parameters: None.
+
+
+
+Nottingham & Sikora     Expires February 12, 2021              [Page 12]
+
+Internet-Draft                Proxy-Status                   August 2020
+
+
+   o  Recommended HTTP status code: 502
+
+2.3.19.  HTTP Response Header Block Too Large
+
+   o  Name: http_response_header_block_size
+
+   o  Description: The intermediary received a response to the request
+      whose header block was considered too large.
+
+   o  Extra Parameters:
+
+      *  header_block_size: a sf-integer indicating how large the
+         headers received were.  Note that they might not be complete;
+         i.e., the intermediary may have discarded or refused additional
+         data.
+
+   o  Recommended HTTP status code: 502
+
+2.3.20.  HTTP Response Header Too Large
+
+   o  Name: http_response_header_size
+
+   o  Description: The intermediary received a response to the request
+      containing an individual header line that was considered too
+      large.
+
+   o  Extra Parameters:
+
+      *  header_name: a sf-string indicating the name of the header that
+         triggered the error.
+
+   o  Recommended HTTP status code: 502
+
+2.3.21.  HTTP Response Body Too Large
+
+   o  Name: http_response_body_size
+
+   o  Description: The intermediary received a response to the request
+      whose body was considered too large.
+
+   o  Extra Parameters:
+
+      *  body_size: a sf-integer indicating how large the body received
+         was.  Note that it may not have been complete; i.e., the
+         intermediary may have discarded or refused additional data.
+
+   o  Recommended HTTP status code: 502
+
+
+
+
+Nottingham & Sikora     Expires February 12, 2021              [Page 13]
+
+Internet-Draft                Proxy-Status                   August 2020
+
+
+2.3.22.  HTTP Response Transfer-Coding Error
+
+   o  Name: http_response_transfer_coding
+
+   o  Description: The intermediary encountered an error decoding the
+      transfer-coding of the response.
+
+   o  Extra Parameters:
+
+      *  coding: a sf-token containing the specific coding that caused
+         the error.
+
+   o  Recommended HTTP status code: 502
+
+2.3.23.  HTTP Response Content-Coding Error
+
+   o  Name: http_response_content_coding
+
+   o  Description: The intermediary encountered an error decoding the
+      content-coding of the response.
+
+   o  Extra Parameters:
+
+      *  coding: a sf-token containing the specific coding that caused
+         the error.
+
+   o  Recommended HTTP status code: 502
+
+2.3.24.  HTTP Response Timeout
+
+   o  Name: http_response_timeout
+
+   o  Description: The intermediary reached a configured time limit
+      waiting for the complete response.
+
+   o  Extra Parameters: None.
+
+   o  Recommended HTTP status code: 504
+
+2.3.25.  HTTP Upgrade Failed
+
+   o  Name: http_upgrade_failed
+
+   o  Description: The HTTP Upgrade between the intermediary and the
+      next hop failed.
+
+   o  Extra Parameters: None.
 
 
 
@@ -786,16 +786,22 @@ Nottingham & Sikora     Expires February 12, 2021              [Page 14]
 Internet-Draft                Proxy-Status                   August 2020
 
 
-2.3.26.  HTTP Upgrade Failed
+   o  Recommended HTTP status code: 502
 
-   o  Name: http_upgrade_failed
+2.3.26.  HTTP Protocol Error
 
-   o  Description: The HTTP Upgrade between the intermediary and the
-      next hop failed.
+   o  Name: http_protocol_error
+
+   o  Description: The intermediary encountered a HTTP protocol error
+      when communicating with the next hop.  This error should only be
+      used when a more specific one is not defined.
 
    o  Extra Parameters: None.
 
    o  Recommended HTTP status code: 502
+
+   Note that additional information about the error can be recorded in
+   the details parameter (as is the case for all errors).
 
 2.3.27.  Proxy Internal Response
 
@@ -816,24 +822,18 @@ Internet-Draft                Proxy-Status                   August 2020
    o  Description: The intermediary encountered an internal error
       unrelated to the origin.
 
-   o  Extra Parameters:
-
-      *  error: a sf-string containing details about the error
-         condition.
+   o  Extra Parameters: None
 
    o  Recommended HTTP status code: 500
+
+   Note that additional information about the error can be recorded in
+   the details parameter (as is the case for all errors).
 
 2.3.29.  Proxy Configuration Error
 
    o  Name: proxy_configuration_error
 
-   o  Description: The intermediary encountered an error regarding its
-      configuration.
 
-   o  Extra Parameters:
-
-      *  error: a sf-string containing details about the error
-         condition.
 
 
 
@@ -842,7 +842,15 @@ Nottingham & Sikora     Expires February 12, 2021              [Page 15]
 Internet-Draft                Proxy-Status                   August 2020
 
 
+   o  Description: The intermediary encountered an error regarding its
+      configuration.
+
+   o  Extra Parameters: None
+
    o  Recommended HTTP status code: 500
+
+   Note that additional information about the error can be recorded in
+   the details parameter (as is the case for all errors).
 
 2.3.30.  Proxy Loop Detected
 
@@ -882,6 +890,14 @@ Internet-Draft                Proxy-Status                   August 2020
 
    o  Name: [a name for the Proxy Error Type that matches sf-token]
 
+
+
+
+Nottingham & Sikora     Expires February 12, 2021              [Page 16]
+
+Internet-Draft                Proxy-Status                   August 2020
+
+
    o  Description: [a description of the conditions that generate the
       Proxy Error Type]
 
@@ -890,13 +906,6 @@ Internet-Draft                Proxy-Status                   August 2020
 
    o  Recommended HTTP status code: [the appropriate HTTP status code
       for this entry]
-
-
-
-Nottingham & Sikora     Expires February 12, 2021              [Page 16]
-
-Internet-Draft                Proxy-Status                   August 2020
-
 
    See the registry at https://iana.org/assignments/http-proxy-status
    [5] for details on where to send registration requests.
@@ -934,15 +943,6 @@ Internet-Draft                Proxy-Status                   August 2020
               HTTP", draft-ietf-httpbis-header-structure-19 (work in
               progress), June 2020.
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
-
-   [RFC7301]  Friedl, S., Popov, A., Langley, A., and E. Stephan,
-              "Transport Layer Security (TLS) Application-Layer Protocol
-              Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
-              July 2014, <https://www.rfc-editor.org/info/rfc7301>.
 
 
 
@@ -953,6 +953,16 @@ Nottingham & Sikora     Expires February 12, 2021              [Page 17]
 
 Internet-Draft                Proxy-Status                   August 2020
 
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC7301]  Friedl, S., Popov, A., Langley, A., and E. Stephan,
+              "Transport Layer Security (TLS) Application-Layer Protocol
+              Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
+              July 2014, <https://www.rfc-editor.org/info/rfc7301>.
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
@@ -988,16 +998,6 @@ Internet-Draft                Proxy-Status                   August 2020
 
    [6] https://iana.org/assignments/http-proxy-statuses
 
-Authors' Addresses
-
-   Mark Nottingham
-   Fastly
-   made in
-   Prahran, VIC
-   Australia
-
-   Email: mnot@mnot.net
-   URI:   https://www.mnot.net/
 
 
 
@@ -1010,22 +1010,22 @@ Nottingham & Sikora     Expires February 12, 2021              [Page 18]
 Internet-Draft                Proxy-Status                   August 2020
 
 
+Authors' Addresses
+
+   Mark Nottingham
+   Fastly
+   made in
+   Prahran, VIC
+   Australia
+
+   Email: mnot@mnot.net
+   URI:   https://www.mnot.net/
+
+
    Piotr Sikora
    Google
 
    Email: piotrsikora@google.com
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
