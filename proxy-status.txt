@@ -156,7 +156,7 @@ Internet-Draft                Proxy-Status                   August 2020
 
    To enable these uses, Section 2 defines a new HTTP response field to
    allow intermediaries to convey details of their handling of a
-   response, Section 2.1 enumerates the kind of information taht can be
+   response, Section 2.1 enumerates the kind of information that can be
    conveyed, and Section 2.3 defines a set of error types for use when a
    proxy generates the response.
 
@@ -196,7 +196,7 @@ Internet-Draft                Proxy-Status                   August 2020
 
    It is a List [I-D.ietf-httpbis-header-structure]:
 
-   Cache-Status   = sf-list
+   Proxy-Status   = sf-list
 
    Each member of the list represents an intermediary that has handled
    the response.  The first member of the list represents the
@@ -207,8 +207,8 @@ Internet-Draft                Proxy-Status                   August 2020
 
    Proxy-Status: FooProxy, ExampleCDN
 
-   indicates that this response was handled first by FooAccelerator and
-   then ExampleCDN.
+   indicates that this response was handled first by FooProxy and then
+   ExampleCDN.
 
    Intermediaries determine when it is appropriate to add the Proxy-
    Status field to a response.  Some might decide to add it to all
