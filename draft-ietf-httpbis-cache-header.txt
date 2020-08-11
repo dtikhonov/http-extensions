@@ -4,8 +4,8 @@
 
 HTTP Working Group                                         M. Nottingham
 Internet-Draft                                                    Fastly
-Intended status: Standards Track                          August 5, 2020
-Expires: February 6, 2021
+Intended status: Standards Track                         August 11, 2020
+Expires: February 12, 2021
 
 
               The Cache-Status HTTP Response Header Field
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 6, 2021.
+   This Internet-Draft will expire on February 12, 2021.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Nottingham              Expires February 6, 2021                [Page 1]
+Nottingham              Expires February 12, 2021               [Page 1]
 
 Internet-Draft             Cache-Status Header               August 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Nottingham              Expires February 6, 2021                [Page 2]
+Nottingham              Expires February 12, 2021               [Page 2]
 
 Internet-Draft             Cache-Status Header               August 2020
 
@@ -141,10 +141,9 @@ Internet-Draft             Cache-Status Header               August 2020
    cache itself, if it chooses to append a value).
 
    Caches determine when it is appropriate to add the Cache-Status
-   header field to a response.  Some might decide to add it to all
-   responses, whereas others might only do so when specifically
-   configured to, or when the request contains a header that activates a
-   debugging mode.
+   header field to a response.  Some might add it to all responses,
+   whereas others might only do so when specifically configured to, or
+   when the request contains a header that activates a debugging mode.
 
    When adding a value to the Cache-Status header field, caches SHOULD
    preserve the existing contents of the header field, to allow
@@ -165,7 +164,8 @@ Internet-Draft             Cache-Status Header               August 2020
 
 
 
-Nottingham              Expires February 6, 2021                [Page 3]
+
+Nottingham              Expires February 12, 2021               [Page 3]
 
 Internet-Draft             Cache-Status Header               August 2020
 
@@ -182,10 +182,10 @@ Internet-Draft             Cache-Status Header               August 2020
 2.1.  The hit parameter
 
    "hit", when true, indicates that the request was satisfied by the
-   cache; i.e., it did not go forward and the response was obtained from
-   the cache.  A response that originally was produced by the origin but
-   was modified by the cache (for example, a 304 or 206 status code) is
-   still considered a hit.
+   cache; i.e., it did not go forward, and the response was obtained
+   from the cache.  A response that originally was produced by the
+   origin but was modified by the cache (for example, a 304 or 206
+   status code) is still considered a hit.
 
    "hit" and "fwd" are exclusive; only one of them should appear on each
    list member.
@@ -221,7 +221,7 @@ Internet-Draft             Cache-Status Header               August 2020
 
 
 
-Nottingham              Expires February 6, 2021                [Page 4]
+Nottingham              Expires February 12, 2021               [Page 4]
 
 Internet-Draft             Cache-Status Header               August 2020
 
@@ -235,7 +235,7 @@ Internet-Draft             Cache-Status Header               August 2020
 
    This parameter is useful to distinguish cases when the next hop
    server sends a 304 Not Modified response to a conditional request, or
-   a 206 Partial Response due to a range request.
+   a 206 Partial Response because of a range request.
 
 2.4.  The ttl parameter
 
@@ -277,7 +277,7 @@ Internet-Draft             Cache-Status Header               August 2020
 
 
 
-Nottingham              Expires February 6, 2021                [Page 5]
+Nottingham              Expires February 12, 2021               [Page 5]
 
 Internet-Draft             Cache-Status Header               August 2020
 
@@ -333,7 +333,7 @@ Internet-Draft             Cache-Status Header               August 2020
 
 
 
-Nottingham              Expires February 6, 2021                [Page 6]
+Nottingham              Expires February 12, 2021               [Page 6]
 
 Internet-Draft             Cache-Status Header               August 2020
 
@@ -380,36 +380,35 @@ Internet-Draft             Cache-Status Header               August 2020
 
 6.  Security Considerations
 
-   Information about a cache's content can be used to infer the activity
-   of those using it.  Generally, access to sensitive information in a
-   cache is limited to those who are authorised to access that
-   information (using a variety of techniques), so this does not
-   represent an attack vector in the general sense.
+   Attackers can use the information in Cache-Status to probe the
+   behaviour of the cache (and other components), and infer the activity
+   of those using the cache.  The Cache-Status header field may not
+   create these risks on its own, but can assist attackers in exploiting
+   them.
 
 
 
 
-Nottingham              Expires February 6, 2021                [Page 7]
+Nottingham              Expires February 12, 2021               [Page 7]
 
 Internet-Draft             Cache-Status Header               August 2020
 
 
-   However, if the Cache-Status header field is exposed to parties who
-   are not authorised to obtain the response it occurs within, it could
-   expose information about that data.
+   For example, knowing if a cache has stored a response can help an
+   attacker execute a timing attack on sensitive data.  Exposing the
+   cache key can help an attacker understand modifications to the cache
+   key, which may assist cache poisoning attacks.  See [ENTANGLE] for
+   details.
 
-   For example, if an attacker were able to obtain the Cache-Status
-   header field from a response containing sensitive information and
-   access were limited to one person (or limited set of people), they
-   could determine whether that information had been accessed before.
-   This is similar to the information exposed by various timing attacks,
-   but is arguably more reliable, since the cache is directly reporting
-   its state.
+   The underlying risks can be mitigated with a variety of techniques
+   (e.g., use of encryption and authentication; avoiding the inclusion
+   of attacker-controlled data in the cache key), depending on their
+   exact nature.
 
-   Mitigations include use of encryption (e.g., TLS [RFC8446])) to
-   protect the response, and careful controls over access to response
-   header fields (as are present in the Web platform).  When in doubt,
-   the Cache-Status header field can be omitted.
+   To avoid assisting such attacks, the Cache-Status header field can be
+   omitted, only sent when the client is authorized to receive it, or
+   only send sensitive information (e.g., the key parameter) when the
+   client is authorized.
 
 7.  References
 
@@ -445,16 +444,19 @@ Internet-Draft             Cache-Status Header               August 2020
 
 
 
-Nottingham              Expires February 6, 2021                [Page 8]
+
+Nottingham              Expires February 12, 2021               [Page 8]
 
 Internet-Draft             Cache-Status Header               August 2020
 
 
 7.2.  Informative References
 
-   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
-              <https://www.rfc-editor.org/info/rfc8446>.
+   [ENTANGLE]
+              Kettle, J., "Web Cache Entanglement: Novel Pathways to
+              Poisoning", n.d., <https://i.blackhat.com/USA-
+              20/Wednesday/us-20-Kettle-Web-Cache-Entanglement-Novel-
+              Pathways-To-Poisoning-wp.pdf>.
 
 7.3.  URIs
 
@@ -499,6 +501,4 @@ Author's Address
 
 
 
-
-
-Nottingham              Expires February 6, 2021                [Page 9]
+Nottingham              Expires February 12, 2021               [Page 9]
