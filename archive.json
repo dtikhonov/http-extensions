@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-11T00:12:27.891067+00:00",
+  "timestamp": "2020-08-13T00:12:25.190300+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -23686,15 +23686,15 @@
       "id": "MDU6SXNzdWU1MDA3OTI3NDM=",
       "title": "SEARCH method",
       "url": "https://github.com/httpwg/http-extensions/issues/943",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "asbjornu",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "As requested by @reschke in httpwg/http-core#250, I'm creating an issue for the specification of the `SEARCH` method as an alternative to `POST`, making search requests safe, idempotent and cacheable.\r\n\r\nAs discussed in the HTTP Workshop in May, `GET` requests with a body is in use by large vendors such as Elasticsearch (see elastic/elasticsearch#16024) and their interpretation of the spec being that this is \"just fine\" (see https://github.com/elastic/elasticsearch-php/issues/737#issuecomment-378590773). Language is hopefully being added to the spec that makes this not seem \"just fine\" anymore, but I think we also need to provide a solution to the specific problem of not wanting to jam JSON into a URL to be able to use the `GET` keyword.\r\n\r\nWhile `POST` with the header defined in #942 would help, `POST` is still an unsafe method that poorly reflects the safe, idempotent semantics of search-like operations. I therefore argue that a a `SEARCH` method is needed to have a safe, idempotent method with explicit caching support, in opposition to `POST` which explicitly is **not cacheable**.\r\n\r\nThe [current draft](https://tools.ietf.org/html/draft-snell-search-method-01) for `SEARCH` is written by @jasnell, but I hope he would be willing to hand over the spec to someone else.",
       "createdAt": "2019-10-01T10:02:26Z",
-      "updatedAt": "2020-07-16T00:53:46Z",
-      "closedAt": null,
+      "updatedAt": "2020-08-11T02:45:36Z",
+      "closedAt": "2020-08-11T02:45:36Z",
       "comments": [
         {
           "author": "MikeBishop",
@@ -23723,6 +23723,13 @@
           "body": "I think `SEARCH` is to specific. What about `FETCH` or `RETRIEVE`?",
           "createdAt": "2020-07-16T00:53:46Z",
           "updatedAt": "2020-07-16T00:53:46Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "See https://github.com/httpwg/admin/issues/2. ",
+          "createdAt": "2020-08-11T02:45:36Z",
+          "updatedAt": "2020-08-11T02:45:36Z"
         }
       ]
     },
@@ -27861,16 +27868,18 @@
     {
       "number": 1163,
       "id": "MDU6SXNzdWU2MDg1NDAzNTI=",
-      "title": "RFC 6265bis: Specify that document.cookie should not be able to access SameSite cookies in cross-site iframes",
+      "title": "document.cookie should not be able to access SameSite cookies in cross-site iframes",
       "url": "https://github.com/httpwg/http-extensions/issues/1163",
       "state": "OPEN",
       "author": "chlily1",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "6265bis"
+      ],
       "body": "[Per mikewest](https://crbug.com/1075610#c5): \r\n\r\n> No, cross-site frames should not be able to access `SameSite=AnythingButNone` cookies via `document.cookie`. The spec doesn't make this clear (you have to read between the lines of bullet 5 of step 1 of https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-06#section-5.5), so we should change the spec.",
       "createdAt": "2020-04-28T18:55:56Z",
-      "updatedAt": "2020-05-13T16:44:25Z",
+      "updatedAt": "2020-08-11T02:46:40Z",
       "closedAt": null,
       "comments": [
         {
@@ -28934,7 +28943,7 @@
       "id": "MDU6SXNzdWU2NTc5Mzc4NjE=",
       "title": "TLS [Untrusted, Expired] Peer Certificate",
       "url": "https://github.com/httpwg/http-extensions/issues/1227",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "mnot-fastly",
       "authorAssociation": "NONE",
       "assignees": [],
@@ -28943,8 +28952,8 @@
       ],
       "body": "Looking at what to map x509 errors (as returned by [openssl](https://www.openssl.org/docs/manmaster/man3/X509_STORE_CTX_get_error.html) into, the most obvious one is `tls_untrusted_peer_certificate`. \r\n\r\nHowever, there's also `tls_expired_peer_certificate`, which is one of these errors. It seems odd to have these two, but not any of the many other verification errors.\r\n\r\nAt first glance, I suspect it may be better to have a single `tls_peer_certificate_verification` error, and let the `detail` convey the reason - whether it's expiration or something else.",
       "createdAt": "2020-07-16T07:36:46Z",
-      "updatedAt": "2020-07-27T06:08:57Z",
-      "closedAt": null,
+      "updatedAt": "2020-08-11T02:22:30Z",
+      "closedAt": "2020-08-11T02:22:30Z",
       "comments": [
         {
           "author": "PiotrSikora",
@@ -29359,10 +29368,12 @@
       "author": "amtunlimited",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "client-hints"
+      ],
       "body": "> User agents MUST clear persisted opt-in preferences when any one of site data, browsing history, browsing cache, cookies, or similar, are cleared.\r\n\r\nBrowsing history seems to stand out to me here. There are a couple of pedantic questions (does this mean full history, or back beyond a certain amount of time?) and doesn't seem to fit with precedent. In general, I don't expect much other information to be cleared when removing history information, but that might very well just be me.",
       "createdAt": "2020-07-31T14:49:44Z",
-      "updatedAt": "2020-07-31T16:34:26Z",
+      "updatedAt": "2020-08-12T16:39:44Z",
       "closedAt": null,
       "comments": [
         {
@@ -29371,6 +29382,34 @@
           "body": "I agree the text seems a bit overprescriptive here. I could imagine UAs that want to clear it with browsing history and UAs that don't, depending on what they're trying to accomplish. It's a question of which \"please forget this\" use cases the browser is aiming to meet with each option.\r\n\r\nPerhaps the UA has an option whose aim is \"please make this site forget about me\". Then the UA should clear client hint preferences, site data, and cache, but may or may not decide history is separate. (Assuming the history is not web-visible!) Or perhaps the aim is \"I don't want these links to appear in address bar completions\". Then perhaps the UA will clear just history but not any site data because the user didn't ask to be logged out. Or perhaps the UA wants to combine these two into one option. Or perhaps the option is for developers, to clear particular pieces of cache to diagnose some issue. Then maybe the client hint cache should be cleared or maybe the option is just about the HTTP cache.\r\n\r\nIdeally the text would capture enough that UAs can make the correct decision for each of their features. (And, since it has privacy implications when UAs forget, probably explicitly call out clearing this in \"please make this site forget about me\" cases like clearing cookies and site data.)",
           "createdAt": "2020-07-31T16:34:26Z",
           "updatedAt": "2020-07-31T16:34:26Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "FWIW, the spec has been approved early July and is in the RFC Editor queue (see https://datatracker.ietf.org/doc/draft-ietf-httpbis-client-hints/). Changes at this stage can only be done with a lot of care.",
+          "createdAt": "2020-08-12T14:44:36Z",
+          "updatedAt": "2020-08-12T14:44:36Z"
+        },
+        {
+          "author": "amtunlimited",
+          "authorAssociation": "NONE",
+          "body": "@reschke I was unaware, thank you.\r\n\r\n@davidben I guess the question is is the issue worth poking? I don't think it'd consider it a blocker for publishing, but I'm not super experienced in the standards processes, where I suppose things are less \"tweakable\" after-the-fact",
+          "createdAt": "2020-08-12T15:15:40Z",
+          "updatedAt": "2020-08-12T15:15:40Z"
+        },
+        {
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ah yeah, the timing is awkward. At the same time, I don't think it does anyone any good if the document does not match what people intend to implement. Since browsing history is, well, a browser notion, I suppose the main question is what browser implementors would do.\r\n\r\nChecking Firefox, it has separate dialogs altogether for \"Clear [Site] Data\" and \"Clear History\", with the latter sectioned under what Firefox remembers, not what the site remembers. The clear history dialog does have separate checkboxes for \"Browsing & Download History\" vs \"Cookies\" and \"Cache\", but if I tell it to just clear the browser-side history it, as one would expect, does not clear HTML localStorage (to pick an example of site state not explicitly covered under here).\r\n\r\nThat and the description suggests to me that, like in Chrome, the \"Browsing & Download History\" option is a \"I don't want to see this in browser completions\" feature, not a \"I want the site to forget about me\" feature, and so it would not make sense to associate the Client Hint cache with browsing history, only cookies and/or cache. @martinthomson, would you agree with this?\r\n\r\nIf so, I think that supports https://github.com/httpwg/http-extensions/issues/1238#issuecomment-667216778 and the current text is too prescriptive. Since it's late in the process and we probably don't want to make large changes, perhaps we should simply strike \"browsing history\" from the list. Then implementors can make a judgement as to whether \"or similar\" covers browsing history for their particular context.",
+          "createdAt": "2020-08-12T16:30:52Z",
+          "updatedAt": "2020-08-12T16:30:52Z"
+        },
+        {
+          "author": "amtunlimited",
+          "authorAssociation": "NONE",
+          "body": "> perhaps we should simply strike \"browsing history\" from the list. Then implementors can make a judgement as to whether \"or similar\" covers browsing history for their particular context.\r\n\r\nSounds good to me; I can adjust the PR to match. Is there any process for getting changes propagated not that it's moved on to the next step?",
+          "createdAt": "2020-08-12T16:39:44Z",
+          "updatedAt": "2020-08-12T16:39:44Z"
         }
       ]
     },
@@ -29379,7 +29418,7 @@
       "id": "MDU6SXNzdWU2NzI1MjAxMjM=",
       "title": "Give guidance about how to choose an error code",
       "url": "https://github.com/httpwg/http-extensions/issues/1240",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "mnot",
       "authorAssociation": "MEMBER",
       "assignees": [],
@@ -29388,8 +29427,8 @@
       ],
       "body": "",
       "createdAt": "2020-08-04T05:39:53Z",
-      "updatedAt": "2020-08-04T05:39:53Z",
-      "closedAt": null,
+      "updatedAt": "2020-08-11T02:53:26Z",
+      "closedAt": "2020-08-11T02:53:26Z",
       "comments": []
     },
     {
@@ -29401,10 +29440,12 @@
       "author": "annevk",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "6265bis"
+      ],
       "body": "Could someone please explain the history behind why we have two drafts (https://tools.ietf.org/html/draft-west-cookie-incrementalism and https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis) that are somewhat incompatible with each other? Could the proposals that have support from the WG move into RFC6265bis?",
       "createdAt": "2020-08-05T14:49:01Z",
-      "updatedAt": "2020-08-06T02:56:25Z",
+      "updatedAt": "2020-08-11T02:46:17Z",
       "closedAt": null,
       "comments": [
         {
@@ -64441,24 +64482,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDYyNTMxOTQ4",
       "title": "Collapse TLS errors down to two.",
       "url": "https://github.com/httpwg/http-extensions/pull/1239",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "mnot",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "Fixes #1227.",
       "createdAt": "2020-08-04T05:09:34Z",
-      "updatedAt": "2020-08-07T09:56:25Z",
+      "updatedAt": "2020-08-11T02:22:31Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "a8e1cdd7ceeb07c2c078629447e4a0ba10de9a05",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "mnot-1227",
-      "headRefOid": "414581c3e4bde7dca40a94dffb61cfefa94e4277",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "04284da1b9d4a155b82968342bfbeb80f35df23e",
+      "closedAt": "2020-08-11T02:22:30Z",
+      "mergedAt": "2020-08-11T02:22:30Z",
+      "mergedBy": "mnot",
+      "mergeCommit": {
+        "oid": "1e62b7a358791f877b822a50e40f1791b9635bfa"
+      },
       "comments": [
         {
           "author": "mnot",
@@ -64508,6 +64551,13 @@
           "body": "As someone who spent countless hours debugging connection issues to various origin servers, my main concern is that `tls_certificate_error` alone doesn't provide enough information as to why the connection failed, it only narrows it down to a TLS certificate issue, but for anything definitive that you would want to share with the customer, you'd still need to go and dig further into logs, or try to replicate the issue. Yes, I know that you could put more information in the \"details\" field, but I'm not a big fan of implementation-specific free-form text.\r\n\r\nHaving said that, I'm not going to oppose if you prefer to have only those 3 generic fields.",
           "createdAt": "2020-08-07T09:55:47Z",
           "updatedAt": "2020-08-07T09:55:47Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks. As Ryan points out, the problem is that implementations have different terminology and granularity of error reporting, and it's not the place of this specification to impose that on them.",
+          "createdAt": "2020-08-11T02:21:39Z",
+          "updatedAt": "2020-08-11T02:21:39Z"
         }
       ],
       "reviews": [
@@ -64527,7 +64577,7 @@
               "originalPosition": 40,
               "body": "So in looking in context, this error stands out as being the only one that explicitly mentions `details`, which might cause some confusion. For example, `http_protocol_error` doesn't mention `details`, yet you use so as part of the illustrative example.\r\n\r\nFor what it's worth, you *could* split this into two: `tls_protocol_error` and `tls_certificate_error`. The former indicates something went wrong with the TLS protocol (which could include both handshake and ongoing use), while the latter indicates an error while verifying the certificate (for which `details` is useful). Similar to `http_protocol_error`, it serves as both the fallback (e.g. if the proxy doesn't expose certificate errors distinct from TLS errors and treats them just as handshake errors) and as a distinct state (errors sending that may not result in a peer alert - e.g. if it receives a malformed message *from* the peer)",
               "createdAt": "2020-08-04T17:36:28Z",
-              "updatedAt": "2020-08-06T02:03:14Z"
+              "updatedAt": "2020-08-11T02:21:00Z"
             }
           ]
         },
@@ -64547,7 +64597,7 @@
               "originalPosition": 40,
               "body": "Thanks, that's helpful. PTAL.",
               "createdAt": "2020-08-06T02:03:23Z",
-              "updatedAt": "2020-08-06T02:03:23Z"
+              "updatedAt": "2020-08-11T02:21:00Z"
             }
           ]
         },
@@ -64567,19 +64617,19 @@
               "originalPosition": 18,
               "body": "Would this be sent instead of `http_response_incomplete`, for example?",
               "createdAt": "2020-08-07T01:56:21Z",
-              "updatedAt": "2020-08-07T02:00:57Z"
+              "updatedAt": "2020-08-11T02:21:00Z"
             },
             {
               "originalPosition": 44,
               "body": "I think this should still stay, since it applies to proxy certificate.",
               "createdAt": "2020-08-07T01:56:57Z",
-              "updatedAt": "2020-08-07T02:00:57Z"
+              "updatedAt": "2020-08-11T02:21:00Z"
             },
             {
               "originalPosition": 51,
               "body": "I think this should still stay, since it applies to proxy certificate...\r\n\r\nAlthough, this could probably be reported as `tls_error_received ` in TLS 1.3.",
               "createdAt": "2020-08-07T01:57:55Z",
-              "updatedAt": "2020-08-07T02:00:57Z"
+              "updatedAt": "2020-08-11T02:21:00Z"
             }
           ]
         },
@@ -64599,7 +64649,7 @@
               "originalPosition": 18,
               "body": "Possibly, depending on how the implementation works. Note that we have an open issue regarding guidance for generating appropriate error codes.",
               "createdAt": "2020-08-07T02:06:44Z",
-              "updatedAt": "2020-08-07T02:06:45Z"
+              "updatedAt": "2020-08-11T02:21:00Z"
             }
           ]
         },
@@ -64619,11 +64669,93 @@
               "originalPosition": 61,
               "body": "Nit: `tls_alert_received` would be technically more correct.",
               "createdAt": "2020-08-07T09:56:24Z",
-              "updatedAt": "2020-08-07T09:56:25Z"
+              "updatedAt": "2020-08-11T02:21:00Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY0NzA0OTg3",
+          "commit": {
+            "abbreviatedOid": "414581c"
+          },
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-11T02:20:59Z",
+          "updatedAt": "2020-08-11T02:20:59Z",
+          "comments": [
+            {
+              "originalPosition": 61,
+              "body": "Done.",
+              "createdAt": "2020-08-11T02:20:59Z",
+              "updatedAt": "2020-08-11T02:21:00Z"
             }
           ]
         }
       ]
+    },
+    {
+      "number": 1242,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDY2MjY1ODU5",
+      "title": "Fix typos.",
+      "url": "https://github.com/httpwg/http-extensions/pull/1242",
+      "state": "MERGED",
+      "author": "PiotrSikora",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Signed-off-by: Piotr Sikora <piotrsikora@google.com>",
+      "createdAt": "2020-08-11T18:03:57Z",
+      "updatedAt": "2020-08-11T23:38:24Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "9300074e9498eab0a7c56436654a76c305e83081",
+      "headRepository": "PiotrSikora/http-extensions",
+      "headRefName": "proxy_status-typos",
+      "headRefOid": "23c524aaf2be1971e2d622084351145672eec9af",
+      "closedAt": "2020-08-11T23:38:23Z",
+      "mergedAt": "2020-08-11T23:38:23Z",
+      "mergedBy": "mnot",
+      "mergeCommit": {
+        "oid": "e2756751a3db99fe3cf9a88648b2e58481584235"
+      },
+      "comments": [
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks!",
+          "createdAt": "2020-08-11T23:38:13Z",
+          "updatedAt": "2020-08-11T23:38:13Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 1243,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDY2ODA5ODAw",
+      "title": "Clearer and less prescriptive wording for when to delete Client Hint persistence preferences",
+      "url": "https://github.com/httpwg/http-extensions/pull/1243",
+      "state": "OPEN",
+      "author": "amtunlimited",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Fix: #1238 \r\n\r\n@yoavweiss \r\n@igrigorik \r\n@davidben ",
+      "createdAt": "2020-08-12T14:29:56Z",
+      "updatedAt": "2020-08-12T14:29:56Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "a3c00db173ed74703dd0d0b6d16d72add63cd761",
+      "headRepository": "amtunlimited/http-extensions",
+      "headRefName": "ch-delete-better",
+      "headRefOid": "978c62e8299a86597adf78d534ed97d74ec09650",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
