@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-13T00:12:25.190300+00:00",
+  "timestamp": "2020-08-16T00:12:54.273017+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -21682,7 +21682,7 @@
       ],
       "body": "## I expect\r\n\r\nThis spec to provide an RFC3230 compatible example of digest-algorithm with parameters.\r\n\r\nRFC3230 stated that:\r\n\r\n```\r\n   For some algorithms, one or more parameters may be\r\n   supplied.\r\n\r\n      digest-algorithm = token\r\n\r\n   The BNF for \"parameter\" is as is used in RFC 2616 [4].  All digest-\r\n   algorithm values are case-insensitive.\r\n```\r\n\r\nbut:\r\n\r\n- provided no example of parameterized algorithms\r\n\r\nIn this draft we *preserved that sentence* but:\r\n\r\n- still did not provide an example of parameterized algorithm;\r\n- still did not update the reference to BNF to the latest http spec.\r\n\r\nIn #1213 there's a possible fix to support parameters, like the following\r\n\r\n```\r\nDigest: myhash=dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs=; param1=40\r\n\r\n```\r\n\r\n## Notes\r\n\r\nUse cases are parametrizable digest-algorithms like mi-sha256.\r\n\r\nAnother solution could be to *deprecate* field parameters in digest: parameters could still be adopted serializing them in the digest-value, and leaving the specification/serialization to the definition of the digest-algorithm. eg:\r\n```\r\nDigest: myhash=40/dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs\r\n```",
       "createdAt": "2019-07-09T14:32:36Z",
-      "updatedAt": "2020-07-06T12:15:03Z",
+      "updatedAt": "2020-08-13T13:15:47Z",
       "closedAt": null,
       "comments": [
         {
@@ -21705,6 +21705,13 @@
           "body": "@reschke I agree. My question is whether it's better to:\r\n\r\n- leave digest-algorithm implementors to define a way to pass parameters via the serialization\r\n- standardize the way parameters are passed.\r\n\r\nGuidance on that is welcome.",
           "createdAt": "2020-07-06T12:15:03Z",
           "updatedAt": "2020-07-06T12:15:03Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@mnot removal of Digest parameters would be a case where our update work deviates a bit further from what we might have initially had in mind. As Julian points out its fine to do so, however I want to make this more visibile before we take a decision.",
+          "createdAt": "2020-08-13T13:15:47Z",
+          "updatedAt": "2020-08-13T13:15:47Z"
         }
       ]
     },
@@ -21722,9 +21729,17 @@
       ],
       "body": "## I expect\r\n\r\nTo better detail the usage of `Digest` in signatures, including:\r\n\r\n- [x] you need a transport-layer integrity mechanism for the whole message;\r\n- [x] what should be included in signature for integrity (representation metadata affecting digest-algorithms)\r\n- [ ] issues with signing partial representations (eg. Range-Request, PATCH, ..)\r\n- [x] using strong crypto algorithms\r\n\r\nThis should be done:\r\n\r\n- [ ] respecting the dependency model is that a signature doesn't need to include a digest but it can;\r\n- [ ] don't explain too much of signature risks inverting the dependency;\r\n- [ ] add useful guidance that is relevant to Digest and expected usages but without also defining the expected usages completely.\r\n\r\n## Questions\r\n\r\n- consider signing `Content-Length` too ([it's a representation-metadata in http-core](https://tools.ietf.org/html/draft-ietf-httpbis-semantics-04#section-6.2)), though it would eliminate the ability to do things like chunked transfer-encoding, which is quite common. @dlongley\r\n\r\n## Previous discussions\r\n\r\nWhat we have today is probably sufficient but we're open to compelling reasons on what would be really helpful to define in this document.\r\n\r\nThe followings may be out-of-scope:\r\n\r\n  - [length-extension attack on the signature](https://en.wikipedia.org/wiki/Length_extension_attack): Digest should not be subject to length extension attacks because **it doesn't provide a proof of origin**;\r\n  - which other signature data unrelated to `Digest` (eg. timestamp, method & co)\r\n",
       "createdAt": "2019-07-09T14:53:27Z",
-      "updatedAt": "2020-04-15T15:20:19Z",
+      "updatedAt": "2020-08-13T13:18:26Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What does it take to close this issue?\r\n\r\nSince we opened it, the HTTP WG has adopted a signautes draft. Does that move the needle on any questions we have?  Can we spin out anything or makr them as won't do?",
+          "createdAt": "2020-08-13T13:18:26Z",
+          "updatedAt": "2020-08-13T13:18:26Z"
+        }
+      ]
     },
     {
       "number": 852,
@@ -21740,7 +21755,7 @@
       ],
       "body": "## I wish\r\n\r\nA threat model for `Digest`.\r\n\r\n## Questions\r\n\r\n- is this useful/required?\r\n- should this go into Security Considerations or in another document?",
       "createdAt": "2019-07-10T09:44:07Z",
-      "updatedAt": "2019-07-24T08:57:27Z",
+      "updatedAt": "2020-08-13T13:19:47Z",
       "closedAt": null,
       "comments": [
         {
@@ -21749,6 +21764,13 @@
           "body": "# Security issues for HTTP Digest\r\n\r\n## Actors\r\n\r\n- User\r\n- User-Agent: see RFC7230\r\n- Intermediaries that do not do TLS termination\r\n- Intermediaries that do TLS termination.\r\n\r\n- Application: the application actually running the service\r\n\r\n## Attacker capabilities\r\n\r\n1. Intermediaries can alter HTTP messages\r\n\r\n2. Intermediaries that do transport-layer termination can alter HTTP messages\r\n\r\n3. The application can erroneously or purposedly alter the message\r\n\r\n4. User can forge messages with the same checksum values\r\n\r\n## Attacker non-capabilities\r\n\r\n# Attacks and mitigations\r\n\r\n## Alteration of HTTP message headers\r\n\r\n### The attack\r\n\r\nAn intermediary can alter an HTTP header by chance or purpose.\r\n\r\n### Proposed mitigation\r\n\r\nUse an end-to-end transport-layer security mechanism.\r\n\r\n\r\n## Alteration of HTTP representation-metadata headers\r\n\r\n### The attack\r\n\r\nA TLS-terminator intermediary can alter representation-metadata by chance or purpose.\r\n\r\n### Proposed mitigation\r\n\r\nUse a signature mechanism that covers both `Digest` and the representation-metadata.\r\n\r\n## Send a Digest header with a different payload\r\n\r\n### The attack\r\n\r\nA TLS-terminator intermediary can replace the representation-data with another\r\none having the same digest-algorithm.\r\n\r\nA malicious User can forge two messages with:\r\n\r\n  - different representation-data\r\n  - same Digest header values\r\n  \r\nsend an HTTP message with the first representation-data\r\nthen pretend he sent the one with the second representation-data.\r\n\r\nA malicious Server could implement a similar behavior.\r\n\r\n### Proposed mitigation\r\n\r\nUse a digest-algorithm that is not subject to collision (eg. sha-256),\r\nor refuse to use digest-algorithms subect to collision.\r\n\r\n## Server resource exhaustion for calculating Digest on huge representation-data\r\n\r\n### The attack\r\n\r\nA User could exhaust server resources by chance or purpose via:\r\n\r\n1- sending a huge representation\r\n2- digest calculation of the complete representation\r\n3- forcing the server to evaluate the digest of the included representation\r\n\r\n### Proposed mitigation\r\n\r\nTo consume huge representation-data, you may consider\r\nmechanisms sending progressive integrity checksums in the payload body\r\nand just use `Digest` to provide the last checksum value.\r\n\r\n## Server resource exhaustion for calculating Digest on partial representations\r\n\r\n### The attack\r\n\r\nA malicious User could exhaust server resources via:\r\n\r\n1- reconstruction of the complete representation\r\n2- digest calculation of the complete representation\r\n3- forcing the server to evaluate many different digest-algorithms for a given representation\r\n\r\n### Proposed mitigation\r\n\r\nIf you are exposed to this kind of attack because \r\nreconstructing complete representations of your \r\nobjects is computationally intensive, avoid using\r\nDigest with mechanisms like Range-Requests and PATCH.\r\n\r\nIf you support multiple digest-algorithms:\r\n\r\n- limit the supported digest-algorithms to the\r\n  ones you really care for;\r\n- establish a policy for validating only the digest\r\n  using the stronger digest-algorithm.\r\n\r\n## Confidence in recipient's Digest validation \r\n\r\n### The attack\r\n\r\nThe recipient may skip Digest header validation by chance or purpose\r\nand still be compliant to the specification: as explained in {#digest-header} \r\nthe recipient MAY ignore any or all the received representation-data-digests.\r\n\r\nThis is because Digest was originally conceived in RFC3230 as a tool \r\nfor the recipient to validate the received representation, but not\r\nfor the sender to receive an integrity proof of the communication. \r\n\r\nYou should not rely on the recipient having correctly verified the Digest value\r\nof the selected representation.\r\n\r\n### Proposed mitigation\r\n\r\nIf you want the recipient to validate the `Digest`:\r\n\r\n- agree on `Digest` processing with your peer, like it is\r\n  done in [MICE](https://github.com/martinthomson/http-mice/blob/master/draft-thomson-http-mice.md)",
           "createdAt": "2019-07-24T08:50:16Z",
           "updatedAt": "2019-07-24T08:57:27Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Let's see if we can incorporate some of this into the security considerations.",
+          "createdAt": "2020-08-13T13:19:47Z",
+          "updatedAt": "2020-08-13T13:19:47Z"
         }
       ]
     },
@@ -22253,9 +22275,17 @@
       ],
       "body": "## I expect\r\n\r\nMore descriptive Digest use-cases.\r\n\r\n## Note\r\n\r\nDigest is used:\r\n\r\n- [x] Digest is usually combined with some mechanism to protect HTTP metadata. \r\nThis allows for L7 protections that transcend transport. See [draft-ietf-httpbis-digest-headers.md#L129](https://github.com/httpwg/http-extensions/blame/master/draft-ietf-httpbis-digest-headers.md#L129)\r\n\r\n- [x] you could compose a resource from partial content \r\n   retrieved from different sources and validate \r\n  the resource's integrity before passing it to\r\n  application for processing. See [draft-ietf-httpbis-digest-headers.md#L686](https://github.com/httpwg/http-extensions/blame/master/draft-ietf-httpbis-digest-headers.md#L686)\r\n\r\n- [ ] in web payments APIs, including EU PSD2 directive via [http-signatures](https://tools.ietf.org/html/draft-cavage-http-signatures-11)\r\n- [x] in MICE content-coding;\r\n- [ ] in [webpackage](https://github.com/WICG/webpackage) (via MICE)\r\n\r\n## Questions\r\n\r\n- We can highlight more the concept of \"Digest as a Signature building block\" in the use-cases\r\n- Should we reference other I-D like http-signatures (now under http-extension), MICE and webpackage in the spec\r\n  to clarify use cases?\r\n\r\n@jyasskin @royfielding issue reopened here from https://github.com/ioggstream/draft-polli-resource-digests-http/issues/15",
       "createdAt": "2019-07-23T12:25:15Z",
-      "updatedAt": "2020-04-15T15:48:07Z",
+      "updatedAt": "2020-08-13T13:22:56Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We've made progress on this. My fear is that mention of other WIP specs like packaging and could tie us up. Therefore, I suggest spinning out the two remaining use cases into separate issues and asking the WG for feedback if we should work on them.",
+          "createdAt": "2020-08-13T13:22:56Z",
+          "updatedAt": "2020-08-13T13:22:56Z"
+        }
+      ]
     },
     {
       "number": 874,
@@ -22370,7 +22400,7 @@
       ],
       "body": "## Suggestion\r\n\r\nMention `digest` usage with `Transfer-Encoding` and trailers\r\n\r\n * [x] use with transfer coding should not affect `digest` because it's not a property of the representation;\r\n * [ ] use with multiple transfer codings (eg with intermediaries?) should not affect `digest` too;\r\n * [ ] caveats with transfer codings, trailers and signatures;\r\n\r\n\r\n## Considerations\r\n\r\n- [x] sending `digest` in HTTP trailers may help the sender in dinamically calculating `digest-value`\r\n  while streaming content; #1157 \r\n- this only work if it's the Origin-Server to apply the `Transfer-Coding`;\r\n- [x] this may not work for all  `digest-algorithms`, eg. see [mi-sha256 in MICE I-D](https://github.com/martinthomson/http-mice/blob/master/draft-thomson-http-mice.md) for a counter-example); @martinthomson @jyasskin  #1157 \r\n- a clarification on using `Digest` with `Transfer-Encoding` should be added before adding this;\r\n- [x] Digest in trailer MUST NOT be discarded #1157\r\n\r\n## Notes\r\n\r\n- Suggested in https://lists.w3.org/Archives/Public/ietf-http-wg/2019JulSep/0087.html\r\n- being transfer coding a representation manipulation assimilated in this spec to range-requests  co, we should provide the following examples:\r\n\r\n",
       "createdAt": "2019-07-31T16:22:04Z",
-      "updatedAt": "2020-04-30T11:04:12Z",
+      "updatedAt": "2020-08-13T13:24:41Z",
       "closedAt": null,
       "comments": [
         {
@@ -22386,6 +22416,13 @@
           "body": "When thinking about sending the digest in trailers, look at which use cases from #872 can actually take advantage of that.",
           "createdAt": "2019-07-31T18:42:22Z",
           "updatedAt": "2019-07-31T18:42:22Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What work is remaining to close out this issue?",
+          "createdAt": "2020-08-13T13:24:41Z",
+          "updatedAt": "2020-08-13T13:24:41Z"
         }
       ]
     },
@@ -23831,7 +23868,7 @@
       ],
       "body": "## I expect\r\n\r\nTo clarify relations between Digest and Caching.\r\n\r\n- [ ] #936 \r\n- [x] #940 \r\n\r\nMoreover address  Digest behavior with:\r\n\r\n- `If-Modified-Since` and `304` with an empty body: do we have all the relevant metadata to compute and reply with the digest?\r\n- Intermediary caches",
       "createdAt": "2019-10-09T09:16:01Z",
-      "updatedAt": "2019-11-25T11:40:36Z",
+      "updatedAt": "2020-08-14T07:27:01Z",
       "closedAt": null,
       "comments": [
         {
@@ -23847,6 +23884,20 @@
           "body": "I need to catch up with this spec -- will comment before Singapore (I hope).",
           "createdAt": "2019-10-28T00:34:00Z",
           "updatedAt": "2019-10-28T00:34:00Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@mnot friendly ping",
+          "createdAt": "2020-08-13T13:26:18Z",
+          "updatedAt": "2020-08-13T13:26:18Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "Regarding #936, this text is very odd:\r\n\r\n> The resource is specified by the effective request URI and any validator field contained in the message.\r\n\r\nI _think_ [this text](https://httpwg.org/http-core/draft-ietf-httpbis-semantics-latest.html#identifying.payload) might help. I.e., you want to say that Digest applies to the selected representation [ref] of the resource corresponding [ref] to the message it occurs within.\r\n\r\n\r\n",
+          "createdAt": "2020-08-14T07:27:00Z",
+          "updatedAt": "2020-08-14T07:27:00Z"
         }
       ]
     },
@@ -24293,9 +24344,17 @@
       ],
       "body": "## Uniform digest request semantic\r\n\r\nWhile discussing #923 @reschke made the following consideration\r\n\r\n> I just don't think that it would be a good idea to vary the semantics based on the request method. \r\n\r\nIn this issue we will gather some examples and considerations so that we can state that \r\ndigest in requests is always computed on the request body.",
       "createdAt": "2019-10-31T17:25:47Z",
-      "updatedAt": "2019-10-31T19:10:10Z",
+      "updatedAt": "2020-08-13T13:29:41Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Does this need fixing, or can we close with no action?",
+          "createdAt": "2020-08-13T13:29:41Z",
+          "updatedAt": "2020-08-13T13:29:41Z"
+        }
+      ]
     },
     {
       "number": 973,
@@ -25050,7 +25109,7 @@
       ],
       "body": "## I wish\r\n\r\nto use `Digest` to implement resumeable uploads.\r\n\r\n## Note\r\n\r\nSee https://cloud.google.com/storage/docs/hashes-etags:\r\n\r\n- approach similar to digest 1\r\n\r\n>  The checksum(s) returned when downloading data from Cloud Storage cover the complete object \r\n> content. Thus, if you specify a request range there's no way to detect data corruption for that byte \r\n> range alone. \r\n\r\n- approach similar to digest 2\r\n\r\n> To protect against data corruption, Cloud Storage supports two types of hashes: CRC32C and \r\n> MD5 (described below). Google recommends that customers use CRC32C for all cases,\r\n \r\n\r\n ",
       "createdAt": "2019-12-06T16:53:27Z",
-      "updatedAt": "2019-12-26T12:38:03Z",
+      "updatedAt": "2020-08-13T13:33:42Z",
       "closedAt": null,
       "comments": [
         {
@@ -25094,6 +25153,13 @@
           "body": "IIUC this is not the semantics of content-md5. Am I wrong? @LPardue \r\n\r\n> we recommend that you request an integrity check of the final uploaded object to be sure that it matches the source file. You can do this [..] adding it to the Content-MD5 request header",
           "createdAt": "2019-12-26T12:38:03Z",
           "updatedAt": "2019-12-26T12:38:03Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Let's try to decide if we want to pursue this or not. @mnot my concern here is that we don't have IETF specs to link to wrt to resumable uploads, I'm wary about speculating on the applicability of digest to a use case that doesn't seem to use it. Someone could always follow up with a separate document that attempts to do this work.",
+          "createdAt": "2020-08-13T13:33:42Z",
+          "updatedAt": "2020-08-13T13:33:42Z"
         }
       ]
     },
@@ -28934,9 +29000,17 @@
       ],
       "body": "## I expect\r\n\r\nTo clarify usage of duplicate algorithms, eg. with different parameters\r\n\r\n## Instead\r\n\r\nIt is not specified\r\n\r\n## Note\r\n\r\nRFC3230 does not forbid duplicate digest-algorithm in field value, because the receiver MAY ignore one or more representation-digest eg:\r\n\r\n```\r\nDigest: sha256=bxxx.., sha256=axxx...\r\n```\r\n\r\nIn case of digest-algorithms with parameters, this is more complex. The following valid example shows a duplicate digest-algorithm `bs` with two different parameter values.\r\n\r\n```\r\nDigest: bs=axxx; p=1,    bs=bxxx; p=2\r\n```\r\n\r\nDo we need an example for that?\r\nWhich is a suitable way to define it using structured fields/headers?\r\n\r\n@LPardue ",
       "createdAt": "2020-06-18T10:09:48Z",
-      "updatedAt": "2020-06-18T12:01:30Z",
+      "updatedAt": "2020-08-13T13:37:20Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think this is tightly coupled with the parameter discussion on #850. ",
+          "createdAt": "2020-08-13T13:37:20Z",
+          "updatedAt": "2020-08-13T13:37:20Z"
+        }
+      ]
     },
     {
       "number": 1227,
@@ -29373,7 +29447,7 @@
       ],
       "body": "> User agents MUST clear persisted opt-in preferences when any one of site data, browsing history, browsing cache, cookies, or similar, are cleared.\r\n\r\nBrowsing history seems to stand out to me here. There are a couple of pedantic questions (does this mean full history, or back beyond a certain amount of time?) and doesn't seem to fit with precedent. In general, I don't expect much other information to be cleared when removing history information, but that might very well just be me.",
       "createdAt": "2020-07-31T14:49:44Z",
-      "updatedAt": "2020-08-12T16:39:44Z",
+      "updatedAt": "2020-08-13T12:19:38Z",
       "closedAt": null,
       "comments": [
         {
@@ -29410,6 +29484,27 @@
           "body": "> perhaps we should simply strike \"browsing history\" from the list. Then implementors can make a judgement as to whether \"or similar\" covers browsing history for their particular context.\r\n\r\nSounds good to me; I can adjust the PR to match. Is there any process for getting changes propagated not that it's moved on to the next step?",
           "createdAt": "2020-08-12T16:39:44Z",
           "updatedAt": "2020-08-12T16:39:44Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> That and the description suggests to me that, like in Chrome, the \"Browsing & Download History\" option is a \"I don't want to see this in browser completions\" feature, not a \"I want the site to forget about me\" feature, and so it would not make sense to associate the Client Hint cache with browsing history, only cookies and/or cache. @martinthomson, would you agree with this?\r\n\r\nThere are two models in conflict here and we have tried over time to make that clear.  History is not site state, so you are right.  We do couple some of our capabilities around this: if a user asks the browser to forget a site, that also means that the browser will forget everything it stores for that site which (ideally, in principle) results in the site also forgetting about the user.",
+          "createdAt": "2020-08-13T01:13:41Z",
+          "updatedAt": "2020-08-13T01:13:41Z"
+        },
+        {
+          "author": "yoavweiss",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> There are two models in conflict here and we have tried over time to make that clear. History is not site state, so you are right. We do couple some of our capabilities around this: if a user asks the browser to forget a site, that also means that the browser will forget everything it stores for that site which (ideally, in principle) results in the site also forgetting about the user.\r\n\r\nInteresting! So if the user picks \"forget my history\", site data remains intact, while them picking \"forget this site\" results in both the site removed from history *and* site data being removed?\r\n\r\nIn that case, just removing \"browser history\" from the current paragraph (as David suggested) will still cover the latter case, right? (as \"site data\" is still explicitly mentioned)\r\n ",
+          "createdAt": "2020-08-13T10:16:34Z",
+          "updatedAt": "2020-08-13T10:16:34Z"
+        },
+        {
+          "author": "amtunlimited",
+          "authorAssociation": "NONE",
+          "body": "> In that case, just removing \"browser history\" from the current paragraph (as David suggested) will still cover the latter case, right? (as \"site data\" is still explicitly mentioned)\r\n\r\nI would agree, and I've adjusted the PR to match.",
+          "createdAt": "2020-08-13T12:19:38Z",
+          "updatedAt": "2020-08-13T12:19:38Z"
         }
       ]
     },
@@ -29454,6 +29549,60 @@
           "body": "I see `draft-west-cookie-incrementalism` as a proposal for modifying RFC6265bis; @mikewest is that the intent?\r\n\r\n",
           "createdAt": "2020-08-06T02:56:25Z",
           "updatedAt": "2020-08-06T02:56:25Z"
+        }
+      ]
+    },
+    {
+      "number": 1244,
+      "id": "MDU6SXNzdWU2Nzg0MDk5NTU=",
+      "title": "Feedback on draft-ietf-httpbis-priority-01",
+      "url": "https://github.com/httpwg/http-extensions/issues/1244",
+      "state": "CLOSED",
+      "author": "olnrao",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "priorities"
+      ],
+      "body": "**URL**: https://tools.ietf.org/html/draft-ietf-httpbis-priority-01\r\n**Summary**: In many places, response is used than request\r\n**Details**:\r\n\r\n**Section**: 4. The Priority HTTP Header Field\r\n**Revision**: \r\nThe Priority HTTP header field can appear in requests and responses. A client uses it to specify the priority of the **~~response~~ request**.  A server uses it to inform the client that the priority was overwritten.  An intermediary can use the Priority information from client requests and server responses to correct or amend the precedence to suit it  (see Section 6).\r\n\r\n**Section**: 5. Reprioritization\r\n**Revision**: \r\nAfter a client sends a request, it may be beneficial to change the priority of the **~~response~~ request**.  As an example, a web browser might issue a prefetch request for a JavaScript file with the urgency parameter of the Priority request header field set to \"u=7\" (background).  Then, when the user navigates to a page which references the new JavaScript file, while the prefetch is in progress, the browser would send a reprioritization frame with the priority field value set to \"u=0\".\r\n\r\nIn HTTP/2 and HTTP/3, after a request message is sent on a stream, the stream transitions to a state that prevents the client from sending additional frames on the stream.  Therefore, a client cannot reprioritize a **~~response~~ request** by using the Priority header field.\r\n\r\n**Section**: 6. Merging Client- and Server-Driven Parameters\r\n**Revision**:\r\nIt is not always the case that the client has the best understanding of how the HTTP **~~responses~~ requests** deserve to be prioritized. The server might have additional information that can be combined with the client's indicated priority in order to improve the prioritization of the **~~response~~ request**.\r\n...\r\nAn origin can use the Priority ~~response~~ header field to indicate its view on how an HTTP **~~response~~ request** should be prioritized.  \r\n...\r\n\r\n(Ok, I think it's not wise for me to give every occurrence. I hope you get the point)\r\n",
+      "createdAt": "2020-08-13T12:47:13Z",
+      "updatedAt": "2020-08-13T15:25:47Z",
+      "closedAt": "2020-08-13T15:19:47Z",
+      "comments": [
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The use of response is intentional because the interoperability of extensible priority signals is premised on hinting to the server how it should schedule sending of response data.\r\n\r\nUsing the term request everywhere makes the intention of the document unclear. Although a server _might_ consider the priority of an incoming request to make local scheduling decisions, e.g. decide to do work for one request over another before sending, that is not the intention of this document and we say nothing about it today.",
+          "createdAt": "2020-08-13T12:59:53Z",
+          "updatedAt": "2020-08-13T13:03:15Z"
+        },
+        {
+          "author": "olnrao",
+          "authorAssociation": "NONE",
+          "body": "Thanks for the quick feedback, @LPardue.  I am bit confused here.  Unless server attends to the request at priority, it can't even know the priority.  Indirectly response priority is driven by priority requested by client in request headers.  Of course, after server reads the request, we can then talk about whether it should respond fast.  If we really want that level of clarity then we should have two headers - request priority to make sure this request is queued ahead of other normal requests, response priority to queue the response ahead of existing normal responses.  Unless we have both in place, I am not sure if we can achieve the desired goal you have stated.  I think I may be missing something.  It would be great if you can expand a bit more on where my thinking is faltered.  Thanks again for your help.",
+          "createdAt": "2020-08-13T14:14:40Z",
+          "updatedAt": "2020-08-13T14:14:55Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "RFC 7540 S 5.3 says:\r\n\r\n>    The purpose of prioritization is to allow an endpoint to express how\r\n>    it would prefer its peer to allocate resources when managing\r\n>    concurrent streams.  Most importantly, priority can be used to select\r\n>    streams for transmitting frames when there is limited capacity for\r\n>    sending.\r\n\r\nIn practice, this means HTTP/2 prioritization is concerned with managing how response bytes are sent in DATA frames on streams when multiplexing is taking place. Many HTTP/2 servers do consume priority signals (in HEADERS or PRIORITY frames) and adapt scheduling to these signals. Sadly, some servers do not.\r\n\r\nExtensible priorities is applicable to HTTP/2 and HTTP/3, so we need to select terminology that applies to both and accomodates the subtle differences when it comes to stream lifecycle.\r\n\r\nSince HTTP/2 prioritization was mainly focused on response multiplexing, we choose to use the term `response` to make the primary purpose of extensible priorities unambiguos.\r\n\r\nI have not heard anyone making a serious case for the need to control prioritizing request processing. So I'm of the opinion that we can not go to the effort of specifying anything.\r\n\r\n",
+          "createdAt": "2020-08-13T14:50:54Z",
+          "updatedAt": "2020-08-13T14:50:54Z"
+        },
+        {
+          "author": "olnrao",
+          "authorAssociation": "NONE",
+          "body": "Thank you, @LPardue.  I did not connect the extensibility part in first go.  Thanks for taking time to expand.  Will close this.",
+          "createdAt": "2020-08-13T15:19:47Z",
+          "updatedAt": "2020-08-13T15:19:47Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "No problem. People do use the terms `request prioritization` and `response prioritization` interchangable, so I get why it's confusing. Since the signal here is a header that can appear on either message, I want to be especially careful with consistency of terms in the document. ",
+          "createdAt": "2020-08-13T15:25:47Z",
+          "updatedAt": "2020-08-13T15:25:47Z"
         }
       ]
     }
@@ -64734,7 +64883,7 @@
     {
       "number": 1243,
       "id": "MDExOlB1bGxSZXF1ZXN0NDY2ODA5ODAw",
-      "title": "Clearer and less prescriptive wording for when to delete Client Hint persistence preferences",
+      "title": "Remove requirement to clear Client Hint preferences on browser history clear",
       "url": "https://github.com/httpwg/http-extensions/pull/1243",
       "state": "OPEN",
       "author": "amtunlimited",
@@ -64743,18 +64892,26 @@
       "labels": [],
       "body": "Fix: #1238 \r\n\r\n@yoavweiss \r\n@igrigorik \r\n@davidben ",
       "createdAt": "2020-08-12T14:29:56Z",
-      "updatedAt": "2020-08-12T14:29:56Z",
+      "updatedAt": "2020-08-13T12:22:46Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "a3c00db173ed74703dd0d0b6d16d72add63cd761",
       "headRepository": "amtunlimited/http-extensions",
       "headRefName": "ch-delete-better",
-      "headRefOid": "978c62e8299a86597adf78d534ed97d74ec09650",
+      "headRefOid": "b235271cbae0e586037a725f2b82930fa1b80ea9",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "amtunlimited",
+          "authorAssociation": "NONE",
+          "body": "Adjusted scope of change because the Client Hints proposal is further along in the process than I realized",
+          "createdAt": "2020-08-13T12:22:46Z",
+          "updatedAt": "2020-08-13T12:22:46Z"
+        }
+      ],
       "reviews": []
     }
   ]
