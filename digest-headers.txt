@@ -125,8 +125,7 @@ Internet-Draft               Digest Headers                  August 2020
      11.6.  Usage in signatures  . . . . . . . . . . . . . . . . . .  22
      11.7.  Usage in trailers  . . . . . . . . . . . . . . . . . . .  22
      11.8.  Usage with encryption  . . . . . . . . . . . . . . . . .  23
-     11.9.  Message Truncation . . . . . . . . . . . . . . . . . . .  23
-     11.10. Algorithm Agility  . . . . . . . . . . . . . . . . . . .  23
+     11.9.  Algorithm Agility  . . . . . . . . . . . . . . . . . . .  23
    12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
      12.1.  Establish the HTTP Digest Algorithm Values . . . . . . .  23
      12.2.  The "status" Field in the HTTP Digest Algorithm Values .  23
@@ -161,7 +160,8 @@ Internet-Draft               Digest Headers                  August 2020
    lower layer in order to provide some integrity protection; for
    instance TCP checksums or TLS records [RFC2818].
 
-
+   However, there are cases where relying on this alone is insufficient.
+   An HTTP-level integrity mechanism that operates independent of
 
 
 
@@ -170,8 +170,6 @@ Polli & Pardue          Expires February 18, 2021               [Page 3]
 Internet-Draft               Digest Headers                  August 2020
 
 
-   However, there are cases where relying on this alone is insufficient.
-   An HTTP-level integrity mechanism that operates independent of
    transfer can be used to detect programming errors and/or corruption
    of data at rest, be used across multiple hops in order to provide
    end-to-end integrity guarantees, aid fault diagnosis across hops and
@@ -218,6 +216,8 @@ Internet-Draft               Digest Headers                  August 2020
    To allow both parties to exchange a Digest of a representation with
    no content codings (see Section 7.1.2 of [SEMANTICS]) two more
    algorithms are added ("ID-SHA-256" and "ID-SHA-512").
+
+
 
 
 
@@ -1237,15 +1237,11 @@ Internet-Draft               Digest Headers                  August 2020
 11.8.  Usage with encryption
 
    Digest may expose information details of encrypted payload when the
-   checksum is computen on the unecrypted data.  An example of that is
+   checksum is computed on the unecrypted data.  An example of that is
    the use of the "id-sha-256" digest algorithm in conjuction with the
    encrypted content-coding [RFC8188].
 
-11.9.  Message Truncation
-
-   ...
-
-11.10.  Algorithm Agility
+11.9.  Algorithm Agility
 
    ...
 
@@ -1282,6 +1278,10 @@ Internet-Draft               Digest Headers                  August 2020
    This memo updates the "CRC32c" digest algorithm in the HTTP Digest
    Algorithm Values [6] registry:
 
+   o  Digest Algorithm: CRC32c
+
+   o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
+      check.  It achieves a better hamming distance (for better error-
 
 
 
@@ -1290,10 +1290,6 @@ Polli & Pardue          Expires February 18, 2021              [Page 23]
 Internet-Draft               Digest Headers                  August 2020
 
 
-   o  Digest Algorithm: CRC32c
-
-   o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
-      check.  It achieves a better hamming distance (for better error-
       detection performance) than many other 32-bit CRC functions.
       Other places it is used include iSCSI and SCTP.  The 32-bit output
       is encoded in hexadecimal (using between 1 and 8 ASCII characters
@@ -1338,6 +1334,10 @@ Internet-Draft               Digest Headers                  August 2020
    This memo registers the "ID-SHA-256" digest algorithm in the HTTP
    Digest Algorithm Values [9] registry:
 
+   o  Digest Algorithm: ID-SHA-256
+
+   o  Description: As specified in Section 5.
+
 
 
 
@@ -1345,10 +1345,6 @@ Polli & Pardue          Expires February 18, 2021              [Page 24]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-   o  Digest Algorithm: ID-SHA-256
-
-   o  Description: As specified in Section 5.
 
    o  Status: As specified in Section 5.
 
@@ -1394,6 +1390,10 @@ Internet-Draft               Digest Headers                  August 2020
 
    Field name: "Digest"
 
+   Status: permanent
+
+   Specification document(s): Section 3 of this document
+
 
 
 
@@ -1401,10 +1401,6 @@ Polli & Pardue          Expires February 18, 2021              [Page 25]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-   Status: permanent
-
-   Specification document(s): Section 3 of this document
 
 13.  References
 
@@ -1448,6 +1444,10 @@ Internet-Draft               Digest Headers                  August 2020
               RFC 3230, DOI 10.17487/RFC3230, January 2002,
               <https://www.rfc-editor.org/info/rfc3230>.
 
+   [RFC3309]  Stone, J., Stewart, R., and D. Otis, "Stream Control
+              Transmission Protocol (SCTP) Checksum Change", RFC 3309,
+              DOI 10.17487/RFC3309, September 2002,
+              <https://www.rfc-editor.org/info/rfc3309>.
 
 
 
@@ -1457,11 +1457,6 @@ Polli & Pardue          Expires February 18, 2021              [Page 26]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-   [RFC3309]  Stone, J., Stewart, R., and D. Otis, "Stream Control
-              Transmission Protocol (SCTP) Checksum Change", RFC 3309,
-              DOI 10.17487/RFC3309, September 2002,
-              <https://www.rfc-editor.org/info/rfc3309>.
 
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
@@ -1507,17 +1502,17 @@ Internet-Draft               Digest Headers                  August 2020
               Messaging", draft-ietf-httpbis-messaging-10 (work in
               progress), July 2020.
 
+   [I-D.thomson-http-mice]
+              Thomson, M. and J. Yasskin, "Merkle Integrity Content
+              Encoding", draft-thomson-http-mice-03 (work in progress),
+              August 2018.
+
 
 
 Polli & Pardue          Expires February 18, 2021              [Page 27]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-   [I-D.thomson-http-mice]
-              Thomson, M. and J. Yasskin, "Merkle Integrity Content
-              Encoding", draft-thomson-http-mice-03 (work in progress),
-              August 2018.
 
    [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
               DOI 10.17487/RFC2818, May 2000,
@@ -1563,16 +1558,17 @@ Internet-Draft               Digest Headers                  August 2020
 
    [6] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
+   [7] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
+
+   [8] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
+
+
 
 
 Polli & Pardue          Expires February 18, 2021              [Page 28]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-   [7] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
-
-   [8] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
    [9] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
@@ -1619,14 +1615,16 @@ Appendix A.  Resource Representation and Representation-Data
    A Range-Request alters the payload body, conveying a partial
    representation.
 
+   Request:
+
+
+
 
 
 Polli & Pardue          Expires February 18, 2021              [Page 29]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-   Request:
 
    GET /entries/1234 HTTP/1.1
    Range: bytes=1-7
@@ -1672,6 +1670,8 @@ Internet-Draft               Digest Headers                  August 2020
    {"author": "Camilleri"}
 
    Response:
+
+
 
 
 
@@ -1869,10 +1869,16 @@ E.3.  Since draft-ietf-httpbis-digest-headers-02
 
    o  Deprecate SHA-1 #1154
 
-   o  Avoid id-* with encrypted content.
+   o  Avoid id-* with encrypted content
 
    o  Digest is independent from MESSAGING and HTTP/1.1 is not normative
       #1215
+
+   o  Identity is not a valid field value for content-encoding #1223
+
+   o  Mention trailers #1157
+
+   o  Reference httpbis-semantics #1156
 
 Authors' Addresses
 
@@ -1886,12 +1892,6 @@ Authors' Addresses
    Cloudflare
 
    Email: lucaspardue.24.7@gmail.com
-
-
-
-
-
-
 
 
 
