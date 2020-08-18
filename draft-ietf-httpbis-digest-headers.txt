@@ -5,8 +5,8 @@
 HTTP Working Group                                              R. Polli
 Internet-Draft                         Team Digitale, Italian Government
 Intended status: Standards Track                               L. Pardue
-Expires: February 18, 2021                                    Cloudflare
-                                                         August 17, 2020
+Expires: February 19, 2021                                    Cloudflare
+                                                         August 18, 2020
 
 
                              Digest Headers
@@ -48,12 +48,12 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 18, 2021.
+   This Internet-Draft will expire on February 19, 2021.
 
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 1]
+Polli & Pardue          Expires February 19, 2021               [Page 1]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 2]
+Polli & Pardue          Expires February 19, 2021               [Page 2]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -165,7 +165,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 3]
+Polli & Pardue          Expires February 19, 2021               [Page 3]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -221,7 +221,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 4]
+Polli & Pardue          Expires February 19, 2021               [Page 4]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -277,7 +277,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 5]
+Polli & Pardue          Expires February 19, 2021               [Page 5]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -304,8 +304,10 @@ Internet-Draft               Digest Headers                  August 2020
    contains several examples to help illustrate those effects.
 
    A representation digest consists of the value of a checksum computed
-   on the entire selected "representation data" of a resource together
-   with an indication of the algorithm used (and any parameters)
+   on the entire selected "representation data" (see Section 7 of
+   [SEMANTICS]) of a resource identified according to Section 7.3.2 of
+   [SEMANTICS] together with an indication of the algorithm used (and
+   any parameters)
 
       representation-data-digest = digest-algorithm "="
                                    <encoded digest output>
@@ -326,20 +328,16 @@ Internet-Draft               Digest Headers                  August 2020
 
       Digest = "Digest" ":" OWS 1#representation-data-digest
 
-   The resource is specified by the effective request URI and any
-   "validator field" contained in the message.
+   The relationship between Content-Location (see Section 7.2.5 of
+   [SEMANTICS]) and Digest is demonstrated in Section 9.7.  A
 
 
 
-
-
-Polli & Pardue          Expires February 18, 2021               [Page 6]
+Polli & Pardue          Expires February 19, 2021               [Page 6]
 
 Internet-Draft               Digest Headers                  August 2020
 
 
-   The relationship between Content-Location (see Section 7.2.5 of
-   [SEMANTICS]) and Digest is demonstrated in Section 9.7.  A
    comprehensive set of examples showing the impacts of representation
    metadata, payload transformations and HTTP methods on Digest is
    provided in Section 9 and Section 10.
@@ -389,7 +387,9 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 7]
+
+
+Polli & Pardue          Expires February 19, 2021               [Page 7]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -445,7 +445,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 8]
+Polli & Pardue          Expires February 19, 2021               [Page 8]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -501,7 +501,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021               [Page 9]
+Polli & Pardue          Expires February 19, 2021               [Page 9]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -557,7 +557,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 10]
+Polli & Pardue          Expires February 19, 2021              [Page 10]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -613,7 +613,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 11]
+Polli & Pardue          Expires February 19, 2021              [Page 11]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -669,7 +669,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 12]
+Polli & Pardue          Expires February 19, 2021              [Page 12]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -725,7 +725,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 13]
+Polli & Pardue          Expires February 19, 2021              [Page 13]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -781,7 +781,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 14]
+Polli & Pardue          Expires February 19, 2021              [Page 14]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -837,7 +837,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 15]
+Polli & Pardue          Expires February 19, 2021              [Page 15]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -893,7 +893,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 16]
+Polli & Pardue          Expires February 19, 2021              [Page 16]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -949,7 +949,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 17]
+Polli & Pardue          Expires February 19, 2021              [Page 17]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1005,7 +1005,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 18]
+Polli & Pardue          Expires February 19, 2021              [Page 18]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1061,7 +1061,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 19]
+Polli & Pardue          Expires February 19, 2021              [Page 19]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 20]
+Polli & Pardue          Expires February 19, 2021              [Page 20]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1173,7 +1173,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 21]
+Polli & Pardue          Expires February 19, 2021              [Page 21]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1229,7 +1229,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 22]
+Polli & Pardue          Expires February 19, 2021              [Page 22]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1285,7 +1285,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 23]
+Polli & Pardue          Expires February 19, 2021              [Page 23]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 24]
+Polli & Pardue          Expires February 19, 2021              [Page 24]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1397,7 +1397,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 25]
+Polli & Pardue          Expires February 19, 2021              [Page 25]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1453,7 +1453,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 26]
+Polli & Pardue          Expires February 19, 2021              [Page 26]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1509,7 +1509,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 27]
+Polli & Pardue          Expires February 19, 2021              [Page 27]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1565,7 +1565,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 28]
+Polli & Pardue          Expires February 19, 2021              [Page 28]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1576,11 +1576,6 @@ Internet-Draft               Digest Headers                  August 2020
 
    [11] https://github.com/httpwg/http-core/
         issues/313#issuecomment-584389706
-
-   [12] https://github.com/httpwg/http-extensions/pull/923
-
-   [13] https://cloud.google.com/storage/docs/performing-resumable-
-        uploads#resume-upload
 
 Appendix A.  Resource Representation and Representation-Data
 
@@ -1617,19 +1612,19 @@ Appendix A.  Resource Representation and Representation-Data
 
    H4sIAItWyFwC/6tWSlSyUlAypANQqgUAREcqfG0AAAA=
 
-
-
-
-
-Polli & Pardue          Expires February 18, 2021              [Page 29]
-
-Internet-Draft               Digest Headers                  August 2020
-
-
    A Range-Request alters the payload body, conveying a partial
    representation.
 
    Request:
+
+
+
+
+
+Polli & Pardue          Expires February 19, 2021              [Page 29]
+
+Internet-Draft               Digest Headers                  August 2020
+
 
    GET /entries/1234 HTTP/1.1
    Range: bytes=1-7
@@ -1674,15 +1669,18 @@ Internet-Draft               Digest Headers                  August 2020
 
    {"author": "Camilleri"}
 
+   Response:
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 30]
+
+
+
+
+Polli & Pardue          Expires February 19, 2021              [Page 30]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-   Response:
 
    HTTP/1.1 201 Created
    Content-Type: application/json
@@ -1730,16 +1728,15 @@ Appendix B.  FAQ
 
        This RFC updates [RFC5843] which is still delegated for all
        algorithms updates, and adds two more algorithms: ID-SHA-256 and
+       ID-SHA-512 which allows to send a checksum of a resource
+       representation with no content codings applied.
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 31]
+Polli & Pardue          Expires February 19, 2021              [Page 31]
 
 Internet-Draft               Digest Headers                  August 2020
 
-
-       ID-SHA-512 which allows to send a checksum of a resource
-       representation with no content codings applied.
 
    8.  What about mid-stream trailers?
 
@@ -1750,19 +1747,6 @@ Internet-Draft               Digest Headers                  August 2020
        trailers, for example an incremental digest-algorithm.  A
        document defining such a digest-algorithm is best positioned to
        describe how it is used.
-
-   9.  Why don't we say that in requests, Digest is always computed on
-       the payload body?
-
-       This discussion is not trivial [12] because while in both POST
-       and PATCH the representation-digest is computed on the payload
-       body, this is because of the semantics of those methods.  For
-       example, an hypothetical method where the request body contains a
-       partial representation would behave differently, and Digest
-       should be computed on the complete representation data.  An
-       example of such an hypothetical use case would be a resumable
-       upload mechanism implemented with PUT + Content-Range like this
-       one [13].
 
 Acknowledgements
 
@@ -1789,7 +1773,23 @@ Code Samples
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 32]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Polli & Pardue          Expires February 19, 2021              [Page 32]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1845,7 +1845,7 @@ E.1.  Since draft-ietf-httpbis-digest-headers-00
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 33]
+Polli & Pardue          Expires February 19, 2021              [Page 33]
 
 Internet-Draft               Digest Headers                  August 2020
 
@@ -1901,4 +1901,4 @@ Authors' Addresses
 
 
 
-Polli & Pardue          Expires February 18, 2021              [Page 34]
+Polli & Pardue          Expires February 19, 2021              [Page 34]
