@@ -1577,6 +1577,11 @@ Internet-Draft               Digest Headers                  August 2020
    [11] https://github.com/httpwg/http-core/
         issues/313#issuecomment-584389706
 
+   [12] https://github.com/httpwg/http-extensions/pull/923
+
+   [13] https://cloud.google.com/storage/docs/performing-resumable-
+        uploads#resume-upload
+
 Appendix A.  Resource Representation and Representation-Data
 
    The following examples show how representation metadata, payload
@@ -1612,11 +1617,6 @@ Appendix A.  Resource Representation and Representation-Data
 
    H4sIAItWyFwC/6tWSlSyUlAypANQqgUAREcqfG0AAAA=
 
-   A Range-Request alters the payload body, conveying a partial
-   representation.
-
-   Request:
-
 
 
 
@@ -1625,6 +1625,11 @@ Polli & Pardue          Expires February 19, 2021              [Page 29]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   A Range-Request alters the payload body, conveying a partial
+   representation.
+
+   Request:
 
    GET /entries/1234 HTTP/1.1
    Range: bytes=1-7
@@ -1669,11 +1674,6 @@ Internet-Draft               Digest Headers                  August 2020
 
    {"author": "Camilleri"}
 
-   Response:
-
-
-
-
 
 
 
@@ -1681,6 +1681,8 @@ Polli & Pardue          Expires February 19, 2021              [Page 30]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   Response:
 
    HTTP/1.1 201 Created
    Content-Type: application/json
@@ -1720,11 +1722,9 @@ Appendix B.  FAQ
 
    6.  What changes in "Want-Digest"?
 
-       The contentMD5 token defined in Section 5 of [RFC3230] is
-       deprecated by Section 7.  We added examples on using "Want-
-       Digest" in responses to advertise the supported digest-algorithms
-       and the inability to accept requests with unsupported digest-
-       algorithms.
+       We allow to use the "Want-Digest" in responses to advertise the
+       supported digest-algorithms and the inability to accept requests
+       with unsupported digest-algorithms.
 
    7.  Does this spec changes supported algorithms?
 
@@ -1751,6 +1751,19 @@ Internet-Draft               Digest Headers                  August 2020
        document defining such a digest-algorithm is best positioned to
        describe how it is used.
 
+   9.  Why don't we say that in requests, Digest is always computed on
+       the payload body?
+
+       This discussion is not trivial [12].  When using POST and PATCH
+       the representation-digest is computed on the payload body but
+       this is because of the semantics of those methods.  However,
+       other method semantics can vary.  For example, a hypothetical
+       method where the request body contains a partial representation
+       would behave differently, and it's Digest would be computed on
+       the complete representation data.  An example of such a
+       hypothetical use case would be a resumable upload mechanism
+       implemented with PUT + Content-Range, such as this one [13].
+
 Acknowledgements
 
    The vast majority of this document is inherited from [RFC3230], so
@@ -1771,19 +1784,6 @@ Code Samples
    these are formatted as base64.  This function could be adapted to
    other algorithms and should take into account their specific
    formatting rules.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
