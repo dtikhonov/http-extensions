@@ -1721,15 +1721,15 @@ Appendix B.  FAQ
    6.  What changes in "Want-Digest"?
 
        The contentMD5 token defined in Section 5 of [RFC3230] is
-       deprecated by Section 7.  We added examples on using "Want-
-       Digest" in responses to advertise the supported digest-algorithms
-       and the inability to accept requests with unsupported digest-
-       algorithms.
+       deprecated by Section 7.
 
-   7.  Does this spec changes supported algorithms?
+       To clarify that "Digest" and "Want-"Digest can be used in both
+       requests and responses - [RFC3230] carefully uses "sender" and
+       "receiver" in their definition - we added examples on using
+       "Want-Digest" in responses to advertise the supported digest-
+       algorithms and the inability to accept requests with unsupported
+       digest-algorithms.
 
-       This RFC updates [RFC5843] which is still delegated for all
-       algorithms updates, and adds two more algorithms: ID-SHA-256 and
 
 
 
@@ -1738,6 +1738,10 @@ Polli & Pardue          Expires February 19, 2021              [Page 31]
 Internet-Draft               Digest Headers                  August 2020
 
 
+   7.  Does this spec changes supported algorithms?
+
+       This RFC updates [RFC5843] which is still delegated for all
+       algorithms updates, and adds two more algorithms: ID-SHA-256 and
        ID-SHA-512 which allows to send a checksum of a resource
        representation with no content codings applied.
 
@@ -1771,10 +1775,6 @@ Code Samples
    these are formatted as base64.  This function could be adapted to
    other algorithms and should take into account their specific
    formatting rules.
-
-
-
-
 
 
 
