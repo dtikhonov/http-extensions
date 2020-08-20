@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-18T00:12:30.100382+00:00",
+  "timestamp": "2020-08-20T00:12:52.526415+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -21682,7 +21682,7 @@
       ],
       "body": "## I expect\r\n\r\nThis spec either:\r\n\r\n* to provide an RFC3230 compatible example of digest-algorithm with parameters;\r\n* explicitly drop parameters because they are not widely used and augment the attack surface;\r\n\r\nRFC3230 stated that:\r\n\r\n```\r\n   For some algorithms, one or more parameters may be\r\n   supplied.\r\n\r\n      digest-algorithm = token\r\n\r\n   The BNF for \"parameter\" is as is used in RFC 2616 [4].  All digest-\r\n   algorithm values are case-insensitive.\r\n```\r\n\r\nbut:\r\n\r\n- provided no example of parameterized algorithms\r\n\r\nIn this draft we *preserved that sentence* but:\r\n\r\n- still did not provide an example of parameterized algorithm;\r\n- still did not update the reference to BNF to the latest http spec.\r\n\r\nIn #1213 there's a possible fix to support parameters, like the following\r\n\r\n```\r\nDigest: myhash=dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs=; param1=40\r\n\r\n```\r\n\r\n## Notes\r\n\r\nUse cases are parametrizable digest-algorithms like mi-sha256.\r\n\r\nAnother solution could be to *deprecate* field parameters in digest: parameters could still be adopted serializing them in the digest-value, and leaving the specification/serialization to the definition of the digest-algorithm. eg:\r\n```\r\nDigest: myhash=40/dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs\r\n```",
       "createdAt": "2019-07-09T14:32:36Z",
-      "updatedAt": "2020-08-17T09:57:52Z",
+      "updatedAt": "2020-08-18T10:11:03Z",
       "closedAt": null,
       "comments": [
         {
@@ -21719,6 +21719,27 @@
           "body": "> I want to make this more visibile before we take a decision\r\n\r\n@LPardue I tweeted on that https://twitter.com/ioggstream/status/1295292991335268352 :) \r\n\r\nTo me leaving the parameter definition to the algorithm specification is fine, eg https://github.com/httpwg/http-extensions/issues/850#issuecomment-653931895 ",
           "createdAt": "2020-08-17T09:57:51Z",
           "updatedAt": "2020-08-17T09:57:51Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I'll send an email to the HTTP WG list too.",
+          "createdAt": "2020-08-18T09:11:42Z",
+          "updatedAt": "2020-08-18T09:11:42Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "+1 for removing parameters.",
+          "createdAt": "2020-08-18T10:00:07Z",
+          "updatedAt": "2020-08-18T10:00:07Z"
+        },
+        {
+          "author": "bsdphk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "+0 on removing parameters, but I want to strongly suggest that any examples of encoded parameters are expressed in terms of Structured Fields, even if the entire header is not compliant.\r\n\r\nie:\r\n\r\n    bikeshed=:SD8E9q0okq:\r\n\r\nwhere the parameters are encoded in the first two base64 encoded bytes.\r\n     \r\n",
+          "createdAt": "2020-08-18T10:11:03Z",
+          "updatedAt": "2020-08-18T10:11:03Z"
         }
       ]
     },
@@ -22412,7 +22433,7 @@
       "id": "MDU6SXNzdWU0NzUyMzk2Mzg=",
       "title": "Mention effects of transfer coding and HTTP trailers",
       "url": "https://github.com/httpwg/http-extensions/issues/884",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ioggstream",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
@@ -22421,8 +22442,8 @@
       ],
       "body": "## Suggestion\r\n\r\nMention `digest` usage with `Transfer-Encoding` and trailers\r\n\r\n * [x] use with transfer coding should not affect `digest` because transfer coding is not a property of the representation;\r\n * [ ] use with multiple transfer codings (eg with intermediaries?) should not affect `digest` too; (see above)\r\n * [x] caveats with transfer codings, trailers #884  and signatures (this may be addressed in digest+signatures BCP);\r\n\r\n\r\n## Considerations\r\n\r\n- [x] sending `digest` in HTTP trailers may help the sender in dinamically calculating `digest-value`\r\n  while streaming content; #1157 \r\n- this only work if it's the Origin-Server to apply the `Transfer-Coding`;\r\n- [x] this may not work for all  `digest-algorithms`, eg. see [mi-sha256 in MICE I-D](https://github.com/martinthomson/http-mice/blob/master/draft-thomson-http-mice.md) for a counter-example); @martinthomson @jyasskin  #1157 \r\n- a clarification on using `Digest` with `Transfer-Encoding` should be added before adding this;\r\n- [x] Digest in trailer MUST NOT be discarded #1157\r\n\r\n## Notes\r\n\r\n- Suggested in https://lists.w3.org/Archives/Public/ietf-http-wg/2019JulSep/0087.html\r\n- being transfer coding a representation manipulation assimilated in this spec to range-requests  co, we provided the following examples #884 \r\n\r\n",
       "createdAt": "2019-07-31T16:22:04Z",
-      "updatedAt": "2020-08-17T13:58:54Z",
-      "closedAt": null,
+      "updatedAt": "2020-08-18T09:08:45Z",
+      "closedAt": "2020-08-18T09:08:45Z",
       "comments": [
         {
           "author": "ioggstream",
@@ -22461,7 +22482,7 @@
       ],
       "body": "draft-ietf-httpbis-digest-headers introduces id-sha-256 as a separate algorithm to sha-256 for the Digest HTTP header to allow an integrity check that doesn't depend on the content-encoding.\r\n\r\nThe desire to apply integrity to the content-encoded representation, or the decoded representation, is independent of the choice of integrity algorithm.\r\n\r\nHow about defining \"id-\" as a prefix that can be applied to any integrity algorithm to indicate the choice of representation? That avoids the need to duplicate sha-256 and sha-512 entries (and others) in the table of Digest algorithms.",
       "createdAt": "2019-08-01T03:12:56Z",
-      "updatedAt": "2020-08-17T11:17:23Z",
+      "updatedAt": "2020-08-18T11:45:24Z",
       "closedAt": null,
       "comments": [
         {
@@ -22491,6 +22512,20 @@
           "body": "@LPardue should we file a new I-D for that and close this issue? Should we reserve the `id-` word for algorithms?",
           "createdAt": "2020-08-17T11:17:23Z",
           "updatedAt": "2020-08-17T11:17:23Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There's two things at play in my mind:\r\n\r\n1) I think I originally misread @manger's point. I'm coming to a position that thinks it is more logically pure to do it the way he has suggested.\r\n2) We use `id-sha-{256|512}` as a device to help explain some of the thornier parts of using digest.\r\n\r\nPoint 2 is important not to lose IMO.\r\n\r\nMy suggested course of action is to keep this issue open for the time being, @ioggstream to lead on putting together an independent Internet-Draft that describes \"id- prefix for digest algorithms\", and @ioggstream to lead on a WIP PR to replace the definition of `id-sha-` algorithms in digest with cross references to the new I-D. This would give us a good picture of the impact of change, which we can then take to the WG for feedback. Subject to that, we can then resolve this issue with the new text or close with no action.\r\n\r\n\r\n",
+          "createdAt": "2020-08-18T10:06:42Z",
+          "updatedAt": "2020-08-18T10:06:42Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I'll accept your suggestion to check the impacts. \r\n\r\nIn general:\r\n\r\n1- ok to a new I-D \"id- prefix for digest algorithms\"\r\n2- I will retain `id-sha` in Digest without references to other I-D\r\n3- we could reserve the `id-` prefix for Digest algorithms in this I-D so we can close this issue\r\n\r\n",
+          "createdAt": "2020-08-18T11:45:24Z",
+          "updatedAt": "2020-08-18T11:45:24Z"
         }
       ]
     },
@@ -24340,7 +24375,7 @@
       ],
       "body": "I think this example demonstrates the under specification of the Want-Digest header. Does it work as \r\n\r\n1. A discovery mechanism that allows the client to probe the server for the set of digests it supports (client and server specifically)\r\n2. A unilateral advertisement of the algorithms supported by the sending endpoint\r\n\r\n\r\n\r\nBut to try and understand if it is 1) or 2) I see nothing in RFC 3230 that prescribes behaviour like this but I may well have missed it. Either way I don't think we should be putting normative text (MAY reply) in the section header. \r\n\r\nSo lets decouple things.\r\n\r\nI'm assuming in this example case that we operate under the model that server is allowed to respond with a 4xx under any circumstance. But specifically in this case the server is unwilling to accept requests with `sha` algorithm.\r\n\r\nThen next it advertises the list of algorithms it can generate? In which case, a header names Want-Digest is not very inutuitive. It seems to act asymmetrically, while we are expending a lot of effort to understand and describe how Digest can be used in Request and Response.",
       "createdAt": "2019-10-31T14:47:06Z",
-      "updatedAt": "2019-10-31T19:10:30Z",
+      "updatedAt": "2020-08-18T11:52:26Z",
       "closedAt": null,
       "comments": [
         {
@@ -24363,6 +24398,27 @@
           "body": "This also relates to \r\n\r\n> 6. What changes in `Want-Digest`?\r\n\r\n>   We allow to use the `Want-Digest` in responses to advertise the supported digest-algorithms\r\n   and the inability to accept requests with unsupported digest-algorithms.",
           "createdAt": "2019-10-31T18:42:29Z",
           "updatedAt": "2019-10-31T18:42:29Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The current situation on this thread:\r\n\r\n- we did not add further normative parts on want-digest\r\n\r\n> a stand alone example that shows a request with Want-Digest and a response that includes no Digest and no Want-Digest because of the algorithm mismatch.\r\n\r\n- we have examples showing two legitimate ways of managing unsupported algorithms in a way which is similar to the [Negotiation of Content-MD5](https://tools.ietf.org/html/rfc3230#section-5) proposed in RFC3230. Moreover Digest Negotiation is one of the goal of RFC3230: \r\n   * one ignoring Want-Digest and returning 200 + Digest (WRT the client, this is exactly the same of returning no Digest), \r\n   * one returning the supported Want-Digest algorithms with a 400 error\r\n\r\n\r\n> I'd be happier with a separate example that shows a 4xx response that includes the digest of the error body (i.e. the returned error page). \r\n\r\n- we have another example showing that Digest of error responses refers to the error payload\r\n\r\nAbout what changes in Want-Digest: probably the only thing is the deprecation of contentMD5, because all the examples describe behaviors which are legitimante under RFC3230",
+          "createdAt": "2020-08-18T09:02:05Z",
+          "updatedAt": "2020-08-18T09:16:06Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> About what changes in Want-Digest: probably the only thing is the deprecation of contentMD5, because all the examples describe behaviors which are legitimante under RFC3230\r\n\r\nIIUC all we need to do is update the example `Want-Digest: SHA-512;q=0.3, sha-256;q=1, md5;q=0` to remove/replace the `md5` algorithm. I don't think we need to explicitly mention this because the example is non-normative, and the deprecation of MD5 is already covered. Or maybe I'm misunderstanding?",
+          "createdAt": "2020-08-18T09:16:57Z",
+          "updatedAt": "2020-08-18T09:16:57Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I just added that `md5;q=0` to express that the sender does not want md5, but un case this creates confusion I replaced it with `unixsum;q=0` in #1249 \r\n",
+          "createdAt": "2020-08-18T10:39:16Z",
+          "updatedAt": "2020-08-18T11:52:26Z"
         }
       ]
     },
@@ -28915,9 +28971,24 @@
       ],
       "body": "## I suggest\r\n\r\nthat digest-algorithms `SHOULD` be lowercase\r\n\r\n## Note\r\n\r\ndigest-algorithms are currently case insensitive.\r\nWe won't break specs suggesting to express them in lowercase.\r\nThis could make it easy a future transition to S-H\r\n",
       "createdAt": "2020-06-01T09:51:20Z",
-      "updatedAt": "2020-08-17T11:07:37Z",
+      "updatedAt": "2020-08-18T07:48:30Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "The encoded digest output seems like it's often case-sensitive, but it's a token, so this header won't 'fit' into Structured Fields naturally anyway. ",
+          "createdAt": "2020-08-18T02:13:12Z",
+          "updatedAt": "2020-08-18T02:13:12Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ok, so I'll close sh-related issues, though I'm still in favor of suggesting `lowercase` digest-algorithms :) ",
+          "createdAt": "2020-08-18T07:48:30Z",
+          "updatedAt": "2020-08-18T07:48:30Z"
+        }
+      ]
     },
     {
       "number": 1214,
@@ -29662,6 +29733,182 @@
           "body": "No problem. People do use the terms `request prioritization` and `response prioritization` interchangable, so I get why it's confusing. Since the signal here is a header that can appear on either message, I want to be especially careful with consistency of terms in the document. ",
           "createdAt": "2020-08-13T15:25:47Z",
           "updatedAt": "2020-08-13T15:25:47Z"
+        }
+      ]
+    },
+    {
+      "number": 1250,
+      "id": "MDU6SXNzdWU2ODA5NTY0Njg=",
+      "title": "Digest editorial refresh before WGLC",
+      "url": "https://github.com/httpwg/http-extensions/issues/1250",
+      "state": "OPEN",
+      "author": "ioggstream",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Tasks\r\n\r\n- [ ] clean up Representation Digest https://github.com/httpwg/http-extensions/pull/937#discussion_r472018411\r\n- [ ] remove reference to \"validator fields\" if they are not used anymore\r\n- [ ] consistent usage of backticks in\r\n\r\n```\r\n`Digest` vs Digest vs \"Digest\"\r\n`digest-algorithms` vs digest-algoritms vs \"digest-algorithms\"\r\n```\r\n\r\n- [ ] consistent usage of \"-\" \r\n\r\n```\r\ndigest-algorithms vs digest algorithms\r\n```\r\n\r\n- [ ] consistent usage of lowercase digest-algorithms with backticks `sha-256` in text",
+      "createdAt": "2020-08-18T11:14:37Z",
+      "updatedAt": "2020-08-18T11:14:37Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 1251,
+      "id": "MDU6SXNzdWU2ODA5NjU1Mjk=",
+      "title": "[structured-fields] Inconsistent rules around whitespace",
+      "url": "https://github.com/httpwg/http-extensions/issues/1251",
+      "state": "OPEN",
+      "author": "zcorpan",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "https://httpwg.org/http-extensions/draft-ietf-httpbis-header-structure.html\r\n\r\nI found https://github.com/httpwg/http-extensions/pull/1173\r\n\r\nThe current grammar with both SP and OWS in different places. I don't quite understand the motivation for SP in some places instead of OWS everywhere. If OWS was allowed in some places for more robust parsing, wouldn't allowing OWS everywhere be more robust still?\r\n\r\nAlso, there are some places where no whitespace is allowed but maybe it should be. In particular, before the `;` in the parameters. Should whitespace be allowed there?\r\n\r\ncc @mnot",
+      "createdAt": "2020-08-18T11:29:33Z",
+      "updatedAt": "2020-08-19T09:56:18Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "annevk",
+          "authorAssociation": "NONE",
+          "body": "cc @valenting",
+          "createdAt": "2020-08-18T12:03:17Z",
+          "updatedAt": "2020-08-18T12:03:17Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "FWIW and AFAIR, \"OWS\" was needed because sender/recipient have no control about how other components rombine multiple field lines into one. The other places are actually intentionally strict.",
+          "createdAt": "2020-08-18T12:28:03Z",
+          "updatedAt": "2020-08-18T12:28:03Z"
+        },
+        {
+          "author": "annevk",
+          "authorAssociation": "NONE",
+          "body": "So SP is used where you could not have whitespace as a result of combining? So basically whenever there's no possible comma adjacent to it?\r\n\r\n(That would still leave the parameters thing.)",
+          "createdAt": "2020-08-18T12:37:59Z",
+          "updatedAt": "2020-08-18T12:37:59Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> (That would still leave the parameters thing.)\r\n\r\nYes, there are multiple questions here.\r\n\r\nI would say that it really doesn't matter that much as long as it is well-defined and implementations agree on it (and there's a test suite for a reason). In which case the outcome IMHO should be not to make another change, given the fact that the spec is approved already.",
+          "createdAt": "2020-08-18T12:54:39Z",
+          "updatedAt": "2020-08-18T12:54:39Z"
+        },
+        {
+          "author": "annevk",
+          "authorAssociation": "NONE",
+          "body": "Making this a bit more concrete, in `N: \\tV` (assuming \\t is HT) does `V` end up parsing as a structured value or not? If it does because HTTP removed the HT, why does SFV feel the need to remove SP in step 2 of https://httpwg.org/http-extensions/draft-ietf-httpbis-header-structure.html#text-parse?",
+          "createdAt": "2020-08-18T13:49:55Z",
+          "updatedAt": "2020-08-18T13:49:55Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "AFAIU, the invidual parsers (list, item, ...) assume that leading SP has already been consumed.",
+          "createdAt": "2020-08-18T14:00:05Z",
+          "updatedAt": "2020-08-18T14:00:05Z"
+        },
+        {
+          "author": "annevk",
+          "authorAssociation": "NONE",
+          "body": "I'm not sure how that addresses the question. Are you saying \\tV cannot parse as a structured field value? So if you defined a header value as \"sometoken\" (or case-sensitive variant) in the past it's not forward-compatible with SFV?",
+          "createdAt": "2020-08-18T14:09:23Z",
+          "updatedAt": "2020-08-18T14:09:23Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It parses, as the leading HTAB is part of the OWS that surrounds the field value. See <https://greenbytes.de/tech/webdav/rfc7230.html#header.fields>.",
+          "createdAt": "2020-08-18T14:19:37Z",
+          "updatedAt": "2020-08-18T14:19:37Z"
+        },
+        {
+          "author": "annevk",
+          "authorAssociation": "NONE",
+          "body": "Okay and OWS includes SP, so why does https://httpwg.org/http-extensions/draft-ietf-httpbis-header-structure.html#text-parse remove SP? How can there be SP at that point?",
+          "createdAt": "2020-08-18T14:22:30Z",
+          "updatedAt": "2020-08-18T14:22:30Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Good question.",
+          "createdAt": "2020-08-18T14:26:14Z",
+          "updatedAt": "2020-08-18T14:26:14Z"
+        },
+        {
+          "author": "phluid61",
+          "authorAssociation": "COLLABORATOR",
+          "body": ">  Are you saying \\tV cannot parse as a structured field value?\r\n\r\nIt can't, but also it should never try to, because by the time the field value gets to the Structured Fields parser, the `\\t` should have been eaten by the HTTP parser. So in a sane environment, step 2 is a noop. I guess we just forgot about that, because we've not been working in that sane environment (the test suite doesn't use any HTTP machinery, so there's no guarantee that what gets fed into `parse()` is even remotely sensible.)\r\n\r\nI think it shouldn't be a problem to remove it.\r\n\r\nFor the parameters thing: there's a discussion in #954 (from October last year, so I can't remember precise details.) I think it was that the algorithm doesn't look ahead, so couldn't distinguish between `\"x ;\"` and `\"x y\"`, so it gobbled up the space after `x`, which broke the inner-list parser which expected a space character before the `y`.",
+          "createdAt": "2020-08-18T23:57:25Z",
+          "updatedAt": "2020-08-18T23:57:25Z"
+        },
+        {
+          "author": "zcorpan",
+          "authorAssociation": "NONE",
+          "body": "Thanks for the clarifications. I think it would be helpful with a note in \"Parsing Structured Fields\" to clarify that leading and trailing OWS are \"removed\" per RFC7230. Also I suggest removing the (no-op) steps that skip SP.",
+          "createdAt": "2020-08-19T09:56:17Z",
+          "updatedAt": "2020-08-19T09:56:17Z"
+        }
+      ]
+    },
+    {
+      "number": 1252,
+      "id": "MDU6SXNzdWU2ODE4Njk2MjQ=",
+      "title": "Content-Disposition: whitespace in filename parameter without quotes",
+      "url": "https://github.com/httpwg/http-extensions/issues/1252",
+      "state": "OPEN",
+      "author": "annevk",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Firefox is feeling forced to support whitespace without quotes in the filename parameter of the Content-Disposition header. See https://bugzilla.mozilla.org/show_bug.cgi?id=1440677.\r\n\r\nIn https://bugs.chromium.org/p/chromium/issues/detail?id=1006345 @MattMenke2 suggests removing whitespace without quotes support is not worth it to Chrome.\r\n\r\nI haven't surveyed other clients, but it seems pretty clear what servers are doing (perhaps not in detail, but they're emitting whitespace without quotes).",
+      "createdAt": "2020-08-19T14:06:42Z",
+      "updatedAt": "2020-08-19T15:28:38Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> I haven't surveyed other clients, but it seems pretty clear what servers are doing (perhaps not in detail, but they're emitting whitespace without quotes).\r\n\r\nMy assumption is that they just string-concat filenames without *any* care; the problem just happens to surface with whitespace most of the time. I'm pretty sure that servers that send unquoted whitespace *also* have trouble with non-ASCII characters, or with other ASCII characters not allowed in tokens (such as \"(\" and \")\"). ",
+          "createdAt": "2020-08-19T14:39:52Z",
+          "updatedAt": "2020-08-19T14:39:52Z"
+        },
+        {
+          "author": "MattMenke2",
+          "authorAssociation": "NONE",
+          "body": "Note that truncating at whitespace can change file extensions, which can have security implications.  So if we want to reach consensus on doing something other than what Chrome does here, I don't think we want to do what FireFox does.",
+          "createdAt": "2020-08-19T14:51:41Z",
+          "updatedAt": "2020-08-19T14:51:41Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Truncating isn't a good idea, indeed. The \"proper\" approach would be to ignore the filename information, as the parameter does not parse as spec'd.",
+          "createdAt": "2020-08-19T14:57:35Z",
+          "updatedAt": "2020-08-19T14:57:35Z"
+        },
+        {
+          "author": "MattMenke2",
+          "authorAssociation": "NONE",
+          "body": "The entire header doesn't parse as specced, though, not just some subset of it.  Of course, just ignoring the header results in other potential security issues.  Ideally, we'd just reject responses with invalid headers, but that would likely result in way too much breakage for anyone to ship.\r\n\r\nEven just ignoring the filename will likely result in widespread breakage. Not sure if there'll be the willingness to go through that, on the Chrome side of things.",
+          "createdAt": "2020-08-19T15:19:18Z",
+          "updatedAt": "2020-08-19T15:26:34Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> The entire header doesn't parse as specced, though, not just some subset of it.\r\n\r\nThat's the pedantic point of view (which I happen to like). But one could argue that failure to parse parameters does not require to throw away the disposition type.\r\n",
+          "createdAt": "2020-08-19T15:24:16Z",
+          "updatedAt": "2020-08-19T15:24:16Z"
+        },
+        {
+          "author": "MattMenke2",
+          "authorAssociation": "NONE",
+          "body": "> That's the pedantic point of view (which I happen to like). But one could argue that failure to parse parameters does not require to throw away the disposition type.\r\n\r\nBut that necessarily require us to at least partially parse the invalid content, so we then actually need to specify how and when invalid parts of a header should be parsed.",
+          "createdAt": "2020-08-19T15:28:38Z",
+          "updatedAt": "2020-08-19T15:28:38Z"
         }
       ]
     }
@@ -52474,19 +52721,19 @@
       ],
       "body": "## This PR\r\n\r\nUses payload body as iiuc:\r\n\r\n- we want to be transparent to transfer-coding;\r\n- rfc 7540 doesn't seem to use `message body`\r\n\r\n## Note\r\n\r\nIf you agree I can replace elsewhere too.",
       "createdAt": "2019-08-30T07:40:07Z",
-      "updatedAt": "2019-08-30T09:50:40Z",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "comments": [],
-      "reviews": [],
+      "updatedAt": "2020-08-18T10:40:22Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "da67208c034fc53dae221b254489664d97578d34",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-patch-1",
       "headRefOid": "de2de274fc59e73608a5700a00f0ed8513c51c95",
-      "mergeCommit": null
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     },
     {
       "number": 919,
@@ -53349,13 +53596,13 @@
       ],
       "body": "## This PR\r\n\r\nClarifies the following points:\r\n\r\n- resource identification is inherited from SEMANTICS\r\n- validator fields (ETags & Last Modified) which apply to the identified resource, apply to Digest too.",
       "createdAt": "2019-09-24T16:15:32Z",
-      "updatedAt": "2020-08-17T16:05:22Z",
+      "updatedAt": "2020-08-18T11:33:08Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "5af1520b6f163d3601178a1249f2213c0bd3469d",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-936",
-      "headRefOid": "85a29515fa3eda74e50bd738627a775deff7141e",
+      "headRefOid": "945809a8b266f3294fe22ccd81c2090cf3470083",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -53402,6 +53649,20 @@
           "body": "Current wording integrates @reschke and @mnot suggestion (iiuc).",
           "createdAt": "2020-08-17T16:05:22Z",
           "updatedAt": "2020-08-17T16:05:22Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yeah I forgot about the clash with 850. Let's land this and I see you've made a signpost back to my editorial suggestion so we don't lose it.",
+          "createdAt": "2020-08-18T11:16:34Z",
+          "updatedAt": "2020-08-18T11:16:34Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ok, to me this is complete. I'll leave to @LPardue  the decision to merge or to wait for further feedback.",
+          "createdAt": "2020-08-18T11:32:47Z",
+          "updatedAt": "2020-08-18T11:32:47Z"
         }
       ],
       "reviews": [
@@ -53421,7 +53682,7 @@
               "originalPosition": 34,
               "body": "`201 OK` ??",
               "createdAt": "2019-09-24T16:19:36Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53441,7 +53702,7 @@
               "originalPosition": 50,
               "body": "@LPardue I need some guidance here:\r\n\r\n- iiuc cache validators are ETags & Last Modified [RFC2616 s. 13.3.3 ](https://tools.ietf.org/html/rfc2616#section-13.3.3)\r\n\r\nit's not clear to me:\r\n\r\n* how a cache validator specify a resource;\r\n* I stubbed a translation to RFC723x in #940 ",
               "createdAt": "2019-09-24T20:00:37Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53461,7 +53722,7 @@
               "originalPosition": 50,
               "body": "sorry, not a caching expert so my opinion might not help much here.",
               "createdAt": "2019-10-07T16:40:57Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53481,7 +53742,7 @@
               "originalPosition": 50,
               "body": "As @reschke had similar considerations in https://github.com/httpwg/http-extensions/pull/940#pullrequestreview-299297863\r\n\r\nI asked his help.",
               "createdAt": "2019-10-09T11:29:43Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53501,7 +53762,7 @@
               "originalPosition": 50,
               "body": "Can that work?\r\n```\r\nselected representation-data is identified accordingly to Section 3.1.4.1 of [RFC7231].\r\nhttps://httpwg.org/http-core/draft-ietf-httpbis-semantics-latest.html#identifying.payload\r\n```",
               "createdAt": "2019-10-09T15:35:32Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53521,7 +53782,7 @@
               "originalPosition": 50,
               "body": "I thought twice. Probably rfc 3230 refers to receiving a cached `Digest`.\r\n\r\n`validators` do not identify the resource on the origin server \r\n but it's cached representation. Let me know, R.",
               "createdAt": "2019-10-09T19:01:26Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53541,7 +53802,7 @@
               "originalPosition": 6,
               "body": "```suggestion\r\n`Digest` field-value can be cached by intermediaries.\r\n```",
               "createdAt": "2020-03-17T09:28:55Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53561,7 +53822,7 @@
               "originalPosition": 6,
               "body": "```suggestion\r\n(see Section 7 of {{SEMANTICS}}) of a resource identified according to Section 7.3.2 of {{SEMANTICS}}\r\n```",
               "createdAt": "2020-08-17T15:59:45Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
             }
           ]
         },
@@ -53581,7 +53842,107 @@
               "originalPosition": 25,
               "body": "```suggestion\r\nDigest MAY be cached and the freshness information of the resource, eventually conveyed by validator\r\n header fields or other cache headers, apply to its value too.\r\n```",
               "createdAt": "2020-08-17T16:01:04Z",
-              "updatedAt": "2020-08-17T16:01:17Z"
+              "updatedAt": "2020-08-18T08:02:24Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY4OTQ0MDIw",
+          "commit": {
+            "abbreviatedOid": "85a2951"
+          },
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T02:10:52Z",
+          "updatedAt": "2020-08-18T02:10:52Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "Generally, we try to avoid re-stating requirements in other specs, or constraining how they're interpreted, because that makes the composition of the specs more brittle -- there's more chance of misinterpretation or unintentional misalignment (either as written or after some future change in the dependency).\r\n\r\nSo if you say anything at all, it shouldn't be a RFC2119 requirement; just some prose about the relationship for reader convenience.",
+              "createdAt": "2020-08-18T02:10:52Z",
+              "updatedAt": "2020-08-18T08:02:24Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MDgyNTM2",
+          "commit": {
+            "abbreviatedOid": "85a2951"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T07:59:34Z",
+          "updatedAt": "2020-08-18T07:59:34Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "Thanks @mnot. Let's drop those lines then! ",
+              "createdAt": "2020-08-18T07:59:34Z",
+              "updatedAt": "2020-08-18T08:02:24Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MDgzNjYw",
+          "commit": {
+            "abbreviatedOid": "85a2951"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T08:00:59Z",
+          "updatedAt": "2020-08-18T08:00:59Z",
+          "comments": [
+            {
+              "originalPosition": 26,
+              "body": "```suggestion\r\n```",
+              "createdAt": "2020-08-18T08:00:59Z",
+              "updatedAt": "2020-08-18T08:02:24Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MTE4NzUz",
+          "commit": {
+            "abbreviatedOid": "945809a"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T08:45:59Z",
+          "updatedAt": "2020-08-18T08:58:48Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "This new text look technically fine but the sentence is a bit long winded now, especially with the\r\nparameter comment in brackets. How about some editorializing like this, which intentially avoids saying anything about parameters.\r\n\r\n```\r\nA representation digest consists of a `digest-algorithm` followed by an `encoded digest output`.\r\n\r\n~~~ abnf\r\n   representation-data-digest = digest-algorithm \"=\"\r\n                                <encoded digest output>\r\n~~~\r\n\r\nThe `digest-algorithm` identifies both an algorithm and output encoding format which are applied\r\nto a representation. A checksum value is first computed on the entire selected `representation data`\r\n(see Section 7 of {{SEMANTICS}}) of a resource identified according to Section 7.3.2 of {{SEMANTICS}}.\r\nThis is then encoded using the required format.\r\n\r\nThe list of defined `digest-algorithms` is provided in {{algorithms}}.\r\n\r\nThe example below shows the `sha-256` digest-algorithm which uses base64 encoding.\r\n\r\n~~~ example\r\n   sha-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\r\n~~~\r\n```",
+              "createdAt": "2020-08-18T08:45:59Z",
+              "updatedAt": "2020-08-18T08:58:48Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MjIxNzk5",
+          "commit": {
+            "abbreviatedOid": "945809a"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T11:07:34Z",
+          "updatedAt": "2020-08-18T11:07:34Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "If this is technically ok, I suggest to:\r\n\r\n- merge and close the issue;\r\n- resolve #850 (parameters);\r\n- rewording in another PR.\r\n\r\nIn the rewording, we could even avoid mentioning the \"encoding\" part as I think it should only be mentioned in the `digest-algorithm` section.\r\n\r\nWDYT?",
+              "createdAt": "2020-08-18T11:07:34Z",
+              "updatedAt": "2020-08-18T11:07:34Z"
             }
           ]
         }
@@ -64646,10 +65007,12 @@
       "author": "richanna",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "signatures"
+      ],
       "body": "- Strengthened requirement for content identifiers for header fields to be lower-case (changed from SHOULD to MUST).\r\n- Relaxed guidance on processing Creation Time and Expiration Time to only require verifiers to examine them and test against the verifier\u2019s requirements.\r\n- Minor editorial corrections and readability improvements.\r\n\r\nResolves #1187, resolves #1188 ",
       "createdAt": "2020-07-24T23:14:24Z",
-      "updatedAt": "2020-08-10T19:55:57Z",
+      "updatedAt": "2020-08-18T10:55:43Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "a01b9d4abb116685fdad1061fd2f7ce6335c0748",
@@ -64674,6 +65037,26 @@
           "createdAt": "2020-08-10T19:55:57Z",
           "updatedAt": "2020-08-10T19:55:57Z",
           "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MjExNDcw",
+          "commit": {
+            "abbreviatedOid": "b60a4cd"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "I'd split the clock-skew part in a separate PR. The rest LGTM.",
+          "createdAt": "2020-08-18T10:54:58Z",
+          "updatedAt": "2020-08-18T10:55:43Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "I would split this passage in a separate PR and provide considerations. The rest LGTM.",
+              "createdAt": "2020-08-18T10:54:59Z",
+              "updatedAt": "2020-08-18T10:55:22Z"
+            }
+          ]
         }
       ]
     },
@@ -65132,7 +65515,7 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDY4ODUxMTM2",
       "title": "Fix: #884. multiple transfer coding",
       "url": "https://github.com/httpwg/http-extensions/pull/1247",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ioggstream",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
@@ -65141,19 +65524,35 @@
       ],
       "body": "## This PR\r\n\r\n- explicits that digest does not depend from multiple transfer coding",
       "createdAt": "2020-08-17T13:59:39Z",
-      "updatedAt": "2020-08-17T14:04:08Z",
+      "updatedAt": "2020-08-18T09:08:45Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "5af1520b6f163d3601178a1249f2213c0bd3469d",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-884-bis",
       "headRefOid": "10cb171a4cb99c8935e2e0d6f7c04102bc7337b8",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-08-18T09:08:43Z",
+      "mergedAt": "2020-08-18T09:08:43Z",
+      "mergedBy": "LPardue",
+      "mergeCommit": {
+        "oid": "7f9bcd3f446d4bceabfa0ebdf7805af1209d4f1b"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MTM1Nzc4",
+          "commit": {
+            "abbreviatedOid": "10cb171"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-08-18T09:07:40Z",
+          "updatedAt": "2020-08-18T09:07:40Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 1248,
@@ -65169,19 +65568,189 @@
       ],
       "body": "## This PR\r\n\r\nClarifies why digest semantic on requests depends on the underlying method semantic and can't be generalized on all methods.\r\n\r\nThe clarification is added in the FAQ.\r\n\r\nFixes: #970 ",
       "createdAt": "2020-08-17T16:38:26Z",
-      "updatedAt": "2020-08-17T16:38:48Z",
+      "updatedAt": "2020-08-18T10:41:28Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "5af1520b6f163d3601178a1249f2213c0bd3469d",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-970",
-      "headRefOid": "aac2d05b527b664cad4529058bc6b65070ac9ce7",
+      "headRefOid": "5b1c524a5ab010d23b8d6add1acc229fee11234b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Clarifies why digest semantic on requests depends on the underlying method semantic and can't be generalized on all methods.\r\n\r\nTo me, that is the opposite of what needs to be done. The semantics of \"Digest\" in a request should always be the same.\r\n\r\nIf would be good to understand *why* you want to make Digest depend on the method.\r\n",
+          "createdAt": "2020-08-18T10:03:47Z",
+          "updatedAt": "2020-08-18T10:03:47Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Forewords: thanks Julian for all the time you are spending on this spec! I really appreciate it!\r\n\r\n> No.\r\n> Digest should not depend on the method\r\n> The semantics of \"Digest\" in a request should always be the same.\r\n\r\nCan you provide some normative references in SEMANTICS which forbids to create a method or a mechanism conveying a partial representation in a request? It would be really useful :) \r\n\r\n> [..] HTTP spec explicitly forbids (PUT + Range)\r\n\r\nlet it be an `UPDATE` method which conveys a partial representation instead of a patch-document. \r\nProbably the proliferation of different ways of updating resources via partial representations and the (mis)use of Content-MD5 by goog, amz & co requires some attention from us.\r\n\r\n> why you want to make Digest depend on the method\r\n\r\nDigest does not depend directly on the method, but on the SEMANTICS (which may depend on the method).\r\nimho stating that Digest in request just depends on the payload body is not in line with RFC3230 spirit.",
+          "createdAt": "2020-08-18T10:34:14Z",
+          "updatedAt": "2020-08-18T10:35:46Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Can you provide some normative references in SEMANTICS which forbids to create a method or a mechanism conveying a partial representation in a request? It would be really useful :)\r\n\r\nOf course a method can carry a partial representation. What I'm saying is that even when it does, a Digest request header field would *still* reflect the contents of the payload, in this case the partial payload.\r\n\r\n> Digest does not depend directly on the method, but on the SEMANTICS (which may depend on the method).\r\nimho stating that Digest in request just depends on the payload body is not in line with RFC3230 spirit.\r\n\r\nBut a recipient has no idea about the \"semantics\" of new methods, thus the behavior would essentially be undefined. How is that useful?\r\n\r\nCan wou please provide a *concrete* example where you would want the Digest request header field *not* to refer to the payload, whatever it is?\r\n\r\n(FWIW, the \"spirit\" of RFC 3230 is really irrelevant here unless you can demonstrate that it's actually useful and deployable; revising specs includes cleaning them up)\r\n",
+          "createdAt": "2020-08-18T10:41:28Z",
+          "updatedAt": "2020-08-18T10:41:28Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MTM0MzMw",
+          "commit": {
+            "abbreviatedOid": "aac2d05"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T09:05:52Z",
+          "updatedAt": "2020-08-18T09:05:53Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "```suggestion\r\n   This [discussion is not trivial](https://github.com/httpwg/http-extensions/pull/923).\r\n   When using POST and PATCH the representation-digest is computed on the payload body but\r\n   this is because of the semantics of those methods. However, other method semantics can vary.\r\n   For example, a hypothetical method where the request body contains a partial representation\r\n   would behave differently, and it's Digest would be computed on the complete representation data.\r\n   An example of such a hypothetical use case would be a resumable upload mechanism \r\n   implemented with PUT + Content-Range, such as\r\n   [this one](https://cloud.google.com/storage/docs/performing-resumable-uploads#resume-upload).\r\n```\r\n\r\njust some editorializing",
+              "createdAt": "2020-08-18T09:05:52Z",
+              "updatedAt": "2020-08-18T09:35:47Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MTQzMzAx",
+          "commit": {
+            "abbreviatedOid": "aac2d05"
+          },
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T09:17:32Z",
+          "updatedAt": "2020-08-18T09:17:32Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "No. \r\n\r\nThe Digest shoult not depend on the method. And giving an example of something that the HTTP spec explicitly forbids (PUT + Range) doesn't make it better.",
+              "createdAt": "2020-08-18T09:17:32Z",
+              "updatedAt": "2020-08-18T09:35:47Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDY5MTk1OTkx",
+          "commit": {
+            "abbreviatedOid": "5b1c524"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-18T10:31:03Z",
+          "updatedAt": "2020-08-18T10:31:04Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "See https://github.com/httpwg/http-extensions/pull/1248#issuecomment-675400978",
+              "createdAt": "2020-08-18T10:31:03Z",
+              "updatedAt": "2020-08-18T10:36:24Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 1249,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDY5Mzk1NTEz",
+      "title": "Fix: #968. Clarifications on Want-Digest.",
+      "url": "https://github.com/httpwg/http-extensions/pull/1249",
+      "state": "OPEN",
+      "author": "ioggstream",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "LPardue"
+      ],
+      "labels": [
+        "digest-headers"
+      ],
+      "body": "## This PR\r\n\r\nclarifies that no normative parts were added to Want-Digest, only examples.",
+      "createdAt": "2020-08-18T10:42:36Z",
+      "updatedAt": "2020-08-19T08:48:13Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "7f9bcd3f446d4bceabfa0ebdf7805af1209d4f1b",
+      "headRepository": "httpwg/http-extensions",
+      "headRefName": "ioggstream-978",
+      "headRefOid": "4f5378a1961dcb77d506b1400a97c9ac0b65e41f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Hmm I think the issue might have conflated two things. 1) We are deprecating use of the MD5 algorithm in digests (including want-digest with `md5` 2) We are deprecating the use of content-MD5 as described in https://tools.ietf.org/html/rfc3230#section-5. I think we should expand the `deprecate-contentMD5` section a little to explicitly state what want-digest with `contentMD5` means in this draft i.e. is it ignored?. It's easy to confuse these things with the current text.",
+          "createdAt": "2020-08-18T12:51:29Z",
+          "updatedAt": "2020-08-18T12:52:28Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> I think we should expand the `deprecate-contentMD5` section a little\r\n> to explicitly state what want-digest with `contentMD5` means in this draft i.e. is it ignored?\r\n\r\nTo me the implementor is free to ignore or error on  contentMD5: OTOH it's an unregistered algorithm.\r\nWe could just reserve that word to avoid that to be registered, but I don't like this kind of entries lingering around (eg. see https://github.com/httpwg/http-core/issues/388 )\r\n\r\nre-reading the draft, I found the message quite clear: forget md5 and all that relates to it.\r\n\r\n\r\n",
+          "createdAt": "2020-08-18T16:08:20Z",
+          "updatedAt": "2020-08-18T16:08:20Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> We could just reserve that word to avoid that to be registered, but I don't like this kind of entries lingering around \r\n\r\nHaving the value in the registry makes a lot of sense, because that's what people are supposed to look up. It should just make clear that it's deprecated.\r\n\r\n>  (eg. see httpwg/http-core#388 )\r\n\r\nThat's IMHO a bit misleading as \"identity\" is not a real content-coding.",
+          "createdAt": "2020-08-18T16:22:01Z",
+          "updatedAt": "2020-08-18T16:22:01Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "My interpretation is different than Roberto's; RFC3230 registers the value `contentMD5` for use in `want-digest`, and only `want-digest`.\r\n\r\n```\r\n   First, we add to the set of digest-algorithm values (in section\r\n   4.1.1) the token \"contentMD5\", with the provision that this digest-\r\n   algorithm MUST NOT be used in a Digest header field.\r\n```\r\n\r\nthen\r\n\r\n```\r\n  The presence of the \"contentMD5\" digest-algorithm with a non-zero\r\n   qvalue in a Want-Digest header field indicates that the sender wishes\r\n   to receive a Content-MD5 header on messages associated with the\r\n   Request-URI.\r\n```\r\n\r\nso a client sending `want-digest: contentMD5;q=1` is asking for the server to provide a `Content-MD5` in the response, independent of the `Digest`. That `contentMD5` is missing from any registry seems like an oversight.\r\n\r\nIn the meantime, RFC 7231 has deprecated Content-MD5 and says:\r\n\r\n```\r\n   The Content-MD5 header field has been removed because it was\r\n   inconsistently implemented with respect to partial responses.\r\n```\r\n\r\nSo the right thing to do, I think, is to register this as an obsolete digest-algorithm. Whether that needs to be a `SHOULD NOT be used in Want-Digest and MUST NOT be used in Digest`, or a MUST NOT in both (probably unenforceable) I don't know.\r\n\r\n",
+          "createdAt": "2020-08-18T17:24:37Z",
+          "updatedAt": "2020-08-18T17:24:37Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "1- I'll register the algorithm in the table and mark it as Obsolete\r\n2- PTAL https://github.com/httpwg/http-extensions/pull/1249/files#r472865789",
+          "createdAt": "2020-08-19T08:48:13Z",
+          "updatedAt": "2020-08-19T08:48:13Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDcwMjQ5NDEz",
+          "commit": {
+            "abbreviatedOid": "4f5378a"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-19T08:45:41Z",
+          "updatedAt": "2020-08-19T08:45:41Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "```suggestion\r\n[RFC7231].\r\nThe `contentMD5` token defined in Section 5 of [RFC3230] MUST NOT be used as a digest-algorithm.\r\n```",
+              "createdAt": "2020-08-19T08:45:41Z",
+              "updatedAt": "2020-08-19T08:45:41Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
