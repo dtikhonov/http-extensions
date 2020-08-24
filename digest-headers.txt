@@ -102,9 +102,9 @@ Table of Contents
      9.8.  POST Response Describes the Request Status  . . . . . . .  16
      9.9.  Digest with PATCH . . . . . . . . . . . . . . . . . . . .  17
      9.10. Error responses . . . . . . . . . . . . . . . . . . . . .  18
-     9.11. Use with trailers and transfer-coding . . . . . . . . . .  19
+     9.11. Use with trailers and transfer coding . . . . . . . . . .  19
    10. Examples of Want-Digest Solicited Digest  . . . . . . . . . .  19
-     10.1.  Server Selects Client's Least Preferred Algorithm  . . .  19
+     10.1.  Server Selects Client's Least Preferred Algorithm  . . .  20
      10.2.  Server Selects Algorithm Unsupported by Client . . . . .  20
 
 
@@ -130,27 +130,28 @@ Internet-Draft               Digest Headers                  August 2020
      12.1.  Establish the HTTP Digest Algorithm Values . . . . . . .  23
      12.2.  The "status" Field in the HTTP Digest Algorithm Values .  23
      12.3.  Deprecate "MD5" Digest Algorithm . . . . . . . . . . . .  23
-     12.4.  Update "CRC32C" Digest Algorithm . . . . . . . . . . . .  23
+     12.4.  Update "CRC32C" Digest Algorithm . . . . . . . . . . . .  24
      12.5.  Obsolete "SHA" Digest Algorithm  . . . . . . . . . . . .  24
      12.6.  Obsolete "ADLER32" Digest Algorithm  . . . . . . . . . .  24
-     12.7.  The "ID-SHA-256" Digest Algorithm  . . . . . . . . . . .  24
-     12.8.  The "ID-SHA-512" Digest Algorithm  . . . . . . . . . . .  25
-     12.9.  Changes compared to RFC5843  . . . . . . . . . . . . . .  25
-     12.10. Want-Digest Field Registration . . . . . . . . . . . . .  25
-     12.11. Digest Header Field Registration . . . . . . . . . . . .  25
+     12.7.  Obsolete "contentMD5" token in Digest Algorithm  . . . .  25
+     12.8.  The "ID-SHA-256" Digest Algorithm  . . . . . . . . . . .  25
+     12.9.  The "ID-SHA-512" Digest Algorithm  . . . . . . . . . . .  25
+     12.10. Changes compared to RFC5843  . . . . . . . . . . . . . .  25
+     12.11. Want-Digest Field Registration . . . . . . . . . . . . .  26
+     12.12. Digest Header Field Registration . . . . . . . . . . . .  26
    13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  26
      13.1.  Normative References . . . . . . . . . . . . . . . . . .  26
-     13.2.  Informative References . . . . . . . . . . . . . . . . .  27
-     13.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  28
+     13.2.  Informative References . . . . . . . . . . . . . . . . .  28
+     13.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  29
    Appendix A.  Resource Representation and Representation-Data  . .  29
    Appendix B.  FAQ  . . . . . . . . . . . . . . . . . . . . . . . .  31
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  32
-   Code Samples  . . . . . . . . . . . . . . . . . . . . . . . . . .  32
+   Code Samples  . . . . . . . . . . . . . . . . . . . . . . . . . .  33
    Changes . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  33
-     E.1.  Since draft-ietf-httpbis-digest-headers-00  . . . . . . .  33
+     E.1.  Since draft-ietf-httpbis-digest-headers-00  . . . . . . .  34
      E.2.  Since draft-ietf-httpbis-digest-headers-01  . . . . . . .  34
      E.3.  Since draft-ietf-httpbis-digest-headers-02  . . . . . . .  34
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  34
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  35
 
 1.  Introduction
 
@@ -160,8 +161,7 @@ Internet-Draft               Digest Headers                  August 2020
    lower layer in order to provide some integrity protection; for
    instance TCP checksums or TLS records [RFC2818].
 
-   However, there are cases where relying on this alone is insufficient.
-   An HTTP-level integrity mechanism that operates independent of
+
 
 
 
@@ -170,6 +170,8 @@ Polli & Pardue          Expires February 25, 2021               [Page 3]
 Internet-Draft               Digest Headers                  August 2020
 
 
+   However, there are cases where relying on this alone is insufficient.
+   An HTTP-level integrity mechanism that operates independent of
    transfer can be used to detect programming errors and/or corruption
    of data at rest, be used across multiple hops in order to provide
    end-to-end integrity guarantees, aid fault diagnosis across hops and
@@ -216,8 +218,6 @@ Internet-Draft               Digest Headers                  August 2020
    To allow both parties to exchange a Digest of a representation with
    no content codings (see Section 7.1.2 of [SEMANTICS]) two more
    algorithms are added ("ID-SHA-256" and "ID-SHA-512").
-
-
 
 
 
@@ -1020,11 +1020,13 @@ Internet-Draft               Digest Headers                  August 2020
      "status": 404
    }
 
-9.11.  Use with trailers and transfer-coding
+9.11.  Use with trailers and transfer coding
 
    An origin server sends Digest in the HTTP trailer, so it can
    calculate digest-value while streaming content and thus mitigate
    resource consumption.  The field value is the same as in Section 9.1
+   because Digest is designed to be independent from the use of one or
+   more transfer codings (see Section 2).
 
    Request:
 
@@ -1053,10 +1055,8 @@ Internet-Draft               Digest Headers                  August 2020
    The following examples demonstrate interactions where a client
    solicits a "Digest" using "Want-Digest".
 
-10.1.  Server Selects Client's Least Preferred Algorithm
 
-   The client requests a digest, preferring sha.  The server is free to
-   reply with sha-256 anyway.
+
 
 
 
@@ -1065,6 +1065,11 @@ Polli & Pardue          Expires February 25, 2021              [Page 19]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+10.1.  Server Selects Client's Least Preferred Algorithm
+
+   The client requests a digest, preferring sha.  The server is free to
+   reply with sha-256 anyway.
 
    Request:
 
@@ -1107,11 +1112,6 @@ Internet-Draft               Digest Headers                  August 2020
 
    Request:
 
-   GET /items/123
-   Want-Digest: sha;q=1
-
-
-   Response:
 
 
 
@@ -1121,6 +1121,12 @@ Polli & Pardue          Expires February 25, 2021              [Page 20]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   GET /items/123
+   Want-Digest: sha;q=1
+
+
+   Response:
 
    HTTP/1.1 400 Bad Request
    Want-Digest: sha-256, sha-512
@@ -1163,12 +1169,6 @@ Internet-Draft               Digest Headers                  August 2020
    Besides, it allows to protect "representation data" from buggy
    manipulation, buggy compression, etc.
 
-   Moreover identity digest algorithms (eg.  ID-SHA-256 and ID-SHA-512)
-   allow piecing together a resource from different sources (e.g.
-   different servers that perhaps apply different content codings)
-   enabling the user-agent to detect that the application-layer tasks
-   completed properly, before handing off to say the HTML parser, video
-   player etc.
 
 
 
@@ -1177,6 +1177,13 @@ Polli & Pardue          Expires February 25, 2021              [Page 21]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   Moreover identity digest algorithms (eg.  ID-SHA-256 and ID-SHA-512)
+   allow piecing together a resource from different sources (e.g.
+   different servers that perhaps apply different content codings)
+   enabling the user-agent to detect that the application-layer tasks
+   completed properly, before handing off to say the HTML parser, video
+   player etc.
 
    Even a simple mechanism for end-to-end validation is thus valuable.
 
@@ -1220,19 +1227,19 @@ Internet-Draft               Digest Headers                  August 2020
    validating the digest value.  Instead, data should only be processed
    after validating the Digest.
 
-   If received in trailers, Digest MUST NOT be discarded; instead it MAY
-   be merged in the header section (See Section 5.6.2 of [SEMANTICS]).
-
-   Not every digest-algorithm is suitable for trailers, as they may
-   require to pre-process the whole payload before sending a message
-   (eg. see [I-D.thomson-http-mice]).
-
 
 
 Polli & Pardue          Expires February 25, 2021              [Page 22]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   If received in trailers, Digest MUST NOT be discarded; instead it MAY
+   be merged in the header section (See Section 5.6.2 of [SEMANTICS]).
+
+   Not every digest-algorithm is suitable for trailers, as they may
+   require to pre-process the whole payload before sending a message
+   (eg. see [I-D.thomson-http-mice]).
 
 11.8.  Usage with encryption
 
@@ -1273,6 +1280,16 @@ Internet-Draft               Digest Headers                  August 2020
 
    o  Status: As specified in Section 5.
 
+
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 23]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
 12.4.  Update "CRC32C" Digest Algorithm
 
    This memo updates the "CRC32c" digest algorithm in the HTTP Digest
@@ -1282,14 +1299,6 @@ Internet-Draft               Digest Headers                  August 2020
 
    o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
       check.  It achieves a better hamming distance (for better error-
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 23]
-
-Internet-Draft               Digest Headers                  August 2020
-
-
       detection performance) than many other 32-bit CRC functions.
       Other places it is used include iSCSI and SCTP.  The 32-bit output
       is encoded in hexadecimal (using between 1 and 8 ASCII characters
@@ -1329,15 +1338,6 @@ Internet-Draft               Digest Headers                  August 2020
 
    o  Status: obsoleted
 
-12.7.  The "ID-SHA-256" Digest Algorithm
-
-   This memo registers the "ID-SHA-256" digest algorithm in the HTTP
-   Digest Algorithm Values [9] registry:
-
-   o  Digest Algorithm: ID-SHA-256
-
-   o  Description: As specified in Section 5.
-
 
 
 
@@ -1346,12 +1346,36 @@ Polli & Pardue          Expires February 25, 2021              [Page 24]
 Internet-Draft               Digest Headers                  August 2020
 
 
+12.7.  Obsolete "contentMD5" token in Digest Algorithm
+
+   This memo adds the "contentMD" token in the HTTP Digest Algorithm
+   Values [9] registry:
+
+   o  Digest Algorithm: contentMD5
+
+   o  Description: Section 5 of [RFC3230] defined the "contentMD5" token
+      to be used only in Want-Digest.  This token is obsoleted and MUST
+      NOT be used.
+
+   o  Reference: Section 12.7 of this document, Section 5 of [RFC3230].
+
+   o  Status: obsoleted
+
+12.8.  The "ID-SHA-256" Digest Algorithm
+
+   This memo registers the "ID-SHA-256" digest algorithm in the HTTP
+   Digest Algorithm Values [10] registry:
+
+   o  Digest Algorithm: ID-SHA-256
+
+   o  Description: As specified in Section 5.
+
    o  Status: As specified in Section 5.
 
-12.8.  The "ID-SHA-512" Digest Algorithm
+12.9.  The "ID-SHA-512" Digest Algorithm
 
    This memo registers the "ID-SHA-512" digest algorithm in the HTTP
-   Digest Algorithm Values [10] registry:
+   Digest Algorithm Values [11] registry:
 
    o  Digest Algorithm: ID-SHA-512
 
@@ -1359,7 +1383,7 @@ Internet-Draft               Digest Headers                  August 2020
 
    o  Status: As specified in Section 5.
 
-12.9.  Changes compared to RFC5843
+12.10.  Changes compared to RFC5843
 
    The status of "MD5" has been updated to "deprecated", and its
    description states that this algorithm MUST NOT be used.
@@ -1369,10 +1393,19 @@ Internet-Draft               Digest Headers                  August 2020
 
    The status for "CRC32C" has been updated to "standard".
 
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 25]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
    The "ID-SHA-256" and "ID-SHA-512" algorithms have been added to the
    registry.
 
-12.10.  Want-Digest Field Registration
+12.11.  Want-Digest Field Registration
 
    This section registers the "Want-Digest" field in the "Hypertext
    Transfer Protocol (HTTP) Field Name Registry" [SEMANTICS].
@@ -1383,7 +1416,7 @@ Internet-Draft               Digest Headers                  August 2020
 
    Specification document(s): Section 4 of this document
 
-12.11.  Digest Header Field Registration
+12.12.  Digest Header Field Registration
 
    This section registers the "Digest" field in the "Hypertext Transfer
    Protocol (HTTP) Field Name Registry" [SEMANTICS].
@@ -1393,14 +1426,6 @@ Internet-Draft               Digest Headers                  August 2020
    Status: permanent
 
    Specification document(s): Section 3 of this document
-
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 25]
-
-Internet-Draft               Digest Headers                  August 2020
-
 
 13.  References
 
@@ -1426,6 +1451,13 @@ Internet-Draft               Digest Headers                  August 2020
               DOI 10.17487/RFC1321, April 1992,
               <https://www.rfc-editor.org/info/rfc1321>.
 
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 26]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
    [RFC1950]  Deutsch, P. and J-L. Gailly, "ZLIB Compressed Data Format
               Specification version 3.3", RFC 1950,
               DOI 10.17487/RFC1950, May 1996,
@@ -1448,15 +1480,6 @@ Internet-Draft               Digest Headers                  August 2020
               Transmission Protocol (SCTP) Checksum Change", RFC 3309,
               DOI 10.17487/RFC3309, September 2002,
               <https://www.rfc-editor.org/info/rfc3309>.
-
-
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 26]
-
-Internet-Draft               Digest Headers                  August 2020
-
 
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
@@ -1484,6 +1507,13 @@ Internet-Draft               Digest Headers                  August 2020
               RFC 7405, DOI 10.17487/RFC7405, December 2014,
               <https://www.rfc-editor.org/info/rfc7405>.
 
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 27]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -1506,13 +1536,6 @@ Internet-Draft               Digest Headers                  August 2020
               Thomson, M. and J. Yasskin, "Merkle Integrity Content
               Encoding", draft-thomson-http-mice-03 (work in progress),
               August 2018.
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 27]
-
-Internet-Draft               Digest Headers                  August 2020
-
 
    [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
               DOI 10.17487/RFC2818, May 2000,
@@ -1539,6 +1562,14 @@ Internet-Draft               Digest Headers                  August 2020
               RFC 8188, DOI 10.17487/RFC8188, June 2017,
               <https://www.rfc-editor.org/info/rfc8188>.
 
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 28]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
    [SRI]      Akhawe, D., Braun, F., Marier, F., and J. Weinberger,
               "Subresource Integrity", W3C Recommendation REC-SRI-
               20160623, June 2016,
@@ -1562,19 +1593,13 @@ Internet-Draft               Digest Headers                  August 2020
 
    [8] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 28]
-
-Internet-Draft               Digest Headers                  August 2020
-
-
    [9] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
    [10] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
-   [11] https://github.com/httpwg/http-core/
+   [11] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
+
+   [12] https://github.com/httpwg/http-core/
         issues/313#issuecomment-584389706
 
 Appendix A.  Resource Representation and Representation-Data
@@ -1592,6 +1617,14 @@ Appendix A.  Resource Representation and Representation-Data
    Content-Type: application/json
 
    {"hello": "world"}
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 29]
+
+Internet-Draft               Digest Headers                  August 2020
+
 
    Here is a gzip-compressed json object using a content coding.
 
@@ -1617,15 +1650,6 @@ Appendix A.  Resource Representation and Representation-Data
 
    Request:
 
-
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 29]
-
-Internet-Draft               Digest Headers                  August 2020
-
-
    GET /entries/1234 HTTP/1.1
    Range: bytes=1-7
 
@@ -1650,6 +1674,14 @@ Internet-Draft               Digest Headers                  August 2020
 
    Response:
 
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 30]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
    HTTP/1.1 200 OK
    Content-Type: application/json
    Content-Encoding: gzip
@@ -1670,17 +1702,6 @@ Internet-Draft               Digest Headers                  August 2020
    {"author": "Camilleri"}
 
    Response:
-
-
-
-
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 30]
-
-Internet-Draft               Digest Headers                  August 2020
-
 
    HTTP/1.1 201 Created
    Content-Type: application/json
@@ -1708,6 +1729,15 @@ Appendix B.  FAQ
 
    4.  Why remove references to delta-encoding?
 
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 31]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
        Unnecessary for a correct implementation of this spec.  The
        revised spec can be nicely adapted to "delta encoding", but all
        the references here to delta encoding don't add anything to this
@@ -1730,14 +1760,6 @@ Appendix B.  FAQ
        algorithms and the inability to accept requests with unsupported
        digest-algorithms.
 
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 31]
-
-Internet-Draft               Digest Headers                  August 2020
-
-
    7.  Does this spec changes supported algorithms?
 
        This RFC updates [RFC5843] which is still delegated for all
@@ -1747,7 +1769,7 @@ Internet-Draft               Digest Headers                  August 2020
 
    8.  What about mid-stream trailers?
 
-       While mid-stream trailers [11] are interesting, since this
+       While mid-stream trailers [12] are interesting, since this
        specification is a rewrite of [RFC3230] we do not think we should
        face that.  As a first thought, nothing in this document
        precludes future work that would find a use for mid-stream
@@ -1763,6 +1785,15 @@ Acknowledgements
    discussion with M.  Nottingham, J.  Yasskin and M.  Thomson when
    reviewing the MICE content coding.
 
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 32]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
 Code Samples
 
    _RFC Editor: Please remove this section before publication._
@@ -1775,24 +1806,6 @@ Code Samples
    these are formatted as base64.  This function could be adapted to
    other algorithms and should take into account their specific
    formatting rules.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 32]
-
-Internet-Draft               Digest Headers                  August 2020
-
 
    import base64, json, hashlib, brotli
 
@@ -1827,6 +1840,16 @@ Changes
 
    _RFC Editor: Please remove this section before publication._
 
+
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 33]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
 E.1.  Since draft-ietf-httpbis-digest-headers-00
 
    o  Align title with document name
@@ -1842,13 +1865,6 @@ E.1.  Since draft-ietf-httpbis-digest-headers-00
    o  Update CRC32C value in IANA table #828
 
    o  Use when acting on resources (POST, PATCH) #853
-
-
-
-Polli & Pardue          Expires February 25, 2021              [Page 33]
-
-Internet-Draft               Digest Headers                  August 2020
-
 
    o  Added Relationship with SRI, draft Use Cases #868, #971
 
@@ -1880,6 +1896,16 @@ E.3.  Since draft-ietf-httpbis-digest-headers-02
 
    o  Reference httpbis-semantics #1156
 
+   o  Add contentMD5 as an obsoleted digest-algorithm #1249
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 34]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
 Authors' Addresses
 
    Roberto Polli
@@ -1901,4 +1927,34 @@ Authors' Addresses
 
 
 
-Polli & Pardue          Expires February 25, 2021              [Page 34]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Polli & Pardue          Expires February 25, 2021              [Page 35]
