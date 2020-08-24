@@ -1348,7 +1348,7 @@ Internet-Draft               Digest Headers                  August 2020
 
 12.7.  Obsolete "contentMD5" token in Digest Algorithm
 
-   This memo adds the "contentMD" token in the HTTP Digest Algorithm
+   This memo adds the "contentMD5" token in the HTTP Digest Algorithm
    Values [9] registry:
 
    o  Digest Algorithm: contentMD5
