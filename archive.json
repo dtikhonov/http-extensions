@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-20T00:12:52.526415+00:00",
+  "timestamp": "2020-08-25T00:16:26.409033+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -21790,15 +21790,15 @@
       ],
       "body": "## I wish\r\n\r\nA threat model for `Digest`.\r\n\r\n## Questions\r\n\r\n- is this useful/required?\r\n- should this go into Security Considerations or in another document?",
       "createdAt": "2019-07-10T09:44:07Z",
-      "updatedAt": "2020-08-13T13:19:47Z",
+      "updatedAt": "2020-08-24T15:23:48Z",
       "closedAt": null,
       "comments": [
         {
           "author": "ioggstream",
           "authorAssociation": "CONTRIBUTOR",
-          "body": "# Security issues for HTTP Digest\r\n\r\n## Actors\r\n\r\n- User\r\n- User-Agent: see RFC7230\r\n- Intermediaries that do not do TLS termination\r\n- Intermediaries that do TLS termination.\r\n\r\n- Application: the application actually running the service\r\n\r\n## Attacker capabilities\r\n\r\n1. Intermediaries can alter HTTP messages\r\n\r\n2. Intermediaries that do transport-layer termination can alter HTTP messages\r\n\r\n3. The application can erroneously or purposedly alter the message\r\n\r\n4. User can forge messages with the same checksum values\r\n\r\n## Attacker non-capabilities\r\n\r\n# Attacks and mitigations\r\n\r\n## Alteration of HTTP message headers\r\n\r\n### The attack\r\n\r\nAn intermediary can alter an HTTP header by chance or purpose.\r\n\r\n### Proposed mitigation\r\n\r\nUse an end-to-end transport-layer security mechanism.\r\n\r\n\r\n## Alteration of HTTP representation-metadata headers\r\n\r\n### The attack\r\n\r\nA TLS-terminator intermediary can alter representation-metadata by chance or purpose.\r\n\r\n### Proposed mitigation\r\n\r\nUse a signature mechanism that covers both `Digest` and the representation-metadata.\r\n\r\n## Send a Digest header with a different payload\r\n\r\n### The attack\r\n\r\nA TLS-terminator intermediary can replace the representation-data with another\r\none having the same digest-algorithm.\r\n\r\nA malicious User can forge two messages with:\r\n\r\n  - different representation-data\r\n  - same Digest header values\r\n  \r\nsend an HTTP message with the first representation-data\r\nthen pretend he sent the one with the second representation-data.\r\n\r\nA malicious Server could implement a similar behavior.\r\n\r\n### Proposed mitigation\r\n\r\nUse a digest-algorithm that is not subject to collision (eg. sha-256),\r\nor refuse to use digest-algorithms subect to collision.\r\n\r\n## Server resource exhaustion for calculating Digest on huge representation-data\r\n\r\n### The attack\r\n\r\nA User could exhaust server resources by chance or purpose via:\r\n\r\n1- sending a huge representation\r\n2- digest calculation of the complete representation\r\n3- forcing the server to evaluate the digest of the included representation\r\n\r\n### Proposed mitigation\r\n\r\nTo consume huge representation-data, you may consider\r\nmechanisms sending progressive integrity checksums in the payload body\r\nand just use `Digest` to provide the last checksum value.\r\n\r\n## Server resource exhaustion for calculating Digest on partial representations\r\n\r\n### The attack\r\n\r\nA malicious User could exhaust server resources via:\r\n\r\n1- reconstruction of the complete representation\r\n2- digest calculation of the complete representation\r\n3- forcing the server to evaluate many different digest-algorithms for a given representation\r\n\r\n### Proposed mitigation\r\n\r\nIf you are exposed to this kind of attack because \r\nreconstructing complete representations of your \r\nobjects is computationally intensive, avoid using\r\nDigest with mechanisms like Range-Requests and PATCH.\r\n\r\nIf you support multiple digest-algorithms:\r\n\r\n- limit the supported digest-algorithms to the\r\n  ones you really care for;\r\n- establish a policy for validating only the digest\r\n  using the stronger digest-algorithm.\r\n\r\n## Confidence in recipient's Digest validation \r\n\r\n### The attack\r\n\r\nThe recipient may skip Digest header validation by chance or purpose\r\nand still be compliant to the specification: as explained in {#digest-header} \r\nthe recipient MAY ignore any or all the received representation-data-digests.\r\n\r\nThis is because Digest was originally conceived in RFC3230 as a tool \r\nfor the recipient to validate the received representation, but not\r\nfor the sender to receive an integrity proof of the communication. \r\n\r\nYou should not rely on the recipient having correctly verified the Digest value\r\nof the selected representation.\r\n\r\n### Proposed mitigation\r\n\r\nIf you want the recipient to validate the `Digest`:\r\n\r\n- agree on `Digest` processing with your peer, like it is\r\n  done in [MICE](https://github.com/martinthomson/http-mice/blob/master/draft-thomson-http-mice.md)",
+          "body": "# Security issues for HTTP Digest\r\n\r\n## Actors\r\n\r\n- User\r\n- User-Agent: see RFC7230\r\n- Intermediaries that do not do TLS termination\r\n- Intermediaries that do TLS termination.\r\n\r\n- Application: the application actually running the service\r\n\r\n## Attacker capabilities\r\n\r\n1. Intermediaries can alter HTTP messages\r\n\r\n2. Intermediaries that do transport-layer termination can alter HTTP messages\r\n\r\n3. The application can erroneously or purposedly alter the message\r\n\r\n4. User can forge messages with the same checksum values\r\n\r\n## Attacker non-capabilities\r\n\r\n# Attacks and mitigations\r\n\r\n## Alteration of HTTP message headers\r\n\r\n### The attack\r\n\r\nAn intermediary can alter an HTTP header by chance or purpose.\r\n\r\n### Proposed mitigation\r\n\r\n[x] Use an end-to-end transport-layer security mechanism.\r\n\r\n\r\n## Alteration of HTTP representation-metadata headers\r\n\r\n### The attack\r\n\r\nA TLS-terminator intermediary can alter representation-metadata by chance or purpose.\r\n\r\n### Proposed mitigation\r\n \r\n - [ ] Use a signature mechanism that covers both `Digest` and the representation-metadata.\r\n\r\n## Send a Digest header with a different payload\r\n\r\n### The attack\r\n\r\nA TLS-terminator intermediary can replace the representation-data with another\r\none having the same digest-algorithm.\r\n\r\nA malicious User can forge two messages with:\r\n\r\n  - different representation-data\r\n  - same Digest header values\r\n  \r\nsend an HTTP message with the first representation-data\r\nthen pretend he sent the one with the second representation-data.\r\n\r\nA malicious Server could implement a similar behavior.\r\n\r\n### Proposed mitigation\r\n\r\n[x] Use a digest-algorithm that is not subject to collision (eg. sha-256),\r\nor refuse to use digest-algorithms subject to collision.\r\n\r\n## Server resource exhaustion for calculating Digest on huge representation-data\r\n\r\n### The attack\r\n\r\nA User could exhaust server resources by chance or purpose via:\r\n\r\n1- sending a huge representation\r\n2- digest calculation of the complete representation\r\n3- forcing the server to evaluate the digest of the included representation\r\n\r\n### Proposed mitigation\r\n\r\n  - [x] To consume huge representation-data, you may consider\r\n         mechanisms sending progressive integrity checksums in the payload body\r\n         and just use `Digest` to provide the last checksum value.\r\n\r\n## Server resource exhaustion for calculating Digest on partial representations\r\n\r\n### The attack\r\n\r\nA malicious User could exhaust server resources via:\r\n\r\n1- reconstruction of the complete representation\r\n2- digest calculation of the complete representation\r\n3- forcing the server to evaluate many different digest-algorithms for a given representation\r\n\r\n### Proposed mitigation\r\n\r\nIf you are exposed to this kind of attack because \r\nreconstructing complete representations of your \r\nobjects is computationally intensive, avoid using\r\n[ ] Digest with mechanisms like Range-Requests and PATCH.\r\n\r\nIf you support multiple digest-algorithms:\r\n\r\n - [ ] limit the supported digest-algorithms to the\r\n  ones you really care for;\r\n - [ ] establish a policy for validating only the digest\r\n  using the stronger digest-algorithm.\r\n\r\n## Confidence in recipient's Digest validation \r\n\r\n### The attack\r\n\r\nThe recipient may skip Digest header validation by chance or purpose\r\nand still be compliant to the specification: as explained in {#digest-header} \r\nthe recipient MAY ignore any or all the received representation-data-digests.\r\n\r\nThis is because Digest was originally conceived in RFC3230 as a tool \r\nfor the recipient to validate the received representation, but not\r\nfor the sender to receive an integrity proof of the communication. \r\n\r\n- [ ] You should not rely on the recipient having correctly verified the Digest value\r\nof the selected representation.\r\n\r\n### Proposed mitigation\r\n\r\nIf you want the recipient to validate the `Digest`:\r\n\r\n- [ ] agree on `Digest` processing with your peer, like it is\r\n  done in [MICE](https://github.com/martinthomson/http-mice/blob/master/draft-thomson-http-mice.md)",
           "createdAt": "2019-07-24T08:50:16Z",
-          "updatedAt": "2019-07-24T08:57:27Z"
+          "updatedAt": "2020-08-24T15:23:48Z"
         },
         {
           "author": "LPardue",
@@ -24366,7 +24366,7 @@
       "id": "MDU6SXNzdWU1MTU0OTE4OTM=",
       "title": "A client requests an unsupported Digest, the server MAY reply with a 400",
       "url": "https://github.com/httpwg/http-extensions/issues/968",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "LPardue",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
@@ -24375,8 +24375,8 @@
       ],
       "body": "I think this example demonstrates the under specification of the Want-Digest header. Does it work as \r\n\r\n1. A discovery mechanism that allows the client to probe the server for the set of digests it supports (client and server specifically)\r\n2. A unilateral advertisement of the algorithms supported by the sending endpoint\r\n\r\n\r\n\r\nBut to try and understand if it is 1) or 2) I see nothing in RFC 3230 that prescribes behaviour like this but I may well have missed it. Either way I don't think we should be putting normative text (MAY reply) in the section header. \r\n\r\nSo lets decouple things.\r\n\r\nI'm assuming in this example case that we operate under the model that server is allowed to respond with a 4xx under any circumstance. But specifically in this case the server is unwilling to accept requests with `sha` algorithm.\r\n\r\nThen next it advertises the list of algorithms it can generate? In which case, a header names Want-Digest is not very inutuitive. It seems to act asymmetrically, while we are expending a lot of effort to understand and describe how Digest can be used in Request and Response.",
       "createdAt": "2019-10-31T14:47:06Z",
-      "updatedAt": "2020-08-18T11:52:26Z",
-      "closedAt": null,
+      "updatedAt": "2020-08-24T14:04:59Z",
+      "closedAt": "2020-08-24T14:04:59Z",
       "comments": [
         {
           "author": "ioggstream",
@@ -27804,7 +27804,7 @@
       ],
       "body": "Section 11.3 says that ADLER32 was removed because it fails to detect certain errors.  I realize that `cksum` might be better as it uses the well-regarded CRC32 (or is that CRC32c? I didn't check; the original CRC32 had weaknesses of its own...).  But the 16-bit `sum` is clearly woefully inadequate for anything other than a sanity check.\r\n\r\nI'm not going to say that anything other than a good cryptographic algorithm is acceptable here, but I want to understand the rationale for inclusion.  Making `sum` obsolete would be an improvement; we almost get better guarantees from the TCP checksum.  I tend to think that `cksum` obsolete would also be a good choice.  Right now, both are 'standard'.",
       "createdAt": "2020-03-12T00:33:17Z",
-      "updatedAt": "2020-03-17T09:21:23Z",
+      "updatedAt": "2020-08-24T15:15:14Z",
       "closedAt": null,
       "comments": [
         {
@@ -27827,6 +27827,13 @@
           "body": "> Making sum obsolete would be an improvement; we almost get better guarantees from the TCP\r\n> checksum.\r\n> I tend to think that cksum obsolete would also be a good choice. Right now, both are 'standard'\r\n\r\nIf you don't want to change the status of `adler32` wdyt to rename this issue as `make sum and cksum obsolete`?\r\n\r\nWhile your question is reasonable, Lucas explained our approach:\r\n\r\n>  if there are no such references for sum then we might need more text than is present for other obsoleted algorithms.\r\n\r\nDo you know of any implementors use-cases that is affected by that?",
           "createdAt": "2020-03-17T09:21:23Z",
           "updatedAt": "2020-03-17T09:21:23Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "If there are no further comments I would close this.",
+          "createdAt": "2020-08-24T15:15:14Z",
+          "updatedAt": "2020-08-24T15:15:14Z"
         }
       ]
     },
@@ -29745,10 +29752,12 @@
       "author": "ioggstream",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
-      "body": "## Tasks\r\n\r\n- [ ] clean up Representation Digest https://github.com/httpwg/http-extensions/pull/937#discussion_r472018411\r\n- [ ] remove reference to \"validator fields\" if they are not used anymore\r\n- [ ] consistent usage of backticks in\r\n\r\n```\r\n`Digest` vs Digest vs \"Digest\"\r\n`digest-algorithms` vs digest-algoritms vs \"digest-algorithms\"\r\n```\r\n\r\n- [ ] consistent usage of \"-\" \r\n\r\n```\r\ndigest-algorithms vs digest algorithms\r\n```\r\n\r\n- [ ] consistent usage of lowercase digest-algorithms with backticks `sha-256` in text",
+      "labels": [
+        "digest-headers"
+      ],
+      "body": "## Tasks\r\n\r\n- [ ] clean up Representation Digest https://github.com/httpwg/http-extensions/pull/937#discussion_r472018411\r\n- [ ] remove reference to \"validator fields\" if they are not used anymore\r\n- [ ] consistent usage of backticks in\r\n\r\n```\r\n`Digest` vs Digest vs \"Digest\"\r\n`digest-algorithms` vs digest-algoritms vs \"digest-algorithms\"\r\n```\r\n\r\n- [ ] consistent usage of \"-\" \r\n\r\n```\r\ndigest-algorithms vs digest algorithms\r\n```\r\n\r\n- [ ] consistent usage of lowercase digest-algorithms with backticks `sha-256` in text\r\n\r\n- [ ] close #1139 and #1138  about old algorithms unless somebody comes with a proposal.",
       "createdAt": "2020-08-18T11:14:37Z",
-      "updatedAt": "2020-08-18T11:14:37Z",
+      "updatedAt": "2020-08-24T15:17:48Z",
       "closedAt": null,
       "comments": []
     },
@@ -29761,10 +29770,12 @@
       "author": "zcorpan",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "header-structure"
+      ],
       "body": "https://httpwg.org/http-extensions/draft-ietf-httpbis-header-structure.html\r\n\r\nI found https://github.com/httpwg/http-extensions/pull/1173\r\n\r\nThe current grammar with both SP and OWS in different places. I don't quite understand the motivation for SP in some places instead of OWS everywhere. If OWS was allowed in some places for more robust parsing, wouldn't allowing OWS everywhere be more robust still?\r\n\r\nAlso, there are some places where no whitespace is allowed but maybe it should be. In particular, before the `;` in the parameters. Should whitespace be allowed there?\r\n\r\ncc @mnot",
       "createdAt": "2020-08-18T11:29:33Z",
-      "updatedAt": "2020-08-19T09:56:18Z",
+      "updatedAt": "2020-08-24T08:14:52Z",
       "closedAt": null,
       "comments": [
         {
@@ -65568,7 +65579,7 @@
       ],
       "body": "## This PR\r\n\r\nClarifies why digest semantic on requests depends on the underlying method semantic and can't be generalized on all methods.\r\n\r\nThe clarification is added in the FAQ.\r\n\r\nFixes: #970 ",
       "createdAt": "2020-08-17T16:38:26Z",
-      "updatedAt": "2020-08-18T10:41:28Z",
+      "updatedAt": "2020-08-24T12:11:24Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "5af1520b6f163d3601178a1249f2213c0bd3469d",
@@ -65600,6 +65611,20 @@
           "body": "> Can you provide some normative references in SEMANTICS which forbids to create a method or a mechanism conveying a partial representation in a request? It would be really useful :)\r\n\r\nOf course a method can carry a partial representation. What I'm saying is that even when it does, a Digest request header field would *still* reflect the contents of the payload, in this case the partial payload.\r\n\r\n> Digest does not depend directly on the method, but on the SEMANTICS (which may depend on the method).\r\nimho stating that Digest in request just depends on the payload body is not in line with RFC3230 spirit.\r\n\r\nBut a recipient has no idea about the \"semantics\" of new methods, thus the behavior would essentially be undefined. How is that useful?\r\n\r\nCan wou please provide a *concrete* example where you would want the Digest request header field *not* to refer to the payload, whatever it is?\r\n\r\n(FWIW, the \"spirit\" of RFC 3230 is really irrelevant here unless you can demonstrate that it's actually useful and deployable; revising specs includes cleaning them up)\r\n",
           "createdAt": "2020-08-18T10:41:28Z",
           "updatedAt": "2020-08-18T10:41:28Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There seems to be some similarity to the discussion on CONNECT-UDP at https://github.com/httpwg/http-core/issues/436. What I mean by this is that special-casing things based on methods can be difficult, and that examples are based on legacy behaviours, which we'd rather not encourage any further.\r\n\r\nIf I understand Julien's point (and I might not!), then a spec that has text which says \"you can do anything\" doesn't help the implementers of Digest today. If there is no actionable advice, then the text has dubious value. Therefore it is better to leave this unwritten and allow someone with an actual case to come along later and describe what is required.",
+          "createdAt": "2020-08-24T11:51:31Z",
+          "updatedAt": "2020-08-24T11:51:31Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Trying to clarify.\r\n\r\nThe spec needs to state what the Digest header field means on *any* request and response. We can't leave that open.\r\n\r\n(And, FWIW, I haven't seen *any* argument in favor of special-casing methods - if there is one, we should discuss it!)\r\n",
+          "createdAt": "2020-08-24T12:11:24Z",
+          "updatedAt": "2020-08-24T12:11:24Z"
         }
       ],
       "reviews": [
@@ -65670,7 +65695,7 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDY5Mzk1NTEz",
       "title": "Fix: #968. Clarifications on Want-Digest.",
       "url": "https://github.com/httpwg/http-extensions/pull/1249",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ioggstream",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -65681,17 +65706,19 @@
       ],
       "body": "## This PR\r\n\r\nclarifies that no normative parts were added to Want-Digest, only examples.",
       "createdAt": "2020-08-18T10:42:36Z",
-      "updatedAt": "2020-08-19T08:48:13Z",
+      "updatedAt": "2020-08-24T14:04:59Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "7f9bcd3f446d4bceabfa0ebdf7805af1209d4f1b",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-978",
-      "headRefOid": "4f5378a1961dcb77d506b1400a97c9ac0b65e41f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "835468dcab13ed0a4b3c9a4f100e3121d8c2cefe",
+      "closedAt": "2020-08-24T14:04:58Z",
+      "mergedAt": "2020-08-24T14:04:58Z",
+      "mergedBy": "ioggstream",
+      "mergeCommit": {
+        "oid": "329e18637883cb47be248f4ef52f175a1f0770b5"
+      },
       "comments": [
         {
           "author": "LPardue",
@@ -65727,6 +65754,13 @@
           "body": "1- I'll register the algorithm in the table and mark it as Obsolete\r\n2- PTAL https://github.com/httpwg/http-extensions/pull/1249/files#r472865789",
           "createdAt": "2020-08-19T08:48:13Z",
           "updatedAt": "2020-08-19T08:48:13Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@LPardue \r\n\r\n> So the right thing to do, I think, is to register this as an obsolete digest-algorithm. Whether that needs to be a SHOULD NOT be used in Want-Digest and MUST NOT be used in Digest, or a MUST NOT in both (probably unenforceable) I don't know.\r\n\r\n\r\n@reschke \r\n>Having the value in the registry makes a lot of sense\r\n\r\nDone :) ",
+          "createdAt": "2020-08-24T08:32:19Z",
+          "updatedAt": "2020-08-24T08:33:04Z"
         }
       ],
       "reviews": [
@@ -65746,7 +65780,60 @@
               "originalPosition": 17,
               "body": "```suggestion\r\n[RFC7231].\r\nThe `contentMD5` token defined in Section 5 of [RFC3230] MUST NOT be used as a digest-algorithm.\r\n```",
               "createdAt": "2020-08-19T08:45:41Z",
-              "updatedAt": "2020-08-19T08:45:41Z"
+              "updatedAt": "2020-08-24T14:03:42Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDczMjIyODY0",
+          "commit": {
+            "abbreviatedOid": "f8389f6"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-24T08:29:36Z",
+          "updatedAt": "2020-08-24T08:29:37Z",
+          "comments": [
+            {
+              "originalPosition": 49,
+              "body": "```suggestion\r\n   To clarify that `Digest` and `Want-Digest` can be used in both requests and responses\r\n```",
+              "createdAt": "2020-08-24T08:29:36Z",
+              "updatedAt": "2020-08-24T14:03:42Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDczMzk4ODI1",
+          "commit": {
+            "abbreviatedOid": "b52fc3d"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-08-24T12:02:17Z",
+          "updatedAt": "2020-08-24T12:02:17Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDczNTIwMzM4",
+          "commit": {
+            "abbreviatedOid": "b52fc3d"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-24T14:03:26Z",
+          "updatedAt": "2020-08-24T14:03:27Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "```suggestion\r\nThis memo adds the \"contentMD5\" token in the [HTTP Digest Algorithm\r\n```",
+              "createdAt": "2020-08-24T14:03:27Z",
+              "updatedAt": "2020-08-24T14:03:42Z"
             }
           ]
         }
