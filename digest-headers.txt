@@ -421,7 +421,7 @@ Internet-Draft               Digest Headers                  August 2020
 
    Some algorithms, although registered, have since been found
    vulnerable: the "md5" algorithm MUST NOT be used due to collision
-   attacks [CMU-836068] and the "sha algorithm MUST NOT be used due to
+   attacks [CMU-836068] and the "sha" algorithm MUST NOT be used due to
    collision attacks [IACR-2020-014].
 
    sha-256
