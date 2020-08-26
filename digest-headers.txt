@@ -1405,7 +1405,7 @@ Internet-Draft               Digest Headers                  August 2020
 12.11.  Changes compared to RFC5843
 
    The digest-algorithm values for "MD5", "SHA", "SHA-256", "SHA-512",
-   "UNIXchksum", "UNIXsum", "ADLER32" and "CRC32c" have been updated to
+   "UNIXcksum", "UNIXsum", "ADLER32" and "CRC32c" have been updated to
    lowercase.
 
    The status of "MD5" has been updated to "deprecated", and its
@@ -1414,7 +1414,8 @@ Internet-Draft               Digest Headers                  August 2020
    The status of "SHA" has been updated to "obsoleted", and its
    description states that this algorithm is NOT RECOMMENDED.
 
-   The status for "CRC2c" has been updated to "standard".
+   The status for "CRC2c", "UNIXsum" and "UNIXcksum" has been updated to
+   "standard".
 
    The "id-sha-256" and "id-sha-512" algorithms have been added to the
    registry.
@@ -1449,7 +1450,6 @@ Internet-Draft               Digest Headers                  August 2020
               Carnagie Mellon University, Software Engineering
               Institute, "MD5 Vulnerable to collision attacks", December
               2008, <https://www.kb.cert.org/vuls/id/836068/>.
-
 
 
 
