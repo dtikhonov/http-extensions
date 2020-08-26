@@ -427,7 +427,7 @@ Internet-Draft               Digest Headers                  August 2020
    sha-256
 
 
-      *  Description: The sha-256 algorithm [RFC6234].  The output of
+      *  Description: The SHA-256 algorithm [RFC6234].  The output of
          this algorithm is encoded using the base64 encoding [RFC4648].
 
       *  Reference: [RFC6234], [RFC4648], this document.
@@ -437,7 +437,7 @@ Internet-Draft               Digest Headers                  August 2020
    sha-512
 
 
-      *  Description: The sha-512 algorithm [RFC6234].  The output of
+      *  Description: The SHA-512 algorithm [RFC6234].  The output of
          this algorithm is encoded using the base64 encoding [RFC4648].
 
       *  Reference: [RFC6234], [RFC4648], this document.
@@ -455,7 +455,7 @@ Internet-Draft               Digest Headers                  August 2020
    md5
 
 
-      *  Description: The md5 algorithm, as specified in [RFC1321].  The
+      *  Description: The MD5 algorithm, as specified in [RFC1321].  The
          output of this algorithm is encoded using the base64 encoding
          [RFC4648].  The "md5" algorithm MUST NOT be used as it's now
          vulnerable to collision attacks [CMU-836068].
@@ -467,7 +467,7 @@ Internet-Draft               Digest Headers                  August 2020
    sha
 
 
-      *  Description: The sha-1 algorithm [RFC3174].  The output of this
+      *  Description: The SHA-1 algorithm [RFC3174].  The output of this
          algorithm is encoded using the base64 encoding [RFC4648].  The
          "sha" algorithm MUST NOT be used as it's now vulnerable to
          collision attacks [IACR-2020-014].
@@ -1151,12 +1151,12 @@ Internet-Draft               Digest Headers                  August 2020
    suited towards cryptographic constructions such as signatures.
 
    However, these rely on collision-resistance for their security proofs
-   [CMU-836068].  The "md5" and "sha-1" algorithms are vulnerable to
+   [CMU-836068].  The MD5 and SHA-1 algorithms are vulnerable to
    collisions attacks, so they MUST NOT be used with "Digest".
 
 11.3.  Other Deprecated Algorithms
 
-   The "adler32" algorithm defined in [RFC1950] has been deprecated by
+   The ADLER32 algorithm defined in [RFC1950] has been deprecated by
    [RFC3309] because under certain conditions it provides weak detection
    of errors and is now NOT RECOMMENDED for use with "Digest".
 
@@ -1308,7 +1308,7 @@ Internet-Draft               Digest Headers                  August 2020
 
    o  Digest Algorithm: crc32c
 
-   o  Description: The crc32c algorithm is a 32-bit cyclic redundancy
+   o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
       check.  It achieves a better hamming distance (for better error-
       detection performance) than many other 32-bit CRC functions.
       Other places it is used include iSCSI and SCTP.  The 32-bit output
@@ -1346,7 +1346,7 @@ Polli & Pardue          Expires February 27, 2021              [Page 24]
 Internet-Draft               Digest Headers                  August 2020
 
 
-   o  Description: The adler32 algorithm is a checksum specified in
+   o  Description: The ADLER32 algorithm is a checksum specified in
       [RFC1950] "ZLIB Compressed Data Format".  The 32-bit output is
       encoded in hexadecimal (using between 1 and 8 ASCII characters
       from 0-9, A-F, and a-f; leading 0's are allowed).  For example,
@@ -1404,13 +1404,17 @@ Internet-Draft               Digest Headers                  August 2020
 
 12.11.  Changes compared to RFC5843
 
-   The status of "md5" has been updated to "deprecated", and its
+   The digest-algorithm values for "MD5", "SHA", "SHA-256", "SHA-512",
+   "UNIXchksum", "UNIXsum", "ADLER32" and "CRC32c" have been updated to
+   lowercase.
+
+   The status of "MD5" has been updated to "deprecated", and its
    description states that this algorithm MUST NOT be used.
 
-   The status of "sha" has been updated to "obsoleted", and its
+   The status of "SHA" has been updated to "obsoleted", and its
    description states that this algorithm is NOT RECOMMENDED.
 
-   The status for "crc32c" has been updated to "standard".
+   The status for "CRC2c" has been updated to "standard".
 
    The "id-sha-256" and "id-sha-512" algorithms have been added to the
    registry.
@@ -1446,10 +1450,6 @@ Internet-Draft               Digest Headers                  August 2020
               Institute, "MD5 Vulnerable to collision attacks", December
               2008, <https://www.kb.cert.org/vuls/id/836068/>.
 
-   [IACR-2020-014]
-              Leurent, G. and T. Peyrin, "SHA-1 is a Shambles", January
-              2020, <https://eprint.iacr.org/2020/014.pdf>.
-
 
 
 
@@ -1457,6 +1457,10 @@ Polli & Pardue          Expires February 27, 2021              [Page 26]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   [IACR-2020-014]
+              Leurent, G. and T. Peyrin, "SHA-1 is a Shambles", January
+              2020, <https://eprint.iacr.org/2020/014.pdf>.
 
    [NIST800-32]
               National Institute of Standards and Technology, U.S.
@@ -1500,10 +1504,6 @@ Internet-Draft               Digest Headers                  August 2020
               RFC 4960, DOI 10.17487/RFC4960, September 2007,
               <https://www.rfc-editor.org/info/rfc4960>.
 
-   [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
-              Specifications: ABNF", STD 68, RFC 5234,
-              DOI 10.17487/RFC5234, January 2008,
-              <https://www.rfc-editor.org/info/rfc5234>.
 
 
 
@@ -1513,6 +1513,11 @@ Polli & Pardue          Expires February 27, 2021              [Page 27]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234,
+              DOI 10.17487/RFC5234, January 2008,
+              <https://www.rfc-editor.org/info/rfc5234>.
 
    [RFC5843]  Bryan, A., "Additional Hash Algorithms for HTTP Instance
               Digests", RFC 5843, DOI 10.17487/RFC5843, April 2010,
@@ -1555,13 +1560,8 @@ Internet-Draft               Digest Headers                  August 2020
               Encoding", draft-thomson-http-mice-03 (work in progress),
               August 2018.
 
-   [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
-              DOI 10.17487/RFC2818, May 2000,
-              <https://www.rfc-editor.org/info/rfc2818>.
 
-   [RFC5789]  Dusseault, L. and J. Snell, "PATCH Method for HTTP",
-              RFC 5789, DOI 10.17487/RFC5789, March 2010,
-              <https://www.rfc-editor.org/info/rfc5789>.
+
 
 
 
@@ -1569,6 +1569,14 @@ Polli & Pardue          Expires February 27, 2021              [Page 28]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
+              DOI 10.17487/RFC2818, May 2000,
+              <https://www.rfc-editor.org/info/rfc2818>.
+
+   [RFC5789]  Dusseault, L. and J. Snell, "PATCH Method for HTTP",
+              RFC 5789, DOI 10.17487/RFC5789, March 2010,
+              <https://www.rfc-editor.org/info/rfc5789>.
 
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
@@ -1610,14 +1618,6 @@ Internet-Draft               Digest Headers                  August 2020
 
    [8] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
-   [9] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
-
-   [10] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
-
-   [11] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
-
-   [12] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
-
 
 
 
@@ -1625,6 +1625,14 @@ Polli & Pardue          Expires February 27, 2021              [Page 29]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   [9] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
+
+   [10] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
+
+   [11] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
+
+   [12] https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml
 
    [13] https://github.com/httpwg/http-core/
         issues/313#issuecomment-584389706
@@ -1667,6 +1675,13 @@ Appendix A.  Resource Representation and Representation-Data
    A Range-Request alters the payload body, conveying a partial
    representation.
 
+
+
+Polli & Pardue          Expires February 27, 2021              [Page 30]
+
+Internet-Draft               Digest Headers                  August 2020
+
+
    Request:
 
    GET /entries/1234 HTTP/1.1
@@ -1674,13 +1689,6 @@ Appendix A.  Resource Representation and Representation-Data
 
 
    Response:
-
-
-
-Polli & Pardue          Expires February 27, 2021              [Page 30]
-
-Internet-Draft               Digest Headers                  August 2020
-
 
    HTTP/1.1 206 Partial Content
    Content-Encoding: gzip
@@ -1721,14 +1729,6 @@ Internet-Draft               Digest Headers                  August 2020
 
    Response:
 
-   HTTP/1.1 201 Created
-   Content-Type: application/json
-   Content-Location: /authors/123
-   Location: /authors/123
-
-   {"id": "123", "author": "Camilleri"}
-
-
 
 
 
@@ -1737,6 +1737,13 @@ Polli & Pardue          Expires February 27, 2021              [Page 31]
 
 Internet-Draft               Digest Headers                  August 2020
 
+
+   HTTP/1.1 201 Created
+   Content-Type: application/json
+   Content-Location: /authors/123
+   Location: /authors/123
+
+   {"id": "123", "author": "Camilleri"}
 
 Appendix B.  FAQ
 
@@ -1779,13 +1786,6 @@ Appendix B.  FAQ
        algorithms and the inability to accept requests with unsupported
        digest-algorithms.
 
-   7.  Does this spec changes supported algorithms?
-
-       This RFC updates [RFC5843] which is still delegated for all
-       algorithms updates, and adds two more algorithms: "id-sha-256"
-       and "id-sha-512" which allows to send a checksum of a resource
-       representation with no content codings applied.  To simplify a
-       future transition to Structured Fields
 
 
 
@@ -1794,6 +1794,13 @@ Polli & Pardue          Expires February 27, 2021              [Page 32]
 Internet-Draft               Digest Headers                  August 2020
 
 
+   7.  Does this spec changes supported algorithms?
+
+       This RFC updates [RFC5843] which is still delegated for all
+       algorithms updates, and adds two more algorithms: "id-sha-256"
+       and "id-sha-512" which allows to send a checksum of a resource
+       representation with no content codings applied.  To simplify a
+       future transition to Structured Fields
        [I-D.ietf-httpbis-header-structure] we introduced that digest-
        algorithms, though case-insensitive, SHOULD be expressed in
        lowercase.
@@ -1828,13 +1835,6 @@ Code Samples
    these are formatted as base64.  This function could be adapted to
    other algorithms and should take into account their specific
    formatting rules.
-
-
-
-
-
-
-
 
 
 
