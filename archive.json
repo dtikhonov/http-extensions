@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-25T00:16:26.409033+00:00",
+  "timestamp": "2020-08-27T00:13:25.902437+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -21682,7 +21682,7 @@
       ],
       "body": "## I expect\r\n\r\nThis spec either:\r\n\r\n* to provide an RFC3230 compatible example of digest-algorithm with parameters;\r\n* explicitly drop parameters because they are not widely used and augment the attack surface;\r\n\r\nRFC3230 stated that:\r\n\r\n```\r\n   For some algorithms, one or more parameters may be\r\n   supplied.\r\n\r\n      digest-algorithm = token\r\n\r\n   The BNF for \"parameter\" is as is used in RFC 2616 [4].  All digest-\r\n   algorithm values are case-insensitive.\r\n```\r\n\r\nbut:\r\n\r\n- provided no example of parameterized algorithms\r\n\r\nIn this draft we *preserved that sentence* but:\r\n\r\n- still did not provide an example of parameterized algorithm;\r\n- still did not update the reference to BNF to the latest http spec.\r\n\r\nIn #1213 there's a possible fix to support parameters, like the following\r\n\r\n```\r\nDigest: myhash=dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs=; param1=40\r\n\r\n```\r\n\r\n## Notes\r\n\r\nUse cases are parametrizable digest-algorithms like mi-sha256.\r\n\r\nAnother solution could be to *deprecate* field parameters in digest: parameters could still be adopted serializing them in the digest-value, and leaving the specification/serialization to the definition of the digest-algorithm. eg:\r\n```\r\nDigest: myhash=40/dcRDgR2GM35DluAV13PzgnG6+pvQwPywfFvAu1UeFrs\r\n```",
       "createdAt": "2019-07-09T14:32:36Z",
-      "updatedAt": "2020-08-18T10:11:03Z",
+      "updatedAt": "2020-08-26T13:00:07Z",
       "closedAt": null,
       "comments": [
         {
@@ -21740,6 +21740,13 @@
           "body": "+0 on removing parameters, but I want to strongly suggest that any examples of encoded parameters are expressed in terms of Structured Fields, even if the entire header is not compliant.\r\n\r\nie:\r\n\r\n    bikeshed=:SD8E9q0okq:\r\n\r\nwhere the parameters are encoded in the first two base64 encoded bytes.\r\n     \r\n",
           "createdAt": "2020-08-18T10:11:03Z",
           "updatedAt": "2020-08-18T10:11:03Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Mailing list thread: https://lists.w3.org/Archives/Public/ietf-http-wg/2020JulSep/0092.html\r\n\r\n",
+          "createdAt": "2020-08-26T13:00:07Z",
+          "updatedAt": "2020-08-26T13:00:07Z"
         }
       ]
     },
@@ -23734,7 +23741,7 @@
       "id": "MDU6SXNzdWU0OTc3MTg3MTc=",
       "title": "Explain reference to `cache-validators`",
       "url": "https://github.com/httpwg/http-extensions/issues/936",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ioggstream",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
@@ -23743,8 +23750,8 @@
       ],
       "body": "## I expect\r\n\r\nto clarify the following passage\r\n\r\n> The resource is specified by the effective\r\n> Request-URI, and any cache-validator contained in the message.\r\n\r\nfor defining the behavior of digest with caching (eg. when Digest is returned together with\r\nLast-Modified and ETag).\r\n\r\nand to better extend the definition of Digest to POST and PATCH requests.\r\nThis is because [POST is cacheable for rfc 7231 \u00a74.2.3](https://tools.ietf.org/html/rfc7231#section-4.2.3) though only when they include explicit freshness information.\r\n\r\nIf we go on the new http-core definition (which is cleaner) we have that\r\n\r\n> Responses to POST requests are only cacheable when they include\r\n>   explicit freshness information (see Section 4.2.1 of [Caching]) \r\n>   and a\r\n>   Content-Location header field that has the same value as the POST's\r\n>   effective request URI (Section 6.2.5).\r\n \r\neg.\r\n```\r\n>POST /books\r\n\r\n< Content-Location: /books\r\n< Cache-Control: max-age=3600\r\n\r\n```\r\n\r\n## note\r\nAccording to https://tools.ietf.org/html/draft-ietf-httpbis-semantics-04#section-7.3.3\r\n\r\nPOST responses identify returned resources in different ways according to the following:\r\n\r\n### referenced resource target != effective request uri\r\n\r\n* the primary resource is identified by Content-Location\r\n* the enclosed representation matches the primary resource\r\neg. 1\r\n\r\n ```\r\nPOST /books\r\n\r\n{\"title\": \"foo\"}\r\n---\r\nHTTP/1.1 201\r\nContent-Location /books/123\r\n\r\n{\"title\": \"foo\", \"id\": 123}\r\n```\r\n\r\neg. 2\r\n\r\n ```\r\nPOST /books\r\n\r\n{\"title\": \"foo\"}\r\n---\r\nHTTP/1.1 204 No Content\r\nContent-Location /books/123\r\n\r\n```\r\n### representation describe the status of the request\r\n\r\n* primary resource identified by `Location`\r\n* enclosed representation matches the status of the request\r\n  according to the resource's own semantic\r\n\r\neg.\r\n\r\n ```\r\nPOST /books\r\n\r\n{\"title\": \"foo\"}\r\n---\r\nHTTP/1.1 200\r\nLocation /books/123\r\n\r\n{\"status\": \"updated\", \"id\": 123}\r\n```\r\n",
       "createdAt": "2019-09-24T14:17:21Z",
-      "updatedAt": "2020-08-17T12:52:19Z",
-      "closedAt": null,
+      "updatedAt": "2020-08-26T13:22:30Z",
+      "closedAt": "2020-08-26T13:22:30Z",
       "comments": [
         {
           "author": "ioggstream",
@@ -23937,9 +23944,9 @@
       "labels": [
         "digest-headers"
       ],
-      "body": "## I expect\r\n\r\nTo clarify relations between Digest and Caching.\r\n\r\n- [ ] #936 \r\n- [x] #940 \r\n\r\nMoreover address  Digest behavior with:\r\n\r\n- `If-Modified-Since` and `304` with an empty body: do we have all the relevant metadata to compute and reply with the digest?\r\n- Intermediary caches",
+      "body": "## I expect\r\n\r\nTo clarify relations between Digest and Caching.\r\n\r\n- [x] #936 \r\n- [x] #940 \r\n\r\nMoreover address  Digest behavior with:\r\n\r\n- `If-Modified-Since` and `304` with an empty body: do we have all the relevant metadata to compute and reply with the digest?\r\n- Intermediary caches",
       "createdAt": "2019-10-09T09:16:01Z",
-      "updatedAt": "2020-08-14T07:27:01Z",
+      "updatedAt": "2020-08-26T13:55:00Z",
       "closedAt": null,
       "comments": [
         {
@@ -27772,13 +27779,15 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "LPardue"
+      ],
       "labels": [
         "digest-headers"
       ],
       "body": "Section 11.2 rightly acknowledges that MD5 and SHA-1 don't provide certain properties.  But `sum` and `cksum` provide even weaker guarantees.  It might pay to reframe this to say that the Digest field is can provide cryptographic properties, but only if an algorithm with the desired properties is used.  I would be very happy to see MD5 in the same bucket as `sum`.",
       "createdAt": "2020-03-12T00:19:57Z",
-      "updatedAt": "2020-03-12T01:02:42Z",
+      "updatedAt": "2020-08-26T13:04:45Z",
       "closedAt": null,
       "comments": [
         {
@@ -27798,13 +27807,15 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "LPardue"
+      ],
       "labels": [
         "digest-headers"
       ],
       "body": "Section 11.3 says that ADLER32 was removed because it fails to detect certain errors.  I realize that `cksum` might be better as it uses the well-regarded CRC32 (or is that CRC32c? I didn't check; the original CRC32 had weaknesses of its own...).  But the 16-bit `sum` is clearly woefully inadequate for anything other than a sanity check.\r\n\r\nI'm not going to say that anything other than a good cryptographic algorithm is acceptable here, but I want to understand the rationale for inclusion.  Making `sum` obsolete would be an improvement; we almost get better guarantees from the TCP checksum.  I tend to think that `cksum` obsolete would also be a good choice.  Right now, both are 'standard'.",
       "createdAt": "2020-03-12T00:33:17Z",
-      "updatedAt": "2020-08-24T15:15:14Z",
+      "updatedAt": "2020-08-26T13:04:51Z",
       "closedAt": null,
       "comments": [
         {
@@ -27834,6 +27845,13 @@
           "body": "If there are no further comments I would close this.",
           "createdAt": "2020-08-24T15:15:14Z",
           "updatedAt": "2020-08-24T15:15:14Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I'd like to try and address both of Martin's point that relate to sum/cksum (here and on #1138) in a single PR. So I vote for keeping this open until we merge some text.",
+          "createdAt": "2020-08-26T13:03:41Z",
+          "updatedAt": "2020-08-26T13:03:41Z"
         }
       ]
     },
@@ -29755,9 +29773,9 @@
       "labels": [
         "digest-headers"
       ],
-      "body": "## Tasks\r\n\r\n- [ ] clean up Representation Digest https://github.com/httpwg/http-extensions/pull/937#discussion_r472018411\r\n- [ ] remove reference to \"validator fields\" if they are not used anymore\r\n- [ ] consistent usage of backticks in\r\n\r\n```\r\n`Digest` vs Digest vs \"Digest\"\r\n`digest-algorithms` vs digest-algoritms vs \"digest-algorithms\"\r\n```\r\n\r\n- [ ] consistent usage of \"-\" \r\n\r\n```\r\ndigest-algorithms vs digest algorithms\r\n```\r\n\r\n- [ ] consistent usage of lowercase digest-algorithms with backticks `sha-256` in text\r\n\r\n- [ ] close #1139 and #1138  about old algorithms unless somebody comes with a proposal.",
+      "body": "## Tasks\r\n\r\n- [ ] digest-algorithm lowercase #1253 \r\n- [ ] deprecate parameters and wait for feedback :)\r\n- [ ] clean up Representation Digest https://github.com/httpwg/http-extensions/pull/937#discussion_r472018411\r\n- [ ] remove reference to \"validator fields\" if they are not used anymore\r\n- [ ] consistent usage of backticks \r\n\r\n```\r\n`Digest` vs Digest vs \"Digest\"\r\n`digest-algorithms` vs digest-algoritms vs \"digest-algorithms\"\r\n```\r\n\r\n- [ ] consistent usage of \"-\" \r\n\r\n```\r\ndigest-algorithms vs digest algorithms\r\n```\r\n\r\n- [ ] consistent usage of lowercase digest-algorithms with backticks `sha-256` in text #1253 \r\n\r\n- [ ] close #1139 and #1138  about old algorithms unless somebody comes with a proposal. @LPardue ",
       "createdAt": "2020-08-18T11:14:37Z",
-      "updatedAt": "2020-08-24T15:17:48Z",
+      "updatedAt": "2020-08-26T16:32:05Z",
       "closedAt": null,
       "comments": []
     },
@@ -53598,7 +53616,7 @@
       "id": "MDExOlB1bGxSZXF1ZXN0MzIwODUyOTc1",
       "title": "Fix: #936. Cache semantics impacts on Digest and on the representation.",
       "url": "https://github.com/httpwg/http-extensions/pull/937",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ioggstream",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
@@ -53607,17 +53625,19 @@
       ],
       "body": "## This PR\r\n\r\nClarifies the following points:\r\n\r\n- resource identification is inherited from SEMANTICS\r\n- validator fields (ETags & Last Modified) which apply to the identified resource, apply to Digest too.",
       "createdAt": "2019-09-24T16:15:32Z",
-      "updatedAt": "2020-08-18T11:33:08Z",
+      "updatedAt": "2020-08-26T13:22:31Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
       "baseRefOid": "5af1520b6f163d3601178a1249f2213c0bd3469d",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-936",
       "headRefOid": "945809a8b266f3294fe22ccd81c2090cf3470083",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-08-26T13:22:30Z",
+      "mergedAt": "2020-08-26T13:22:30Z",
+      "mergedBy": "ioggstream",
+      "mergeCommit": {
+        "oid": "54472b0c7e9f1c66dbef5bf79b8db00c7e058e39"
+      },
       "comments": [
         {
           "author": "ioggstream",
@@ -53956,6 +53976,39 @@
               "updatedAt": "2020-08-18T11:07:34Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc1NDU2NzUx",
+          "commit": {
+            "abbreviatedOid": "945809a"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-26T12:54:08Z",
+          "updatedAt": "2020-08-26T12:54:09Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "sgtm",
+              "createdAt": "2020-08-26T12:54:09Z",
+              "updatedAt": "2020-08-26T12:54:09Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc1NDU3MzQ0",
+          "commit": {
+            "abbreviatedOid": "945809a"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-08-26T12:54:54Z",
+          "updatedAt": "2020-08-26T12:54:54Z",
+          "comments": []
         }
       ]
     },
@@ -65579,13 +65632,13 @@
       ],
       "body": "## This PR\r\n\r\nClarifies why digest semantic on requests depends on the underlying method semantic and can't be generalized on all methods.\r\n\r\nThe clarification is added in the FAQ.\r\n\r\nFixes: #970 ",
       "createdAt": "2020-08-17T16:38:26Z",
-      "updatedAt": "2020-08-24T12:11:24Z",
+      "updatedAt": "2020-08-26T15:38:51Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
-      "baseRefOid": "5af1520b6f163d3601178a1249f2213c0bd3469d",
+      "baseRefOid": "54472b0c7e9f1c66dbef5bf79b8db00c7e058e39",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "ioggstream-970",
-      "headRefOid": "5b1c524a5ab010d23b8d6add1acc229fee11234b",
+      "headRefOid": "c5752448d3e70cf3465b8dc43b4cdbf9aa202b2a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -65625,6 +65678,13 @@
           "body": "Trying to clarify.\r\n\r\nThe spec needs to state what the Digest header field means on *any* request and response. We can't leave that open.\r\n\r\n(And, FWIW, I haven't seen *any* argument in favor of special-casing methods - if there is one, we should discuss it!)\r\n",
           "createdAt": "2020-08-24T12:11:24Z",
           "updatedAt": "2020-08-24T12:11:24Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> The spec needs to state what the Digest header field means on any request and response. We can't leave that open.\r\n\r\nI agree. It is up to some future proposal to make the argument for special case behaviour.",
+          "createdAt": "2020-08-26T12:56:24Z",
+          "updatedAt": "2020-08-26T12:56:24Z"
         }
       ],
       "reviews": [
@@ -65644,7 +65704,7 @@
               "originalPosition": 12,
               "body": "```suggestion\r\n   This [discussion is not trivial](https://github.com/httpwg/http-extensions/pull/923).\r\n   When using POST and PATCH the representation-digest is computed on the payload body but\r\n   this is because of the semantics of those methods. However, other method semantics can vary.\r\n   For example, a hypothetical method where the request body contains a partial representation\r\n   would behave differently, and it's Digest would be computed on the complete representation data.\r\n   An example of such a hypothetical use case would be a resumable upload mechanism \r\n   implemented with PUT + Content-Range, such as\r\n   [this one](https://cloud.google.com/storage/docs/performing-resumable-uploads#resume-upload).\r\n```\r\n\r\njust some editorializing",
               "createdAt": "2020-08-18T09:05:52Z",
-              "updatedAt": "2020-08-18T09:35:47Z"
+              "updatedAt": "2020-08-26T15:38:51Z"
             }
           ]
         },
@@ -65664,7 +65724,7 @@
               "originalPosition": 12,
               "body": "No. \r\n\r\nThe Digest shoult not depend on the method. And giving an example of something that the HTTP spec explicitly forbids (PUT + Range) doesn't make it better.",
               "createdAt": "2020-08-18T09:17:32Z",
-              "updatedAt": "2020-08-18T09:35:47Z"
+              "updatedAt": "2020-08-26T15:38:51Z"
             }
           ]
         },
@@ -65684,7 +65744,7 @@
               "originalPosition": 12,
               "body": "See https://github.com/httpwg/http-extensions/pull/1248#issuecomment-675400978",
               "createdAt": "2020-08-18T10:31:03Z",
-              "updatedAt": "2020-08-18T10:36:24Z"
+              "updatedAt": "2020-08-26T15:38:51Z"
             }
           ]
         }
@@ -65834,6 +65894,83 @@
               "body": "```suggestion\r\nThis memo adds the \"contentMD5\" token in the [HTTP Digest Algorithm\r\n```",
               "createdAt": "2020-08-24T14:03:27Z",
               "updatedAt": "2020-08-24T14:03:42Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 1253,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDc0MDIwMzAy",
+      "title": "Fix: #1211. Recommend lowercase digest-algorithm names.",
+      "url": "https://github.com/httpwg/http-extensions/pull/1253",
+      "state": "OPEN",
+      "author": "ioggstream",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "digest-headers"
+      ],
+      "body": "## This PR\r\n\r\n- use lowercase for digest-algoritms in the doc\r\n- case is unchanged when referring to the actual algorithms (eg. SHA-1)\r\n- RECOMMEND lowercase for digest-algorithms\r\n- update IANA table to use lowercase digest-algorithms\r\n\r\n## Note\r\n\r\ndigest-algorithms remain case insensitive\r\n\r\nFixes #1211 Discussion here https://lists.w3.org/Archives/Public/ietf-http-wg/2020JulSep/0119.html",
+      "createdAt": "2020-08-26T16:27:56Z",
+      "updatedAt": "2020-08-26T17:17:24Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "54472b0c7e9f1c66dbef5bf79b8db00c7e058e39",
+      "headRepository": "httpwg/http-extensions",
+      "headRefName": "1211-lowercase-algorithms",
+      "headRefOid": "2f8f2d8d3db893c98b01d667bb50d5f2f4783489",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Hi @manger could you please take a look at this PR?",
+          "createdAt": "2020-08-26T16:34:27Z",
+          "updatedAt": "2020-08-26T16:34:27Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc1Njg4MTUw",
+          "commit": {
+            "abbreviatedOid": "2f8f2d8"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-26T17:04:12Z",
+          "updatedAt": "2020-08-26T17:04:12Z",
+          "comments": [
+            {
+              "originalPosition": 156,
+              "body": "@LPardue iiuc we forgot to mention the update of UNIX*sum",
+              "createdAt": "2020-08-26T17:04:12Z",
+              "updatedAt": "2020-08-26T17:04:13Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc1Njk3NjI3",
+          "commit": {
+            "abbreviatedOid": "2f8f2d8"
+          },
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-26T17:16:48Z",
+          "updatedAt": "2020-08-26T17:17:24Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "TBH, I'm not sure how a SHOULD is justified here. This is not using SF syntax, so why does it matter?",
+              "createdAt": "2020-08-26T17:16:48Z",
+              "updatedAt": "2020-08-26T17:17:24Z"
             }
           ]
         }
