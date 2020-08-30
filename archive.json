@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-27T00:13:25.902437+00:00",
+  "timestamp": "2020-08-30T00:13:56.418872+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -29146,9 +29146,9 @@
       "labels": [
         "digest-headers"
       ],
-      "body": "## I expect\r\n\r\nTo clarify usage of duplicate algorithms, eg. with different parameters\r\n\r\n## Instead\r\n\r\nIt is not specified\r\n\r\n## Note\r\n\r\nRFC3230 does not forbid duplicate digest-algorithm in field value, because the receiver MAY ignore one or more representation-digest eg:\r\n\r\n```\r\nDigest: sha256=bxxx.., sha256=axxx...\r\n```\r\n\r\nIn case of digest-algorithms with parameters, this is more complex. The following valid example shows a duplicate digest-algorithm `bs` with two different parameter values.\r\n\r\n```\r\nDigest: bs=axxx; p=1,    bs=bxxx; p=2\r\n```\r\n\r\nDo we need an example for that?\r\nWhich is a suitable way to define it using structured fields/headers?\r\n\r\n@LPardue ",
+      "body": "## I expect\r\n\r\nTo clarify usage of duplicate algorithms, eg. with different parameters\r\n\r\n## Instead\r\n\r\nIt is not specified\r\n\r\n## Note\r\n\r\nRFC3230 does not forbid duplicate digest-algorithm in field value, because the receiver MAY ignore one or more representation-digest eg:\r\n\r\n```\r\nDigest: sha256=bxxx.., sha256=axxx...\r\n```\r\n\r\nIn case of digest-algorithms with parameters, this is more complex. The following valid example shows a duplicate digest-algorithm `bs` with two different parameter values.\r\n\r\n```\r\nDigest: bs=axxx; p=1,    bs=bxxx; p=2\r\n```\r\n\r\nA use-case for duplicate algorithms and parameters is eg. to differentiate digest-values for algorithms like [multihash](https://multiformats.io/multihash/#examples) where the algorithm is encoded inside the string. This behavior is not in-line with Structured Fields though.\r\n\r\n```\r\nDigest: multihash=fafafaf ;n=1, multihash=fbfbfbf ;n=2\r\n```\r\n\r\n\r\nDo we need an example for that?\r\nWhich is a suitable way to define it using structured fields/headers?\r\n\r\n@LPardue ",
       "createdAt": "2020-06-18T10:09:48Z",
-      "updatedAt": "2020-08-17T09:58:32Z",
+      "updatedAt": "2020-08-27T08:37:18Z",
       "closedAt": null,
       "comments": [
         {
@@ -65913,13 +65913,13 @@
       ],
       "body": "## This PR\r\n\r\n- use lowercase for digest-algoritms in the doc\r\n- case is unchanged when referring to the actual algorithms (eg. SHA-1)\r\n- RECOMMEND lowercase for digest-algorithms\r\n- update IANA table to use lowercase digest-algorithms\r\n\r\n## Note\r\n\r\ndigest-algorithms remain case insensitive\r\n\r\nFixes #1211 Discussion here https://lists.w3.org/Archives/Public/ietf-http-wg/2020JulSep/0119.html",
       "createdAt": "2020-08-26T16:27:56Z",
-      "updatedAt": "2020-08-26T17:17:24Z",
+      "updatedAt": "2020-08-27T13:14:31Z",
       "baseRepository": "httpwg/http-extensions",
       "baseRefName": "master",
-      "baseRefOid": "54472b0c7e9f1c66dbef5bf79b8db00c7e058e39",
+      "baseRefOid": "2c56984393f9119e93153cdc6c2a4bf8d18a4e0f",
       "headRepository": "httpwg/http-extensions",
       "headRefName": "1211-lowercase-algorithms",
-      "headRefOid": "2f8f2d8d3db893c98b01d667bb50d5f2f4783489",
+      "headRefOid": "62bb3d57bee13564f3b6d99274eb0145b929f263",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -65931,6 +65931,20 @@
           "body": "Hi @manger could you please take a look at this PR?",
           "createdAt": "2020-08-26T16:34:27Z",
           "updatedAt": "2020-08-26T16:34:27Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I made one comment on what I thought was an inconsistency in use of uppercase or not. After further reading I think there are other instances where the editorial rule - uppercase for actual algorithm, lowercase for digest-algorithm (or token?), is hard to rationalise about because the document seems to interchangeably use \"algorithm\", \"digest algorithm\" and \"digest-algorithm\". In order to land this change I think we need to solve that editorial problem. Part of what would help that is to state our algorithm editorial rules in the terminology.",
+          "createdAt": "2020-08-27T12:33:42Z",
+          "updatedAt": "2020-08-27T12:33:42Z"
+        },
+        {
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> state our algorithm editorial rules in the terminology\r\n\r\n+1",
+          "createdAt": "2020-08-27T12:46:56Z",
+          "updatedAt": "2020-08-27T12:46:56Z"
         }
       ],
       "reviews": [
@@ -65950,7 +65964,7 @@
               "originalPosition": 156,
               "body": "@LPardue iiuc we forgot to mention the update of UNIX*sum",
               "createdAt": "2020-08-26T17:04:12Z",
-              "updatedAt": "2020-08-26T17:04:13Z"
+              "updatedAt": "2020-08-27T13:14:31Z"
             }
           ]
         },
@@ -65970,11 +65984,201 @@
               "originalPosition": 33,
               "body": "TBH, I'm not sure how a SHOULD is justified here. This is not using SF syntax, so why does it matter?",
               "createdAt": "2020-08-26T17:16:48Z",
-              "updatedAt": "2020-08-26T17:17:24Z"
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2NDkyMzMz",
+          "commit": {
+            "abbreviatedOid": "2f8f2d8"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T08:21:15Z",
+          "updatedAt": "2020-08-27T08:21:16Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "Which is a sensible way to signal we want to transition to lowercase and in future releases of Digest we may want to switch to SF ?",
+              "createdAt": "2020-08-27T08:21:15Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2NTIzODkz",
+          "commit": {
+            "abbreviatedOid": "2f8f2d8"
+          },
+          "author": "manger",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T09:02:20Z",
+          "updatedAt": "2020-08-27T09:02:21Z",
+          "comments": [
+            {
+              "originalPosition": 133,
+              "body": "typo: unencrypted",
+              "createdAt": "2020-08-27T09:02:21Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2NTI3OTg3",
+          "commit": {
+            "abbreviatedOid": "2f8f2d8"
+          },
+          "author": "manger",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T09:07:44Z",
+          "updatedAt": "2020-08-27T09:07:45Z",
+          "comments": [
+            {
+              "originalPosition": 133,
+              "body": "Looks ok.\r\nGiven the labels are being changed to lowercase it might be good to add to the note on the IANA page https://www.iana.org/assignments/http-dig-alg/http-dig-alg.xhtml: \"Digest algorithm names are case-insensitive\"",
+              "createdAt": "2020-08-27T09:07:44Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2NTI4MDA5",
+          "commit": {
+            "abbreviatedOid": "2f8f2d8"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T09:07:46Z",
+          "updatedAt": "2020-08-27T09:07:46Z",
+          "comments": [
+            {
+              "originalPosition": 133,
+              "body": "fixed on master, thanks!",
+              "createdAt": "2020-08-27T09:07:46Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2NTU5NjEx",
+          "commit": {
+            "abbreviatedOid": "336095d"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T09:48:57Z",
+          "updatedAt": "2020-08-27T09:48:58Z",
+          "comments": [
+            {
+              "originalPosition": 133,
+              "body": "@manger imho as algorithms are case-insensitive since RFC3230 you can already add the note to the page: do you need any action on my side for that?",
+              "createdAt": "2020-08-27T09:48:58Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2NjY2Nzg3",
+          "commit": {
+            "abbreviatedOid": "336095d"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T12:24:44Z",
+          "updatedAt": "2020-08-27T12:24:44Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "Unfortunately due to the overloading of algorithm and the way this section is structured, the lowercasing of these values seems inconsistent with your stated aims. A few ways to fix this come to mind:\r\n\r\n1) Unwind the change and leave them as uppercase\r\n2) \r\n\r\n```\r\nthe \"md5\" token MUST NOT be used due to collision attacks in the MD5 algorithm [link], the \"sha\" token MUST NOT be used due to collision attacks [link]\r\n```\r\n\r\n3) \r\n```\r\nthe MD5 algorithm (token \"md5\") MUST NOT be used ...\r\n```\r\n\r\nI have a slight preference for option 1.",
+              "createdAt": "2020-08-27T12:24:44Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2NjY5NDcw",
+          "commit": {
+            "abbreviatedOid": "336095d"
+          },
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T12:28:17Z",
+          "updatedAt": "2020-08-27T12:28:17Z",
+          "comments": [
+            {
+              "originalPosition": 162,
+              "body": "For consistency, probably just easier to do these as separate items, even if it means the text is more verbose.",
+              "createdAt": "2020-08-27T12:28:17Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc2Njg5OTg1",
+          "commit": {
+            "abbreviatedOid": "336095d"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-27T12:54:40Z",
+          "updatedAt": "2020-08-27T12:54:41Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "I interpreted the following as digest-algorithms because the sentence starts with\r\n\r\n> Some algorithms, although registered\r\n\r\nRewording like below should fix imho\r\n\r\n> Some digest-algorithms, although registered\r\n\r\nOTOH to reference algorithm names instead of tokens, we should use SHA-1\r\n\r\n```suggestion\r\nthe MD5 algorithm MUST NOT be used due to collision attacks [CMU-836068]\r\nand the SHA-1 algorithm MUST NOT be used due\r\n```\r\n\r\n\r\n",
+              "createdAt": "2020-08-27T12:54:40Z",
+              "updatedAt": "2020-08-27T13:14:31Z"
             }
           ]
         }
       ]
+    },
+    {
+      "number": 1254,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDc0NjgzNjkw",
+      "title": "Remove references to \"validator fields\"",
+      "url": "https://github.com/httpwg/http-extensions/pull/1254",
+      "state": "MERGED",
+      "author": "ioggstream",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "digest-headers"
+      ],
+      "body": "## This PR\r\n\r\nRemoves reference to validators as their use is now inferred from http spec.",
+      "createdAt": "2020-08-27T12:59:13Z",
+      "updatedAt": "2020-08-27T13:06:09Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "17051ff04f9570ed7983a764348b2c04e9b08892",
+      "headRepository": "httpwg/http-extensions",
+      "headRefName": "ioggstream-936-bis",
+      "headRefOid": "9a08812a1718e74e8e0d03d17156556e7ebdfdbd",
+      "closedAt": "2020-08-27T13:06:08Z",
+      "mergedAt": "2020-08-27T13:06:08Z",
+      "mergedBy": "ioggstream",
+      "mergeCommit": {
+        "oid": "2c56984393f9119e93153cdc6c2a4bf8d18a4e0f"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
