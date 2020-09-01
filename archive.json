@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-30T00:13:56.418872+00:00",
+  "timestamp": "2020-09-01T00:14:57.441549+00:00",
   "repo": "httpwg/http-extensions",
   "labels": [
     {
@@ -29080,7 +29080,7 @@
       ],
       "body": "The last [email to the list](https://www.w3.org/mid/CALGR9obRjBSADN1KtKF6jvFVzNS1+JzaS0D0kCVKHKkd4sn+MQ@mail.gmail.com) makes it quite clear that request ordering is still a useful signal about priority that can be combined with the proposed new field.  That is, a server can use both explicit signals AND the order of requests to determine how it prioritizes responses.\r\n\r\n(For this, we should probably clarify that it is stream ID - as an indicator of when the request was sent - and not when the request is received that matters.  That creates some interesting side effects for intermediaries though.  If a proxy receives requests out of order, but then forwards them in a different order, does that alter or suppress an otherwise useful signal?)\r\n\r\nWhat isn't clear from the draft is how other signals that were historically used for prioritization might be either used in combination with explicit signals or are rendered invalid by the priority signal being present.  The obvious one is the h2 PRIORITY frame, which I assume has to be superseded.  \r\n\r\nFor instance, can a server that would ordinarily use media type to prioritize requests still do so when the priority signals don't indicate clear preferences?  Or does that server have to use only request order and explicit priority signals?\r\n\r\nTo be clear, this isn't about \"have to\" or \"MUST\", but more about what expectations we set for clients.",
       "createdAt": "2020-06-05T03:43:03Z",
-      "updatedAt": "2020-07-06T14:26:07Z",
+      "updatedAt": "2020-08-31T13:24:30Z",
       "closedAt": null,
       "comments": [
         {
@@ -29089,6 +29089,13 @@
           "body": "> That is, a server can use both explicit signals AND the order of requests to determine how it prioritizes responses.\r\n\r\nI think this is a good observation. Stream ordering's role in how a server allocates resources is a bit buried. I think promoting it will help towards some of this discussion, so lets make a PR to do that. Personally, I see that as a property of the client-server connection with no need to recommend forward action. IMO whether the server has to fetch the file from a remote backend or just read it from a cache, there is no one-size-fits all answer.\r\n\r\nSo far our approach has been to adopt HTTP/2's general \"expressing priority is only a suggestion\" sentiment.  HTTP/2 does, while explaining the mechanics of trees, state how an implementation should allocate resources to them. We describe expectations for urgency and increment without normative language, generally leaning to making no recommendations. \r\n\r\n> What isn't clear from the draft is how other signals that were historically used for prioritization might be either used in combination with explicit signals or are rendered invalid by the priority signal being present. The obvious one is the h2 PRIORITY frame, which I assume has to be superseded.\r\n\r\nWe do spend some text explaining the more complicated case in H2 where SETTINGS is needed to disable tree-priorities, and how a client might send both signals until then. A client could expect either scheme to take effect until then, maybe we can spell that out.\r\n\r\n> For instance, can a server that would ordinarily use media type to prioritize requests still do so when the priority signals don't indicate clear preferences? Or does that server have to use only request order and explicit priority signals?\r\n\r\nSo https://httpwg.org/http-extensions/draft-ietf-httpbis-priority.html#merging does say something like \"the client could be wrong because the server might have additional information\". This is mainly to describe how to merge client and server extensible priority signals. But I think it holds true for something such as learning the content-type after receiving a request for \"accept: image/*\". I'm not sure how extensible priorities makes this situation any different than today.\r\n\r\nWithout formal definition of other signals, it seems hard to predict how an implementation might decide their order of importance. \r\nI wonder if this is issue is really identifying that \r\nI'm not so sure how to address \"other signals\" such as this because it doesn't seem covered by anything in HTTP/2, nor anywhere else really. We do provide text that explains how a proxy might respond to client and origin server extensible priority signals,\r\n\r\n",
           "createdAt": "2020-07-06T14:26:07Z",
           "updatedAt": "2020-07-06T14:26:07Z"
+        },
+        {
+          "author": "jonglezb",
+          "authorAssociation": "NONE",
+          "body": "It would make sense to give examples of signals that the server could use to make a scheduling decision (and of course, stress that this is non-exhaustive). For instance: content length, media type, request order, but people might find other interesting signals.\r\n\r\nSince the priority hints sent by the client are, well, just hints, the server should be allowed to override them if it has a good reason.\r\n\r\nTo some extent, section \"Merging Client- and Server-Driven Parameters\" already lists some signals _and_ allows the server to override the client hints. It would benefit from having a section to itself, dedicated to give guidance on how a server can make its scheduling decision. The \"Merging\" section would then just describe how to deal with the resulting inconsistencies between client and server priorities.",
+          "createdAt": "2020-08-31T13:24:30Z",
+          "updatedAt": "2020-08-31T13:24:30Z"
         }
       ]
     },
@@ -29373,7 +29380,7 @@
       ],
       "body": "On https://lists.w3.org/Archives/Public/ietf-http-wg/2020JulSep/0063.html @ekinnear provided some feedback:\r\n\r\n> For the document as a whole, we\u2019ve gotten some feedback internally that it would be really nice if there were some (minimal, recommendation only) guidance as to how to respond to the priority signals when received. This wouldn\u2019t be restrictive, as we\u2019re really excited to experiment here and see what awesome results we can achieve, but having a baseline of \u201cimplement this as written and you\u2019ll do okay\u201d might be worth considering to increase the likelihood that we have a large group of generally-performant implementations.\r\n> \r\n> An example here would be if two requests of the same urgency arrive back-to-back, the first with the incremental bit set and the second without. What gets sent when? What do you do next if a third request arrives with the incremental bit also set before the first is complete? There are lots and lots of permutations, but a general approach of handling new items coming in is something that I think we\u2019ve all been imagining during discussions, but we haven\u2019t really written it down explicitly. Internally, as we discussed with some folks new to the topic, we discovered that our imaginations of what to do in cases like these didn\u2019t actually align as well as we thought.\r\n\r\nI'm wondering how much this crosses over with https://github.com/httpwg/http-extensions/issues/1216, and how the editors might choose to address this feedback.",
       "createdAt": "2020-07-21T18:15:51Z",
-      "updatedAt": "2020-07-30T04:13:30Z",
+      "updatedAt": "2020-08-31T15:22:01Z",
       "closedAt": null,
       "comments": [
         {
@@ -29487,6 +29494,34 @@
           "body": "Ability to mark all resources non-incremental is critical for Low Latency HLS, so I'd say it is very useful for us.\r\n\r\nOverall, I just want to get a sense of if:\r\n1. Incremental-signaling significantly changes how resources are delivered, and in some cases negatively, so don't change it unless you are absolutely sure what you're doing.\r\n2. Incremental-signaling significantly changes how resources are delivered, but it is well-thought-out and with all corner cases considered, so you can set it wherever it makes sense.\r\n3. Incremental-signaling is just a hint and mostly ignored by servers, setting it will probably be fine.",
           "createdAt": "2020-07-30T04:13:30Z",
           "updatedAt": "2020-07-30T04:13:30Z"
+        },
+        {
+          "author": "jonglezb",
+          "authorAssociation": "NONE",
+          "body": "This is the first question that came to mind when reading the document: what happens when mixing incremental and non-incremental resources at the same priority level? It's definitely a difficult problem.\r\n\r\nFYI, I published some theoretical results ([IEEE paper](https://ieeexplore.ieee.org/document/9142713), [open-access version](https://hal.inria.fr/hal-02570686)) that basically use the following approach on the server side:\r\n\r\n- always respect the strict priority classes (what's called \"urgency\" here)\r\n- within a priority class, send resources with the smallest \"remaining completion time\" first. In practice, it can be approximated by the remaining amount of data to send for this resource. If it's unknown, assume it's infinite, or estimate the remaining completion time some other way.\r\n- within a priority class, a new resource will preempt an existing resource if it has a smaller estimated completion time (approximation: if it has smaller content length compared to what remains to be sent for the existing resource)\r\n\r\nIt's an adaptation of SRPT (Shortest Remaining Processing Time first).\r\n\r\nI deal with incremental resources by assuming they can be modeled as several successive resources. If this is not possible, then the problem becomes much harder.",
+          "createdAt": "2020-08-31T13:41:41Z",
+          "updatedAt": "2020-08-31T13:41:41Z"
+        },
+        {
+          "author": "jonglezb",
+          "authorAssociation": "NONE",
+          "body": "To clarify the last part: let's assume that a progressive image can be split into three \"virtual\" resources: for the sake of example, let's say 16 KB (metadata), 256 KB (low-res part), 4 MB (high-res part).\r\n\r\nIf it's in the same priority class as a 64 KB js file and a 512 KB non-progressive image, here is the order in which resources would be scheduled:\r\n\r\n- 16 KB of the progressive image (metadata)\r\n- 64 KB js file\r\n- 256 KB of the progressive image (low-res part)\r\n- 512 KB non-progressive image\r\n- 4 MB of the progressive image (high-res part)\r\n\r\nIf there are several concurrent progressive images with the same 16K/256K/4M \"split\":\r\n\r\n- send all 16 KB metadata sequentially, then\r\n- send all 256 KB low-res parts sequentially, then\r\n- send all 4 MB high-res parts sequentially. Since they will likely have different sizes, start with the smallest ones.",
+          "createdAt": "2020-08-31T13:57:01Z",
+          "updatedAt": "2020-08-31T13:57:01Z"
+        },
+        {
+          "author": "LPardue",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks for sharing the paper. I took a skim read. It seems like some of the assumptions do not hold in certain kinds of Internet deployments such as reverse proxies or CDNs e.g.\r\n\r\n> We also assume that the scheduler has access to the total size S of the message, for instance through a HTTP/2 header, and that application data is always available when the scheduler needs it.\r\n\r\nThe paper does acknowledge that some assumptions might not hold and provides some different strategies.\r\n\r\nThe modelling of incremental resources as a series of successive resources is interesting. It is similar to the work that was presented on https://blog.cloudflare.com/parallel-streaming-of-progressive-images/. Notably, in contrast to my earlier statement, by using response headers an upstream can inform the Cloudflare edge to schedule different byte ranges within our priority scheme e.g:\r\n\r\n```\r\ncf-priority: 30/0\r\ncf-priority-change: 512:20/1, 15000:10/n\r\n```\r\n\r\nThe hope is that extensible priorities allows the community to define an extension parameter similar to `cf-priority-change` but that is beyond the scope of this document.\r\n\r\nGetting back to the core issue here. I hope people will agree with me that there is going to be no universal perfect scheduler that is deployable. This document needs to contain widely-actionable text. My intent is to create a PR that describes some of the challenges without procsribing any particular solution.",
+          "createdAt": "2020-08-31T14:54:13Z",
+          "updatedAt": "2020-08-31T14:54:13Z"
+        },
+        {
+          "author": "jonglezb",
+          "authorAssociation": "NONE",
+          "body": "Indeed, I had forgotten about it, but this \"metadata / low-res / high-res\" example above is inspired by the blog post.\r\n\r\n> Getting back to the core issue here. I hope people will agree with me that there is going to be no universal perfect scheduler that is deployable. This document needs to contain widely-actionable text. My intent is to create a PR that describes some of the challenges without procsribing any particular solution.\r\n\r\nI completely agree. While I'm happy we have found a generic scheduling scheme that has good theoretical properties, ultimately the \"best\" scheduling scheme really depends on the application. Well, thanks to @rmarx and others, we at least know that Round-Robin is a terrible idea in general ;)",
+          "createdAt": "2020-08-31T15:22:01Z",
+          "updatedAt": "2020-08-31T15:22:01Z"
         }
       ]
     },
@@ -66179,6 +66214,75 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 1255,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDc2Mjg1MjM0",
+      "title": "Always use digest-algorithm (with dash). See #1211.",
+      "url": "https://github.com/httpwg/http-extensions/pull/1255",
+      "state": "OPEN",
+      "author": "ioggstream",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "digest-headers"
+      ],
+      "body": "## This PR\r\n\r\n- is preliminary to #1253 \r\n\r\nConsistently use `digest-algorithm` instead of `digest algorithm`.  In case we need to further focus on the value, we can say `digest-algorithm value` or `digest-algorithm token`.\r\n\r\nLooking at \"content-coding\" vs \"content coding\" in https://httpwg.org/http-core/draft-ietf-httpbis-semantics-latest.html I think that this choice makes the document more readable.",
+      "createdAt": "2020-08-31T13:04:51Z",
+      "updatedAt": "2020-08-31T13:28:55Z",
+      "baseRepository": "httpwg/http-extensions",
+      "baseRefName": "master",
+      "baseRefOid": "2c56984393f9119e93153cdc6c2a4bf8d18a4e0f",
+      "headRepository": "httpwg/http-extensions",
+      "headRefName": "1211-algorithm-editorial",
+      "headRefOid": "e77efb8f506700e94d7515a5264ed8e1be13b1c2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc4NTk4Njk5",
+          "commit": {
+            "abbreviatedOid": "e77efb8"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-31T13:10:00Z",
+          "updatedAt": "2020-08-31T13:10:01Z",
+          "comments": [
+            {
+              "originalPosition": 46,
+              "body": "If we want to reference the crypto algorithm, SHA-1 is the right name.\r\n\r\nGenerally, with this statement we explicitly forbid using SHA-1 and MD5 based digest-algorithms, even if not listed here (that is: a future  multihash digest-algorithm with https://github.com/multiformats/multicodec/blob/master/table.csv#L71)",
+              "createdAt": "2020-08-31T13:10:01Z",
+              "updatedAt": "2020-08-31T13:10:01Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDc4NjAxOTU5",
+          "commit": {
+            "abbreviatedOid": "e77efb8"
+          },
+          "author": "ioggstream",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-08-31T13:14:00Z",
+          "updatedAt": "2020-08-31T13:14:00Z",
+          "comments": [
+            {
+              "originalPosition": 82,
+              "body": "@LPardue here and below, we could replace `digest-algorithm` with `entry`",
+              "createdAt": "2020-08-31T13:14:00Z",
+              "updatedAt": "2020-08-31T13:14:00Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
