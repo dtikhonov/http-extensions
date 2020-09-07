@@ -217,7 +217,7 @@ Internet-Draft               Digest Headers               September 2020
 
    To allow both parties to exchange a Digest of a representation with
    no content codings (see Section 7.1.2 of [SEMANTICS]) two more
-   algorithms are added ("id-sha-256" and "id-sha-512").
+   digest-algorithms are added ("id-sha-256" and "id-sha-512").
 
 
 
@@ -233,7 +233,7 @@ Internet-Draft               Digest Headers               September 2020
    1.  Digest coverage for either the resource's "representation data"
        or "selected representation data" communicated via HTTP.
 
-   2.  Support for multiple digest algorithms.
+   2.  Support for multiple digest-algorithms.
 
    3.  Negotiation of the use of digests.
 
@@ -309,8 +309,8 @@ Internet-Draft               Digest Headers               September 2020
       representation-data-digest = digest-algorithm "="
                                    <encoded digest output>
 
-   The checksum is computed using one of the "digest-algorithms" listed
-   in Section 5 and then encoded in the associated format.
+   The checksum is computed using one of the digest-algorithms listed in
+   Section 5 and then encoded in the associated format.
 
    The example below shows the "sha-256" digest-algorithm which uses
    base64 encoding.
@@ -399,9 +399,9 @@ Internet-Draft               Digest Headers               September 2020
 
 5.  Digest Algorithm Values
 
-   Digest algorithm values are used to indicate a specific digest
-   computation.  For some algorithms, one or more parameters can be
-   supplied.
+   Digest-algorithm values are used to indicate a specific digest
+   computation.  For some digest-algorithms, one or more parameters can
+   be supplied.
 
       digest-algorithm = token
 
@@ -412,10 +412,10 @@ Internet-Draft               Digest Headers               September 2020
    digest-algorithm values.  The registry contains the tokens listed
    below.
 
-   Some algorithms, although registered, have since been found
-   vulnerable: the "MD5" algorithm MUST NOT be used due to collision
-   attacks [CMU-836068] and the "SHA" algorithm MUST NOT be used due to
-   collision attacks [IACR-2020-014].
+   Some digest-algorithms, although registered, rely on vulnerable
+   algorithms: the "MD5" digest-algorithm MUST NOT be used due to
+   collision attacks [CMU-836068] and the "SHA" digest-algorithm MUST
+   NOT be used due to collision attacks [IACR-2020-014].
 
    SHA-256
 
@@ -692,7 +692,7 @@ Internet-Draft               Digest Headers               September 2020
 9.2.  Server Returns No Representation Data
 
    Requests without a payload body can still send a "Digest" field
-   applying the digest algorithm to an empty representation.
+   applying the digest-algorithm to an empty representation.
 
    As there is no content coding applied, the "sha-256" and the "id-sha-
    256" digest-values in the response are the same.
@@ -1237,9 +1237,10 @@ Internet-Draft               Digest Headers               September 2020
 11.8.  Usage with encryption
 
    "Digest" may expose information details of encrypted payload when the
-   checksum is computed on the unencrypted data.  An example of that is
-   the use of the "id-sha-256" digest algorithm in conjuction with the
-   encrypted content-coding [RFC8188].
+   checksum is computed on the unencrypted data.
+
+   An example of that is the use of the "id-sha-256" digest algorithm in
+   conjuction with the encrypted content-coding [RFC8188].
 
 11.9.  Algorithm Agility
 
@@ -1264,7 +1265,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.3.  Deprecate "MD5" Digest Algorithm
 
-   This memo updates the "MD5" digest algorithm in the HTTP Digest
+   This memo updates the "MD5" digest-algorithm in the HTTP Digest
    Algorithm Values [5] registry:
 
    o  Digest Algorithm: MD5
@@ -1275,13 +1276,12 @@ Internet-Draft               Digest Headers               September 2020
 
 12.4.  Update "CRC32c" Digest Algorithm
 
-   This memo updates the "CRC32c" digest algorithm in the HTTP Digest
+   This memo updates the "CRC32c" digest-algorithm in the HTTP Digest
    Algorithm Values [6] registry:
 
    o  Digest Algorithm: CRC32c
 
-   o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
-      check.  It achieves a better hamming distance (for better error-
+
 
 
 
@@ -1290,6 +1290,8 @@ Polli & Pardue           Expires March 11, 2021                [Page 23]
 Internet-Draft               Digest Headers               September 2020
 
 
+   o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
+      check.  It achieves a better hamming distance (for better error-
       detection performance) than many other 32-bit CRC functions.
       Other places it is used include iSCSI and SCTP.  The 32-bit output
       is encoded in hexadecimal (using between 1 and 8 ASCII characters
@@ -1303,7 +1305,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.5.  Obsolete "SHA" Digest Algorithm
 
-   This memo updates the "SHA" digest algorithm in the HTTP Digest
+   This memo updates the "SHA" digest-algorithm in the HTTP Digest
    Algorithm Values [7] registry:
 
    o  Digest Algorithm: SHA
@@ -1314,7 +1316,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.6.  Obsolete "ADLER32" Digest Algorithm
 
-   This memo updates the "ADLER32" digest algorithm in the HTTP Digest
+   This memo updates the "ADLER32" digest-algorithm in the HTTP Digest
    Algorithm Values [8] registry:
 
    o  Digest Algorithm: ADLER32
@@ -1335,8 +1337,6 @@ Internet-Draft               Digest Headers               September 2020
    Values [9] registry:
 
    o  Digest Algorithm: contentMD5
-
-
 
 
 
