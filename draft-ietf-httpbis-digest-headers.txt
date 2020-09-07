@@ -217,7 +217,7 @@ Internet-Draft               Digest Headers               September 2020
 
    To allow both parties to exchange a Digest of a representation with
    no content codings (see Section 7.1.2 of [SEMANTICS]) two more
-   digest-algorithms are added ("id-sha-256" and "id-sha-512").
+   algorithms are added ("id-sha-256" and "id-sha-512").
 
 
 
@@ -233,7 +233,7 @@ Internet-Draft               Digest Headers               September 2020
    1.  Digest coverage for either the resource's "representation data"
        or "selected representation data" communicated via HTTP.
 
-   2.  Support for multiple digest-algorithms.
+   2.  Support for multiple digest algorithms.
 
    3.  Negotiation of the use of digests.
 
@@ -309,8 +309,8 @@ Internet-Draft               Digest Headers               September 2020
       representation-data-digest = digest-algorithm "="
                                    <encoded digest output>
 
-   The checksum is computed using one of the digest-algorithms listed in
-   Section 5 and then encoded in the associated format.
+   The checksum is computed using one of the "digest-algorithms" listed
+   in Section 5 and then encoded in the associated format.
 
    The example below shows the "sha-256" digest-algorithm which uses
    base64 encoding.
@@ -400,8 +400,8 @@ Internet-Draft               Digest Headers               September 2020
 5.  Digest Algorithm Values
 
    Digest algorithm values are used to indicate a specific digest
-   computation.  For some digest-algorithms, one or more parameters can
-   be supplied.
+   computation.  For some algorithms, one or more parameters can be
+   supplied.
 
       digest-algorithm = token
 
@@ -412,10 +412,10 @@ Internet-Draft               Digest Headers               September 2020
    digest-algorithm values.  The registry contains the tokens listed
    below.
 
-   Some digest-algorithms, although registered, have since been found
-   vulnerable: the "MD5" digest-algorithm MUST NOT be used due to
-   collision attacks [CMU-836068] and the "SHA" digest-algorithm MUST
-   NOT be used due to collision attacks [IACR-2020-014].
+   Some algorithms, although registered, have since been found
+   vulnerable: the "MD5" algorithm MUST NOT be used due to collision
+   attacks [CMU-836068] and the "SHA" algorithm MUST NOT be used due to
+   collision attacks [IACR-2020-014].
 
    SHA-256
 
@@ -450,7 +450,7 @@ Polli & Pardue           Expires March 11, 2021                 [Page 8]
 Internet-Draft               Digest Headers               September 2020
 
 
-         [RFC4648].  This digest-algorithm MUST NOT be used as it's now
+         [RFC4648].  The MD5 algorithm MUST NOT be used as it's now
          vulnerable to collision attacks [CMU-836068].
 
       *  Reference: [RFC1321], [RFC4648], this document.
@@ -461,8 +461,8 @@ Internet-Draft               Digest Headers               September 2020
 
 
       *  Description: The SHA-1 algorithm [RFC3174].  The output of this
-         algorithm is encoded using the base64 encoding [RFC4648].  This
-         digest-algorithm MUST NOT be used as it's now vulnerable to
+         algorithm is encoded using the base64 encoding [RFC4648].  The
+         SHA algorithm MUST NOT be used as it's now vulnerable to
          collision attacks [IACR-2020-014].
 
       *  Reference: [RFC3174], [RFC6234], [RFC4648], this document.
@@ -496,7 +496,7 @@ Internet-Draft               Digest Headers               September 2020
       *  Status: standard
 
    To allow sender and recipient to provide a checksum which is
-   independent from "Content-Encoding", the following additional digest-
+   independent from "Content-Encoding", the following additional
    algorithms are defined:
 
 
@@ -692,7 +692,7 @@ Internet-Draft               Digest Headers               September 2020
 9.2.  Server Returns No Representation Data
 
    Requests without a payload body can still send a "Digest" field
-   applying the digest-algorithm to an empty representation.
+   applying the digest algorithm to an empty representation.
 
    As there is no content coding applied, the "sha-256" and the "id-sha-
    256" digest-values in the response are the same.
@@ -1075,7 +1075,7 @@ Internet-Draft               Digest Headers               September 2020
 10.2.  Server Selects Algorithm Unsupported by Client
 
    The client requests a sha digest only.  The server is currently free
-   to reply with a Digest containing an unsupported digest-algorithm.
+   to reply with a Digest containing an unsupported algorithm.
 
    Request:
 
@@ -1139,7 +1139,7 @@ Internet-Draft               Digest Headers               September 2020
    suited towards cryptographic constructions such as signatures.
 
    However, these rely on collision-resistance for their security proofs
-   [CMU-836068].  The "MD5" and "SHA" digest-algorithms are vulnerable
+   [CMU-836068].  The "MD5" and "SHA-1" digest algorithms are vulnerable
    to collisions attacks, so they MUST NOT be used with "Digest".
 
 11.3.  Other Deprecated Algorithms
@@ -1157,7 +1157,7 @@ Internet-Draft               Digest Headers               September 2020
    Besides, it allows to protect "representation data" from buggy
    manipulation, buggy compression, etc.
 
-   Moreover identity digest-algorithms (eg. "id-sha-256" and "id-sha-
+   Moreover identity digest algorithms (eg. "id-sha-256" and "id-sha-
    512") allow piecing together a resource from different sources (e.g.
    different servers that perhaps apply different content codings)
    enabling the user-agent to detect that the application-layer tasks
@@ -1238,7 +1238,7 @@ Internet-Draft               Digest Headers               September 2020
 
    "Digest" may expose information details of encrypted payload when the
    checksum is computed on the unencrypted data.  An example of that is
-   the use of the "id-sha-256" digest-algorithm in conjuction with the
+   the use of the "id-sha-256" digest algorithm in conjuction with the
    encrypted content-coding [RFC8188].
 
 11.9.  Algorithm Agility
@@ -1264,7 +1264,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.3.  Deprecate "MD5" Digest Algorithm
 
-   This memo updates the "MD5" digest-algorithm in the HTTP Digest
+   This memo updates the "MD5" digest algorithm in the HTTP Digest
    Algorithm Values [5] registry:
 
    o  Digest Algorithm: MD5
@@ -1275,7 +1275,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.4.  Update "CRC32c" Digest Algorithm
 
-   This memo updates the "CRC32c" digest-algorithm in the HTTP Digest
+   This memo updates the "CRC32c" digest algorithm in the HTTP Digest
    Algorithm Values [6] registry:
 
    o  Digest Algorithm: CRC32c
@@ -1303,7 +1303,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.5.  Obsolete "SHA" Digest Algorithm
 
-   This memo updates the "SHA" digest-algorithm in the HTTP Digest
+   This memo updates the "SHA" digest algorithm in the HTTP Digest
    Algorithm Values [7] registry:
 
    o  Digest Algorithm: SHA
@@ -1314,7 +1314,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.6.  Obsolete "ADLER32" Digest Algorithm
 
-   This memo updates the "ADLER32" digest-algorithm in the HTTP Digest
+   This memo updates the "ADLER32" digest algorithm in the HTTP Digest
    Algorithm Values [8] registry:
 
    o  Digest Algorithm: ADLER32
@@ -1324,8 +1324,8 @@ Internet-Draft               Digest Headers               September 2020
       encoded in hexadecimal (using between 1 and 8 ASCII characters
       from 0-9, A-F, and a-f; leading 0's are allowed).  For example,
       ADLER32=03da0195 and ADLER32=3DA0195 are both valid checksums for
-      the 4-byte message "Wiki".  This digest-algorithm is obsoleted and
-      SHOULD NOT be used.
+      the 4-byte message "Wiki".  This algorithm is obsoleted and SHOULD
+      NOT be used.
 
    o  Status: obsoleted
 
@@ -1356,7 +1356,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.8.  The "id-sha-256" Digest Algorithm
 
-   This memo registers the "id-sha-256" digest-algorithm in the HTTP
+   This memo registers the "id-sha-256" digest algorithm in the HTTP
    Digest Algorithm Values [10] registry:
 
    o  Digest Algorithm: id-sha-256
@@ -1367,7 +1367,7 @@ Internet-Draft               Digest Headers               September 2020
 
 12.9.  The "id-sha-512" Digest Algorithm
 
-   This memo registers the "id-sha-512" digest-algorithm in the HTTP
+   This memo registers the "id-sha-512" digest algorithm in the HTTP
    Digest Algorithm Values [11] registry:
 
    o  Digest Algorithm: id-sha-512
@@ -1379,15 +1379,15 @@ Internet-Draft               Digest Headers               September 2020
 12.10.  Changes compared to RFC5843
 
    The status of "MD5" has been updated to "deprecated", and its
-   description states that this digest-algorithm MUST NOT be used.
+   description states that this algorithm MUST NOT be used.
 
-   The status of "SHA" has been updated to "obsoleted", and its
-   description states that this digest-algorithm is NOT RECOMMENDED.
+   The status of "SHA" has been updated to "deprecated", and its
+   description states that this algorithm MUST NOT be used.
 
    The status for "CRC32c" has been updated to "standard".
 
-   The "id-sha-256" and "id-sha-512" digest-algorithms have been added
-   to the registry.
+   The "id-sha-256" and "id-sha-512" algorithms have been added to the
+   registry.
 
 12.11.  Want-Digest Field Registration
 
@@ -1756,9 +1756,9 @@ Internet-Draft               Digest Headers               September 2020
    7.  Does this spec changes supported algorithms?
 
        This RFC updates [RFC5843] which is still delegated for all
-       algorithms updates, and adds two more digest-algorithms: "id-sha-
-       256" and "id-sha-512" which allows to send a checksum of a
-       resource representation with no content codings applied.
+       algorithms updates, and adds two more algorithms: "id-sha-256"
+       and "id-sha-512" which allows to send a checksum of a resource
+       representation with no content codings applied.
 
    8.  What about mid-stream trailers?
 
