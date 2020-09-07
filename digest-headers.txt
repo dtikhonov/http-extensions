@@ -1237,10 +1237,9 @@ Internet-Draft               Digest Headers               September 2020
 11.8.  Usage with encryption
 
    "Digest" may expose information details of encrypted payload when the
-   checksum is computed on the unencrypted data.
-
-   An example of that is the use of the "id-sha-256" digest algorithm in
-   conjuction with the encrypted content-coding [RFC8188].
+   checksum is computed on the unencrypted data.  An example of that is
+   the use of the "id-sha-256" digest algorithm in conjuction with the
+   encrypted content-coding [RFC8188].
 
 11.9.  Algorithm Agility
 
@@ -1281,7 +1280,8 @@ Internet-Draft               Digest Headers               September 2020
 
    o  Digest Algorithm: CRC32c
 
-
+   o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
+      check.  It achieves a better hamming distance (for better error-
 
 
 
@@ -1290,8 +1290,6 @@ Polli & Pardue           Expires March 11, 2021                [Page 23]
 Internet-Draft               Digest Headers               September 2020
 
 
-   o  Description: The CRC32c algorithm is a 32-bit cyclic redundancy
-      check.  It achieves a better hamming distance (for better error-
       detection performance) than many other 32-bit CRC functions.
       Other places it is used include iSCSI and SCTP.  The 32-bit output
       is encoded in hexadecimal (using between 1 and 8 ASCII characters
@@ -1337,6 +1335,8 @@ Internet-Draft               Digest Headers               September 2020
    Values [9] registry:
 
    o  Digest Algorithm: contentMD5
+
+
 
 
 
