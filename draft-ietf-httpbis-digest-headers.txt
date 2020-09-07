@@ -5,8 +5,8 @@
 HTTP Working Group                                              R. Polli
 Internet-Draft                         Team Digitale, Italian Government
 Intended status: Standards Track                               L. Pardue
-Expires: March 5, 2021                                        Cloudflare
-                                                      September 01, 2020
+Expires: March 11, 2021                                       Cloudflare
+                                                      September 07, 2020
 
 
                              Digest Headers
@@ -48,12 +48,12 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 5, 2021.
+   This Internet-Draft will expire on March 11, 2021.
 
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 1]
+Polli & Pardue           Expires March 11, 2021                 [Page 1]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 2]
+Polli & Pardue           Expires March 11, 2021                 [Page 2]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -130,12 +130,12 @@ Internet-Draft               Digest Headers               September 2020
      12.1.  Establish the HTTP Digest Algorithm Values . . . . . . .  23
      12.2.  The "status" Field in the HTTP Digest Algorithm Values .  23
      12.3.  Deprecate "MD5" Digest Algorithm . . . . . . . . . . . .  23
-     12.4.  Update "CRC32C" Digest Algorithm . . . . . . . . . . . .  23
+     12.4.  Update "CRC32c" Digest Algorithm . . . . . . . . . . . .  23
      12.5.  Obsolete "SHA" Digest Algorithm  . . . . . . . . . . . .  24
      12.6.  Obsolete "ADLER32" Digest Algorithm  . . . . . . . . . .  24
      12.7.  Obsolete "contentMD5" token in Digest Algorithm  . . . .  24
-     12.8.  The "ID-SHA-256" Digest Algorithm  . . . . . . . . . . .  25
-     12.9.  The "ID-SHA-512" Digest Algorithm  . . . . . . . . . . .  25
+     12.8.  The "id-sha-256" Digest Algorithm  . . . . . . . . . . .  25
+     12.9.  The "id-sha-512" Digest Algorithm  . . . . . . . . . . .  25
      12.10. Changes compared to RFC5843  . . . . . . . . . . . . . .  25
      12.11. Want-Digest Field Registration . . . . . . . . . . . . .  25
      12.12. Digest Header Field Registration . . . . . . . . . . . .  26
@@ -165,7 +165,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 3]
+Polli & Pardue           Expires March 11, 2021                 [Page 3]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -217,11 +217,11 @@ Internet-Draft               Digest Headers               September 2020
 
    To allow both parties to exchange a Digest of a representation with
    no content codings (see Section 7.1.2 of [SEMANTICS]) two more
-   algorithms are added ("ID-SHA-256" and "ID-SHA-512").
+   algorithms are added ("id-sha-256" and "id-sha-512").
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 4]
+Polli & Pardue           Expires March 11, 2021                 [Page 4]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -277,7 +277,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 5]
+Polli & Pardue           Expires March 11, 2021                 [Page 5]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -319,26 +319,26 @@ Internet-Draft               Digest Headers               September 2020
 
 3.  The Digest Field
 
-   The Digest field contains a list of one or more representation digest
-   values as defined in Section 2.  It can be used in both request and
-   response.
+   The "Digest" field contains a list of one or more representation
+   digest values as defined in Section 2.  It can be used in both
+   request and response.
 
       Digest = "Digest" ":" OWS 1#representation-data-digest
 
-   The relationship between Content-Location (see Section 7.2.5 of
-   [SEMANTICS]) and Digest is demonstrated in Section 9.7.  A
+   The relationship between "Content-Location" (see Section 7.2.5 of
+   [SEMANTICS]) and "Digest" is demonstrated in Section 9.7.  A
    comprehensive set of examples showing the impacts of representation
    metadata, payload transformations and HTTP methods on Digest is
    provided in Section 9 and Section 10.
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 6]
+Polli & Pardue           Expires March 11, 2021                 [Page 6]
 
 Internet-Draft               Digest Headers               September 2020
 
 
-   A Digest field MAY contain multiple representation-data-digest
+   A "Digest" field MAY contain multiple representation-data-digest
    values.  This could be useful for responses expected to reside in
    caches shared by users with different browsers, for example.
 
@@ -351,7 +351,7 @@ Internet-Draft               Digest Headers               September 2020
    algorithm without knowing whether the recipient supports the digest-
    algorithm, or even knowing that the recipient will ignore it.
 
-   Digest can be sent in a trailer section.  When using incremental
+   "Digest" can be sent in a trailer section.  When using incremental
    digest-algorithms this allows the sender and the receiver to
    dynamically compute the digest value while streaming the content.
 
@@ -365,7 +365,7 @@ Internet-Draft               Digest Headers               September 2020
 
 4.  The Want-Digest Field
 
-   The Want-Digest field indicates the sender's desire to receive a
+   The "Want-Digest" field indicates the sender's desire to receive a
    representation digest on messages associated with the request URI and
    representation metadata.
 
@@ -374,22 +374,22 @@ Internet-Draft               Digest Headers               September 2020
       qvalue = ( "0"  [ "."  0*1DIGIT ] ) /
                ( "1"  [ "."  0*1( "0" ) ] )
 
-   If a digest-algorithm is not accompanied by a qvalue, it is treated
-   as if its associated qvalue were 1.0.
+   If a digest-algorithm is not accompanied by a "qvalue", it is treated
+   as if its associated "qvalue" were 1.0.
 
    The sender is willing to accept a digest-algorithm if and only if it
-   is listed in a Want-Digest field of a message, and its qvalue is non-
-   zero.
+   is listed in a "Want-Digest" field of a message, and its "qvalue" is
+   non-zero.
 
    If multiple acceptable digest-algorithm values are given, the
    sender's preferred digest-algorithm is the one (or ones) with the
-   highest qvalue.
+   highest "qvalue".
 
    Two examples of its use are
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 7]
+Polli & Pardue           Expires March 11, 2021                 [Page 7]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -413,8 +413,8 @@ Internet-Draft               Digest Headers               September 2020
    below.
 
    Some algorithms, although registered, have since been found
-   vulnerable: the MD5 algorithm MUST NOT be used due to collision
-   attacks [CMU-836068] and the SHA algorithm MUST NOT be used due to
+   vulnerable: the "MD5" algorithm MUST NOT be used due to collision
+   attacks [CMU-836068] and the "SHA" algorithm MUST NOT be used due to
    collision attacks [IACR-2020-014].
 
    SHA-256
@@ -445,7 +445,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 8]
+Polli & Pardue           Expires March 11, 2021                 [Page 8]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -501,12 +501,12 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                 [Page 9]
+Polli & Pardue           Expires March 11, 2021                 [Page 9]
 
 Internet-Draft               Digest Headers               September 2020
 
 
-   ID-SHA-512
+   id-sha-512
 
 
       *  Description: The sha-512 digest of the representation-data of
@@ -516,7 +516,7 @@ Internet-Draft               Digest Headers               September 2020
 
       *  Status: standard
 
-   ID-SHA-256
+   id-sha-256
 
 
       *  Description: The sha-256 digest of the representation-data of
@@ -557,7 +557,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 10]
+Polli & Pardue           Expires March 11, 2021                [Page 10]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -613,7 +613,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 11]
+Polli & Pardue           Expires March 11, 2021                [Page 11]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -669,7 +669,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 12]
+Polli & Pardue           Expires March 11, 2021                [Page 12]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -691,7 +691,7 @@ Internet-Draft               Digest Headers               September 2020
 
 9.2.  Server Returns No Representation Data
 
-   Requests without a payload body can still send a Digest field
+   Requests without a payload body can still send a "Digest" field
    applying the digest algorithm to an empty representation.
 
    As there is no content coding applied, the "sha-256" and the "id-sha-
@@ -725,7 +725,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 13]
+Polli & Pardue           Expires March 11, 2021                [Page 13]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -781,7 +781,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 14]
+Polli & Pardue           Expires March 11, 2021                [Page 14]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -837,7 +837,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 15]
+Polli & Pardue           Expires March 11, 2021                [Page 15]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -893,7 +893,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 16]
+Polli & Pardue           Expires March 11, 2021                [Page 16]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -949,7 +949,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 17]
+Polli & Pardue           Expires March 11, 2021                [Page 17]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1005,17 +1005,17 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 18]
+Polli & Pardue           Expires March 11, 2021                [Page 18]
 
 Internet-Draft               Digest Headers               September 2020
 
 
 9.11.  Use with trailers and transfer coding
 
-   An origin server sends Digest in the HTTP trailer, so it can
+   An origin server sends "Digest" in the HTTP trailer, so it can
    calculate digest-value while streaming content and thus mitigate
    resource consumption.  The field value is the same as in Section 9.1
-   because Digest is designed to be independent from the use of one or
+   because "Digest" is designed to be independent from the use of one or
    more transfer codings (see Section 2).
 
    Request:
@@ -1047,8 +1047,8 @@ Internet-Draft               Digest Headers               September 2020
 
 10.1.  Server Selects Client's Least Preferred Algorithm
 
-   The client requests a digest, preferring sha.  The server is free to
-   reply with sha-256 anyway.
+   The client requests a digest, preferring "sha".  The server is free
+   to reply with "sha-256" anyway.
 
    Request:
 
@@ -1061,7 +1061,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 19]
+Polli & Pardue           Expires March 11, 2021                [Page 19]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1117,7 +1117,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 20]
+Polli & Pardue           Expires March 11, 2021                [Page 20]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1139,8 +1139,8 @@ Internet-Draft               Digest Headers               September 2020
    suited towards cryptographic constructions such as signatures.
 
    However, these rely on collision-resistance for their security proofs
-   [CMU-836068].  The MD5 and SHA-1 algorithms are vulnerable to
-   collisions attacks, so they MUST NOT be used with "Digest".
+   [CMU-836068].  The "MD5" and "SHA-1" digest algorithms are vulnerable
+   to collisions attacks, so they MUST NOT be used with "Digest".
 
 11.3.  Other Deprecated Algorithms
 
@@ -1157,8 +1157,8 @@ Internet-Draft               Digest Headers               September 2020
    Besides, it allows to protect "representation data" from buggy
    manipulation, buggy compression, etc.
 
-   Moreover identity digest algorithms (eg.  ID-SHA-256 and ID-SHA-512)
-   allow piecing together a resource from different sources (e.g.
+   Moreover identity digest algorithms (eg. "id-sha-256" and "id-sha-
+   512") allow piecing together a resource from different sources (e.g.
    different servers that perhaps apply different content codings)
    enabling the user-agent to detect that the application-layer tasks
    completed properly, before handing off to say the HTML parser, video
@@ -1173,7 +1173,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 21]
+Polli & Pardue           Expires March 11, 2021                [Page 21]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1207,7 +1207,7 @@ Internet-Draft               Digest Headers               September 2020
    A "Digest" field using NOT RECOMMENDED digest-algorithms SHOULD NOT
    be used in signatures.
 
-   Using signatures to protect the Digest of an empty representation
+   Using signatures to protect the "Digest" of an empty representation
    allows receiving endpoints to detect if an eventual payload has been
    stripped or added.
 
@@ -1218,8 +1218,9 @@ Internet-Draft               Digest Headers               September 2020
    validating the digest value.  Instead, data should only be processed
    after validating the Digest.
 
-   If received in trailers, Digest MUST NOT be discarded; instead it MAY
-   be merged in the header section (See Section 5.6.2 of [SEMANTICS]).
+   If received in trailers, "Digest" MUST NOT be discarded; instead it
+   MAY be merged in the header section (See Section 5.6.2 of
+   [SEMANTICS]).
 
    Not every digest-algorithm is suitable for trailers, as they may
    require to pre-process the whole payload before sending a message
@@ -1228,15 +1229,14 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-
-Polli & Pardue            Expires March 5, 2021                [Page 22]
+Polli & Pardue           Expires March 11, 2021                [Page 22]
 
 Internet-Draft               Digest Headers               September 2020
 
 
 11.8.  Usage with encryption
 
-   Digest may expose information details of encrypted payload when the
+   "Digest" may expose information details of encrypted payload when the
    checksum is computed on the unencrypted data.  An example of that is
    the use of the "id-sha-256" digest algorithm in conjuction with the
    encrypted content-coding [RFC8188].
@@ -1273,7 +1273,7 @@ Internet-Draft               Digest Headers               September 2020
 
    o  Status: As specified in Section 5.
 
-12.4.  Update "CRC32C" Digest Algorithm
+12.4.  Update "CRC32c" Digest Algorithm
 
    This memo updates the "CRC32c" digest algorithm in the HTTP Digest
    Algorithm Values [6] registry:
@@ -1285,7 +1285,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 23]
+Polli & Pardue           Expires March 11, 2021                [Page 23]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1341,7 +1341,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 24]
+Polli & Pardue           Expires March 11, 2021                [Page 24]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1354,23 +1354,23 @@ Internet-Draft               Digest Headers               September 2020
 
    o  Status: obsoleted
 
-12.8.  The "ID-SHA-256" Digest Algorithm
+12.8.  The "id-sha-256" Digest Algorithm
 
-   This memo registers the "ID-SHA-256" digest algorithm in the HTTP
+   This memo registers the "id-sha-256" digest algorithm in the HTTP
    Digest Algorithm Values [10] registry:
 
-   o  Digest Algorithm: ID-SHA-256
+   o  Digest Algorithm: id-sha-256
 
    o  Description: As specified in Section 5.
 
    o  Status: As specified in Section 5.
 
-12.9.  The "ID-SHA-512" Digest Algorithm
+12.9.  The "id-sha-512" Digest Algorithm
 
-   This memo registers the "ID-SHA-512" digest algorithm in the HTTP
+   This memo registers the "id-sha-512" digest algorithm in the HTTP
    Digest Algorithm Values [11] registry:
 
-   o  Digest Algorithm: ID-SHA-512
+   o  Digest Algorithm: id-sha-512
 
    o  Description: As specified in Section 5.
 
@@ -1384,9 +1384,9 @@ Internet-Draft               Digest Headers               September 2020
    The status of "SHA" has been updated to "obsoleted", and its
    description states that this algorithm is NOT RECOMMENDED.
 
-   The status for "CRC32C" has been updated to "standard".
+   The status for "CRC32c" has been updated to "standard".
 
-   The "ID-SHA-256" and "ID-SHA-512" algorithms have been added to the
+   The "id-sha-256" and "id-sha-512" algorithms have been added to the
    registry.
 
 12.11.  Want-Digest Field Registration
@@ -1397,7 +1397,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 25]
+Polli & Pardue           Expires March 11, 2021                [Page 25]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1453,7 +1453,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 26]
+Polli & Pardue           Expires March 11, 2021                [Page 26]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1509,7 +1509,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 27]
+Polli & Pardue           Expires March 11, 2021                [Page 27]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1565,7 +1565,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 28]
+Polli & Pardue           Expires March 11, 2021                [Page 28]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1621,7 +1621,7 @@ Appendix A.  Resource Representation and Representation-Data
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 29]
+Polli & Pardue           Expires March 11, 2021                [Page 29]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1677,7 +1677,7 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 30]
+Polli & Pardue           Expires March 11, 2021                [Page 30]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1733,7 +1733,7 @@ Appendix B.  FAQ
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 31]
+Polli & Pardue           Expires March 11, 2021                [Page 31]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1756,8 +1756,8 @@ Internet-Draft               Digest Headers               September 2020
    7.  Does this spec changes supported algorithms?
 
        This RFC updates [RFC5843] which is still delegated for all
-       algorithms updates, and adds two more algorithms: ID-SHA-256 and
-       ID-SHA-512 which allows to send a checksum of a resource
+       algorithms updates, and adds two more algorithms: "id-sha-256"
+       and "id-sha-512" which allows to send a checksum of a resource
        representation with no content codings applied.
 
    8.  What about mid-stream trailers?
@@ -1782,14 +1782,14 @@ Code Samples
 
    _RFC Editor: Please remove this section before publication._
 
-   How can I generate and validate the Digest values shown in the
+   How can I generate and validate the "Digest" values shown in the
    examples throughout this document?
 
 
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 32]
+Polli & Pardue           Expires March 11, 2021                [Page 32]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1845,7 +1845,7 @@ E.1.  Since draft-ietf-httpbis-digest-headers-00
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 33]
+Polli & Pardue           Expires March 11, 2021                [Page 33]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1901,7 +1901,7 @@ Authors' Addresses
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 34]
+Polli & Pardue           Expires March 11, 2021                [Page 34]
 
 Internet-Draft               Digest Headers               September 2020
 
@@ -1957,4 +1957,4 @@ Internet-Draft               Digest Headers               September 2020
 
 
 
-Polli & Pardue            Expires March 5, 2021                [Page 35]
+Polli & Pardue           Expires March 11, 2021                [Page 35]
